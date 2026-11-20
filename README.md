@@ -65,6 +65,32 @@ npm run typecheck  # also checks every exported type through the package name
 barrel, every component renders with Bob's scoped class names, and `dist/index.js` imports
 `bob.css`.
 
+## Storybook and screenshot tests
+
+```sh
+npm run storybook          # http://localhost:6006
+npm run build-storybook    # static build in storybook-static/
+npm run test:visual:docker # one screenshot per story, in the Playwright Linux image
+```
+
+Each component has a story with controls for its props. The Introduction and Tokens pages show
+this README and [TOKENS.md](./TOKENS.md).
+
+The screenshot test opens every story in the built Storybook and compares it with a baseline in
+`visual/__screenshots__/`, with no pixel tolerance. Baselines come from the Playwright Linux image,
+never from macOS, because fonts render differently. CI uses the same image. Build the Storybook
+first.
+
+When you change how a component looks on purpose, take new baselines and commit them with the
+change, so the review shows the before and after:
+
+```sh
+npm run build-storybook && npm run test:visual:docker -- --update-snapshots
+```
+
+A new story fails until it has a baseline. The image version in `package.json` and `ci.yml` must
+match the installed `@playwright/test`.
+
 ## Release
 
 Bump the version in a commit, then push a tag `v<version>`. GitHub Actions runs the tests and
