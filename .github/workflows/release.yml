@@ -1,0 +1,33 @@
+name: Release
+
+# Push a tag v<version> to publish that version to npm. Trusted publishing
+# (OIDC) authenticates the job, so no token or OTP is stored anywhere.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: npm
+      # Trusted publishing needs npm 11.5.1 or later. Node 22 ships npm 10.
+      - run: npm install -g npm@11
+      - name: The tag must match package.json
+        run: |
+          v=$(node -p "require('./package.json').version")
+          test "v$v" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME, package.json $v"; exit 1; }
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm publish --access public
