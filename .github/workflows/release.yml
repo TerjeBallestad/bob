@@ -30,4 +30,13 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run typecheck
-      - run: npm publish --access public
+      # 0.1.0 was published by hand before trusted publishing existed. A tag for a
+      # version that is already on npm builds the Storybook image and publishes nothing.
+      - name: Publish, unless this version is already on npm
+        run: |
+          v=$(node -p "require('./package.json').version")
+          if npm view "@terjeballestad/bob@$v" version >/dev/null 2>&1; then
+            echo "$v is already on npm"
+          else
+            npm publish --access public
+          fi
