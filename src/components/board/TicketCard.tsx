@@ -21,6 +21,12 @@ export interface TicketCardProps {
   progress?: { done: number; total: number };
   live?: boolean;
   emphasis?: 'sdd' | 'plan';
+  /** A type label in the head, for records that have no ticket kind, for example MAP or PLAN. */
+  label?: { text: string; color?: string };
+  /** Small grey text in the foot, for example "3 comments" or "4 linked". */
+  note?: React.ReactNode;
+  /** The id's colour when the card has no kind. */
+  idColor?: string;
   onClick?: () => void;
   style?: React.CSSProperties;
 }
@@ -35,6 +41,9 @@ export function TicketCard({
   progress,
   live,
   emphasis,
+  label,
+  note,
+  idColor,
   onClick,
   style,
 }: TicketCardProps) {
@@ -57,12 +66,17 @@ export function TicketCard({
     >
       <div className={styles.head}>
         {live && <span className={styles.live} />}
-        <span className={styles.id} style={{ color: (kind && KIND_COLORS[kind]) || 'var(--text-2)' }}>
+        <span className={styles.id} style={{ color: (kind && KIND_COLORS[kind]) || idColor || 'var(--text-2)' }}>
           {id}
         </span>
         {kind && (
           <span className={styles.kind} style={{ color: KIND_COLORS[kind] }}>
             {kind}
+          </span>
+        )}
+        {!kind && label && (
+          <span className={styles.kind} style={{ color: label.color || 'var(--text-2)' }}>
+            {label.text}
           </span>
         )}
         {priority && (
@@ -76,9 +90,10 @@ export function TicketCard({
         {age && <span className={styles.age}>{age}</span>}
       </div>
       <div className={styles.title}>{title}</div>
-      {(blocked || progress) && (
+      {(blocked || note || progress) && (
         <div className={styles.foot}>
           {blocked && <span className={styles.blocked}>{blocked}</span>}
+          {note && <span className={styles.note}>{note}</span>}
           {progress && (
             <>
               <span className={styles.track}>

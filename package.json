@@ -1,6 +1,6 @@
 {
   "name": "@terjeballestad/bob",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Bob: the design system shared by Time Turtle and pm-board",
   "type": "module",
   "license": "UNLICENSED",
@@ -9,9 +9,10 @@
     "url": "git+https://github.com/TerjeBallestad/bob.git"
   },
   "files": [
-    "dist",
+    "CHANGELOG.md",
     "README.md",
-    "TOKENS.md"
+    "TOKENS.md",
+    "dist"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",

@@ -22,6 +22,17 @@ export const TicketCardStates: StoryObj = {
   ),
 };
 
+export const TicketCardLabelsAndNotes: StoryObj = {
+  render: () => (
+    <div style={{ display: 'grid', gap: 8, width: 280 }}>
+      <TicketCard id="SDD-005" idColor="#7b83eb" label={{ text: 'map', color: '#7b83eb' }} title="A map with a label and a note" emphasis="sdd" note="4 linked" age="2d" />
+      <TicketCard id="PLAN-002" idColor="#46c288" label={{ text: 'plan', color: '#46c288' }} title="A plan with a note and progress" emphasis="plan" note="1 comment" progress={{ done: 1, total: 4 }} />
+      <TicketCard id="SB-051" kind="task" title="A kind wins over a label" label={{ text: 'ignored' }} note="3 comments" />
+      <TicketCard id="SB-052" kind="grill" title="Blocked, with a note" blocked="SB-049" note="1 comment" />
+    </div>
+  ),
+};
+
 export const ListRowStory: StoryObj<typeof ListRow> = {
   name: 'ListRow',
   render: () => (

@@ -84,6 +84,10 @@
   background: var(--green);
   border-radius: 2px;
 }
+.note {
+  font-size: 10.5px;
+  color: var(--text-3);
+}
 .count {
   font-family: var(--mono);
   font-size: 10.5px;
