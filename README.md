@@ -19,7 +19,9 @@ An import from `@terjeballestad/bob` also loads `bob.css`: the tokens, the keyfr
 component styles. You do not import a stylesheet yourself. If your bundler drops CSS that a
 package imports, import `@terjeballestad/bob/styles.css` once at the root of your app.
 
-`react` and `react-dom` 18.3 or later are peer dependencies.
+`react`, `react-dom` and `@types/react` 18.3 or later are peer dependencies. The types are a
+required peer, because Bob's declarations import React's types, and npm must place them where
+Bob can see them.
 
 ## Layout
 

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Install the packed package into an npm workspace (the app is a workspace, the
+# package is hoisted to the root) and type-check a file that passes native props.
+#
+# This does NOT reproduce the 0.1.0 failure. There, Time Turtle's lockfile kept
+# @types/react inside client/node_modules, out of reach of Bob's declarations,
+# so ButtonProps lost every native attribute. A fresh install hoists
+# @types/react anyway. The fix is the required peer on @types/react, which
+# makes npm place it where Bob can see it, and Time Turtle's own typecheck is
+# the test of that.
+set -euo pipefail
+root=$(cd "$(dirname "$0")/.." && pwd)
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+
+npm pack --silent --pack-destination "$work" >/dev/null
+tgz=$(ls "$work"/*.tgz)
+
+mkdir -p "$work/ws/app/src"
+cat > "$work/ws/package.json" <<JSON
+{ "name": "ws", "private": true, "workspaces": ["app"] }
+JSON
+cat > "$work/ws/app/package.json" <<JSON
+{ "name": "app", "private": true, "type": "module",
+  "dependencies": { "react": "18.3.1", "react-dom": "18.3.1", "@terjeballestad/bob": "file:$tgz" },
+  "devDependencies": { "@types/react": "18.3.31", "@types/react-dom": "18.3.7", "typescript": "$(node -p "require('$root/package.json').devDependencies.typescript")" } }
+JSON
+cat > "$work/ws/app/tsconfig.json" <<'JSON'
+{ "compilerOptions": { "target": "ES2022", "module": "ESNext", "moduleResolution": "bundler",
+  "jsx": "react-jsx", "strict": true, "noEmit": true, "types": ["react", "react-dom"] },
+  "include": ["src"] }
+JSON
+cat > "$work/ws/app/src/use.tsx" <<'TSX'
+import { Button, Chip, Input } from '@terjeballestad/bob';
+export const ok = (
+  <>
+    <Button variant="ghost" onClick={() => {}} type="submit">Save</Button>
+    <Chip mono tone="green" title="role">admin</Chip>
+    <Input value="x" onChange={(e) => e.target.value} />
+  </>
+);
+TSX
+(cd "$work/ws" && npm install --silent --no-audit --no-fund >/dev/null && cd app && npx tsc -p .)
+echo "consumer check passed"

@@ -1,6 +1,6 @@
 {
   "name": "@terjeballestad/bob",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Bob: the design system shared by Time Turtle and pm-board",
   "type": "module",
   "license": "UNLICENSED",
@@ -35,9 +35,11 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o storybook-static --quiet",
     "test:visual": "playwright test",
-    "test:visual:docker": "docker run --rm --ipc=host -v \"$PWD\":/work -w /work mcr.microsoft.com/playwright:v1.65.1-noble sh -c 'npx playwright test \"$@\"' --"
+    "test:visual:docker": "docker run --rm --ipc=host -v \"$PWD\":/work -w /work mcr.microsoft.com/playwright:v1.65.1-noble sh -c 'npx playwright test \"$@\"' --",
+    "test:consumer": "npm run build && scripts/consumer-check.sh"
   },
   "peerDependencies": {
+    "@types/react": ">=18.3",
     "react": ">=18.3",
     "react-dom": ">=18.3"
   },
