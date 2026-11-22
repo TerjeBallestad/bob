@@ -1,17 +1,18 @@
 import React from 'react';
-import styles from './Button.module.css';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'accent' | 'danger' | 'danger-ghost';
 export type ButtonSize = 'sm' | 'md';
 
+// Whole class names, so Tailwind finds them when it scans this file.
 const VARIANT_CLASS: Record<ButtonVariant, string> = {
-  primary: 'primary',
-  secondary: 'secondary',
-  ghost: 'ghost',
-  accent: 'accent',
-  danger: 'danger',
-  'danger-ghost': 'dangerGhost',
+  primary: 'btn-primary',
+  secondary: 'btn-secondary',
+  ghost: 'btn-ghost',
+  accent: 'btn-accent',
+  danger: 'btn-danger',
+  'danger-ghost': 'btn-danger-ghost',
 };
+const SIZE_CLASS: Record<ButtonSize, string> = { sm: 'btn-sm', md: 'btn-md' };
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -19,7 +20,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 export function Button({ variant = 'primary', size = 'md', className, children, ...rest }: ButtonProps) {
-  const cls = [styles.btn, styles[size], styles[VARIANT_CLASS[variant]], className].filter(Boolean).join(' ');
+  const cls = ['btn', SIZE_CLASS[size], VARIANT_CLASS[variant], className].filter(Boolean).join(' ');
   return (
     <button className={cls} {...rest}>
       {children}

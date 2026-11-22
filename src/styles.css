@@ -3,3 +3,10 @@
 @import './tokens/typography.css';
 @import './tokens/layout.css';
 @import './tokens/base.css';
+
+/* Tailwind layer (prototype). Bob's own build generates only the classes its components use.
+   No preflight and no cascade layer: the output stays plain CSS, like the CSS modules were. */
+@import './tailwind/theme.css';
+@import './tailwind/components.css';
+@tailwind utilities source(none);
+@source './components';
