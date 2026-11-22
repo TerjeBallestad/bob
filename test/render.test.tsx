@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { renderToString } from 'react-dom/server';
 import * as Bob from '@terjeballestad/bob';
+const css = readFileSync('dist/bob.css', 'utf8');
 
 const samples: Record<string, () => JSX.Element> = {
   Avatar: () => <Bob.Avatar initials="TB" />,
@@ -33,9 +34,13 @@ describe('render', () => {
   });
 
   for (const name of Object.keys(samples)) {
-    it(`${name} renders from the built package with Bob's scoped class names`, () => {
+    // A component on CSS modules gets scoped names (bob_...). One moved to the Tailwind layer
+    // gets Bob's component classes (btn, chip), and the built bob.css must define them.
+    it(`${name} renders from the built package with Bob's class names`, () => {
       const html = renderToString(samples[name]());
-      expect(html).toMatch(/class="[^"]*bob_/);
+      const tw = html.match(/class="(btn|chip)\b/);
+      if (tw) expect(css).toContain(`.${tw[1]}{`);
+      else expect(html).toMatch(/class="[^"]*bob_/);
     });
   }
 

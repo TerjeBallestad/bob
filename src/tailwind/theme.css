@@ -1,0 +1,53 @@
+/* Bob tokens as Tailwind theme values, so a Tailwind app can write bg-surface-card or text-text-2.
+   `inline` makes each utility read the Bob variable (var(--surface-card)), so the tokens in
+   src/tokens/ stay the one source of truth. Radii and fonts are not here yet: Bob already uses
+   Tailwind's names for them (--radius-btn, --font-sans), and a self-reference needs a decision. */
+@theme inline {
+  --color-accent: var(--accent);
+  --color-accent-deep: var(--accent-deep);
+  --color-bg: var(--bg);
+  --color-bg-rail: var(--bg-rail);
+  --color-bg-side: var(--bg-side);
+  --color-blue: var(--blue);
+  --color-border: var(--border);
+  --color-border-2: var(--border-2);
+  --color-border-card-hover: var(--border-card-hover);
+  --color-danger: var(--danger);
+  --color-gold: var(--gold);
+  --color-green: var(--green);
+  --color-input: var(--input);
+  --color-input-border: var(--input-border);
+  --color-on-accent: var(--on-accent);
+  --color-orange: var(--orange);
+  --color-panel: var(--panel);
+  --color-panel-dim: var(--panel-dim);
+  --color-panel-hover: var(--panel-hover);
+  --color-purple: var(--purple);
+  --color-scrim: var(--scrim);
+  --color-surface-app: var(--surface-app);
+  --color-surface-card: var(--surface-card);
+  --color-surface-card-hover: var(--surface-card-hover);
+  --color-surface-code: var(--surface-code);
+  --color-surface-input: var(--surface-input);
+  --color-surface-modal: var(--surface-modal);
+  --color-surface-overlay: var(--surface-overlay);
+  --color-surface-rail: var(--surface-rail);
+  --color-surface-sidebar: var(--surface-sidebar);
+  --color-surface-toast: var(--surface-toast);
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-text-4: var(--text-4);
+  --color-text-body: var(--text-body);
+  --color-text-faint: var(--text-faint);
+  --color-text-muted: var(--text-muted);
+  --color-text-prose: var(--text-prose);
+  --color-text-secondary: var(--text-secondary);
+  --color-tint-accent: var(--tint-accent);
+  --color-tint-blue: var(--tint-blue);
+  --color-tint-danger: var(--tint-danger);
+  --color-tint-green: var(--tint-green);
+  --color-tint-orange: var(--tint-orange);
+  --color-tint-yellow: var(--tint-yellow);
+  --color-yellow: var(--yellow);
+}
