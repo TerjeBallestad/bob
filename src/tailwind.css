@@ -1,0 +1,21 @@
+/* Bob for a Tailwind v4 app (DD-031). The app adds one line after its Tailwind import:
+
+     @import "tailwindcss";
+     @import "@terjeballestad/bob/tailwind.css";
+
+   The app's own Tailwind build then writes Bob's component classes (btn, chip, ...) next to its
+   utilities, in the same layer, so `<Button className="px-8">` wins over Bob's padding.
+   This file is copied to dist/ with src/tokens/ and src/tailwind/ (scripts/copy-tailwind.mjs).
+
+   The webfonts are not imported here: CSS allows `@import url(...)` only at the top of a
+   stylesheet, so the app's build would drop it. They come with the package's JS import
+   (`import { Button } from '@terjeballestad/bob'` loads dist/bob.css, which starts with them). */
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/layout.css';
+@import './tokens/base.css' layer(base);
+@import './tailwind/theme.css';
+@import './tailwind/components.css';
+
+/* Bob's built components: the app's build finds the class names they render. */
+@source './index.js';

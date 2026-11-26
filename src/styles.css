@@ -1,12 +1,23 @@
-@import './tokens/fonts.css';
-@import './tokens/colors.css';
-@import './tokens/typography.css';
-@import './tokens/layout.css';
-@import './tokens/base.css';
+/* The precompiled stylesheet, dist/bob.css: what `import { Button } from '@terjeballestad/bob'`
+   loads. An app with no Tailwind (Time Turtle today) gets all of Bob from it.
 
-/* Tailwind layer (prototype). Bob's own build generates only the classes its components use.
-   No preflight and no cascade layer: the output stays plain CSS, like the CSS modules were. */
+   Everything except the webfonts sits in the cascade layer `base` (DD-031). A Tailwind app
+   builds Bob's classes itself from dist/tailwind.css, in its utilities layer, and still loads
+   this file through the JS import. In `base`, this copy loses to the app's utilities, so
+   `<Button className="px-8">` wins. The name is `base` because Tailwind orders its layers
+   `theme, base, components, utilities` wherever this file lands in the page. Inside the one
+   layer, Bob's own rules keep their order. */
+@import './tokens/fonts.css';
+@import './tokens/colors.css' layer(base);
+@import './tokens/typography.css' layer(base);
+@import './tokens/layout.css' layer(base);
+@import './tokens/base.css' layer(base);
+
+/* Bob's own build generates only the classes its components use. No preflight. The two
+   imports define the theme and the @utility classes and write no CSS of their own. */
 @import './tailwind/theme.css';
 @import './tailwind/components.css';
-@tailwind utilities source(none);
+@layer base {
+  @tailwind utilities source(none);
+}
 @source './components';
