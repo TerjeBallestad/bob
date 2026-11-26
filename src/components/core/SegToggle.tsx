@@ -17,6 +17,8 @@ export function SegToggle({ options = [], value, onChange, style }: SegTogglePro
         return (
           <button
             key={opt.value}
+            type="button"
+            aria-pressed={active}
             onClick={() => onChange && onChange(opt.value)}
             className={active ? 'seg-opt seg-active' : 'seg-opt'}
           >

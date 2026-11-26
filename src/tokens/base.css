@@ -41,42 +41,13 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--gray-19);
 }
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.45;
-  }
-}
-@keyframes card-in {
-  from {
-    opacity: 0;
-    transform: translateY(3px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes toast-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes slide-in {
-  from {
-    transform: translateX(24px);
-    opacity: 0;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
+/* Bob's animations (live-pulse, card-in, toast-in, slide-in) are Tailwind theme keys with their
+   @keyframes in src/tailwind/theme.css: animate-live, animate-card-in, animate-toast-in,
+   animate-slide-in. A build writes a keyframe only when something uses it. */
+
+/* One focus style for every control: a 2px ring outside the element, shown on keyboard focus.
+   A component that clips its children (SegToggle) draws it inside instead. */
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--accent);
+  outline-offset: var(--focus-ring-offset);
 }

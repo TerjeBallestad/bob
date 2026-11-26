@@ -12,7 +12,7 @@ export function SearchInput({ kbd, expandOnFocus = false, className, ...rest }: 
     // The kbd variant is a button, not an input — rest carries the shared placeholder/onClick props.
     const buttonRest = rest as unknown as React.ButtonHTMLAttributes<HTMLButtonElement>;
     return (
-      <button className={['search-kbd', className].filter(Boolean).join(' ')} {...buttonRest}>
+      <button type="button" className={['search-kbd', className].filter(Boolean).join(' ')} {...buttonRest}>
         <span>{rest.placeholder || 'Search'}</span>
         <kbd className="search-kbd-hint">{kbd}</kbd>
       </button>

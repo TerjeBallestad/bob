@@ -1,5 +1,27 @@
 # Changelog
 
+## Unreleased
+
+PLAN-005 Task 3 (TASK-032): focus, accessibility checks, state screenshots, animations.
+
+- **Every control shows keyboard focus**: a 2px `--accent` ring, 2px outside, on
+  `:focus-visible` (new tokens `--focus-ring-width`, `--focus-ring-offset`). Input, Select,
+  Textarea and SearchInput no longer set `outline: none`.
+- **ListRow and TicketCard with `onClick` are keyboard controls**: role `button`, in the Tab
+  order, Enter and Space click them. Without `onClick` they stay plain.
+- **ARIA**: Modal is a `dialog` with `aria-modal`, named by its title; its close button is named
+  Close. SegToggle options have `aria-pressed`. A Toast is a `status`, an error Toast an `alert`.
+  FormRow's label names its one child control (`htmlFor` and an id). Bob's buttons have
+  `type="button"`, so they do not submit a form.
+- **Error state**: Input, Select, Textarea and SearchInput show a `--danger` border with
+  `aria-invalid="true"`.
+- **Animations are Tailwind theme keys**: `animate-live`, `animate-toast-in`, `animate-card-in`,
+  `animate-slide-in` (TOKENS.md). They run only under `motion-safe`. StatusDot's live pulse is a
+  class (`status-dot-live`), not an inline style. The keyframe `pulse` is now `live-pulse`, with
+  the same timing. `bob.css` holds only the keyframes Bob's components use, so `card-in` and
+  `slide-in` are no longer in it; a Tailwind app gets them from `animate-card-in` and
+  `animate-slide-in`.
+
 ## 0.3.0
 
 Bob is a Tailwind library in the daisyUI style (DD-031). No prop and no token name changes.

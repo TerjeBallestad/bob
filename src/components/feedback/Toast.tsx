@@ -9,7 +9,8 @@ export interface ToastProps {
 /** Copy rule: 2–5 words, past tense, no subject — "Title updated", "SB-341 archived". */
 export function Toast({ children, error = false, style }: ToastProps) {
   return (
-    <div className={error ? 'toast toast-error' : 'toast'} style={style}>
+    // status: a screen reader reads a new toast when it is idle; alert: at once, for an error.
+    <div className={error ? 'toast toast-error' : 'toast'} role={error ? 'alert' : 'status'} style={style}>
       {children}
     </div>
   );

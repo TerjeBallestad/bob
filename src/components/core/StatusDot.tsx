@@ -18,7 +18,8 @@ export function StatusDot({
   square = false,
   style,
 }: StatusDotProps) {
-  // color/size/square are data-driven, so the visual props stay inline; only layout is a class.
+  // color/size/square are data-driven, so the visual props stay inline; layout and the live pulse
+  // (animate-live, under motion-safe) are classes.
   const s: React.CSSProperties = {
     width: size,
     height: size,
@@ -41,10 +42,7 @@ export function StatusDot({
   }
   if (state === 'live') {
     return (
-      <span
-        className="status-dot"
-        style={{ ...s, background: color, boxShadow: `0 0 6px ${color}`, animation: 'pulse 1.8s ease-in-out infinite' }}
-      />
+      <span className="status-dot status-dot-live" style={{ ...s, background: color, boxShadow: `0 0 6px ${color}` }} />
     );
   }
   return <span className="status-dot" style={{ ...s, background: color }} />;

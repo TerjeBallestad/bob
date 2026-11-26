@@ -197,6 +197,10 @@
   font-family: var(--sans);
   font-size: 11.5px;
   cursor: pointer;
+  /* .seg clips its children (overflow: hidden), so the focus ring goes inside. */
+  &:focus-visible {
+    outline-offset: calc(-1 * var(--focus-ring-width));
+  }
 }
 @utility seg-active {
   background: var(--panel-hover);
@@ -204,8 +208,13 @@
   font-weight: 600;
 }
 
-/* StatusDot. Size, shape, colour and state come from props, inline. */
+/* StatusDot. Size, shape and colour come from props, inline. */
 @utility status-dot {
   display: inline-block;
   flex-shrink: 0;
+}
+@utility status-dot-live {
+  @variant motion-safe {
+    animation: var(--animate-live);
+  }
 }

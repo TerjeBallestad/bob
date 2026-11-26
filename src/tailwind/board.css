@@ -114,7 +114,7 @@
 }
 
 /* TicketCard. The border colour comes in as --tc-border from the emphasis and kind props;
-   the hover border overrides it. pulse is a keyframe in src/tokens/base.css. */
+   the hover border overrides it. --animate-live is a theme key in src/tailwind/theme.css. */
 @utility ticket-card {
   background: var(--panel);
   border: 1px solid var(--tc-border, var(--border));
@@ -140,7 +140,9 @@
   background: var(--green);
   box-shadow: var(--glow-green);
   align-self: center;
-  animation: pulse 1.8s ease-in-out infinite;
+  @variant motion-safe {
+    animation: var(--animate-live);
+  }
 }
 @utility ticket-card-id {
   font-family: var(--mono);

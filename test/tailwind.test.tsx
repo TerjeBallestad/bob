@@ -17,10 +17,10 @@ const APP_CSS = `
 @source inline("px-8");
 `;
 
-async function buildApp() {
+async function buildApp(extra: string[] = []) {
   const compiler = await compile(APP_CSS, { base: process.cwd(), onDependency: () => {} });
   const scanner = new Scanner({ sources: compiler.sources });
-  return compiler.build(scanner.scan());
+  return compiler.build([...scanner.scan(), ...extra]);
 }
 
 const classesOf = (html: string) =>
@@ -84,5 +84,19 @@ describe('the Tailwind entry', () => {
     for (const rule of [':root{', '.btn{', '.btn-md{', '.chip{']) expect(layer).toContain(rule);
     // Outside the layer: only the webfont import and Tailwind's @property fallbacks.
     expect(outside.match(/(^|})\.[\w-]+[{:]/g)).toBeNull();
+  });
+
+  it("makes Bob's animations theme keys: animate-* classes, with a keyframe only when used", async () => {
+    const plain = await buildApp();
+    // Bob's components use the live pulse and toast-in, under motion-safe.
+    expect(plain).toMatch(/\.ticket-card-live \{[^}]*@media \(prefers-reduced-motion: no-preference\) \{\s*animation: var\(--animate-live\)/);
+    expect(plain).toContain('@keyframes live-pulse');
+    expect(plain).not.toContain('@keyframes card-in');
+    const app = await buildApp(['animate-card-in', 'animate-slide-in', 'animate-pulse']);
+    expect(app).toContain('.animate-card-in {');
+    expect(app).toContain('@keyframes card-in');
+    expect(app).toContain('@keyframes slide-in');
+    // Tailwind's animate-pulse keeps its own keyframe: Bob does not define one named pulse.
+    expect(app.match(/@keyframes pulse \{[\s\S]*?\n {2}\}/)?.[0]).toContain('opacity: 0.5');
   });
 });

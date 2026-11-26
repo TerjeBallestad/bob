@@ -50,7 +50,7 @@
   margin-top: 18px;
 }
 
-/* Toast. toast-in is a keyframe in src/tokens/base.css. */
+/* Toast. --animate-toast-in is a theme key in src/tailwind/theme.css. */
 @utility toast {
   background: var(--surface-toast);
   border: 1px solid var(--border-2);
@@ -61,7 +61,9 @@
   box-shadow: var(--shadow-toast);
   font-family: var(--sans);
   display: inline-block;
-  animation: toast-in 0.18s ease;
+  @variant motion-safe {
+    animation: var(--animate-toast-in);
+  }
 }
 @utility toast-error {
   border-color: var(--red-9-a50);

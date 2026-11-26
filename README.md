@@ -15,7 +15,7 @@ import { Button, Chip, StatusDot } from '@terjeballestad/bob';
 <StatusDot state="live" color="var(--green)" size={7} />
 ```
 
-An import from `@terjeballestad/bob` also loads `bob.css`: the tokens, the keyframes and the
+An import from `@terjeballestad/bob` also loads `bob.css`: the tokens, the animations and the
 component styles. You do not import a stylesheet yourself. If your bundler drops CSS that a
 package imports, import `@terjeballestad/bob/styles.css` once at the root of your app.
 
@@ -62,7 +62,7 @@ src/
   tailwind.css           the Tailwind entry (dist/tailwind.css): tokens, theme, @utility classes
   tailwind/              theme.css (@theme over the tokens), components.css and one file of
                          @utility classes per group: core, forms, feedback, board
-  tokens/                colors, typography, layout, fonts, base (reset + keyframes)
+  tokens/                colors, typography, layout, fonts, base (reset + focus ring)
   components/
     core/                Avatar Button Chip Kbd ProgressBar SegToggle StatusDot
     forms/               FormRow Input SearchInput Select Textarea

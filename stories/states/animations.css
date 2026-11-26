@@ -1,0 +1,26 @@
+/* For the story Animations / Live dot only: Tailwind's own animate-pulse and animate-ping, from
+   Tailwind's default theme, next to Bob's animate-live. Bob's build does not load Tailwind's
+   theme, so this file builds the two classes for the story. */
+@import 'tailwindcss/theme.css';
+@source './animations.stories.tsx';
+@tailwind utilities source(none);
+
+/* The TicketCard dot with Tailwind's animate-pulse instead of Bob's animate-live. */
+.live-tw-pulse .ticket-card-live {
+  animation: none;
+  @apply motion-safe:animate-pulse;
+}
+/* animate-ping scales and fades its element to nothing, so Tailwind puts it on a copy behind
+   the dot (its docs' pattern): the dot stays, a ring grows out of it. */
+.live-tw-ping .ticket-card-live {
+  position: relative;
+  animation: none;
+}
+.live-tw-ping .ticket-card-live::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  @apply motion-safe:animate-ping;
+}

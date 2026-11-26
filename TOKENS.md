@@ -160,20 +160,28 @@ Structure: `--sidebar-w` 226px · `--rail-w` 290px · `--topbar-h` 48px.
 
 Motion: `--dur-fast` .1s · `--dur` .12s · `--dur-slow` .18s, all `--ease` `ease`. Fast and small — nothing bounces.
 
-## Base styles and keyframes — `tokens/base.css`
+## Base styles and focus — `tokens/base.css`
 
-Carries the reset, `body` defaults, the link and scrollbar styling, and four keyframes that
-components reference by name:
+Carries the reset, `body` defaults, the link and scrollbar styling, and the one focus style:
+on keyboard focus (`:focus-visible`) every control gets a `--focus-ring-width` (2px) ring in
+`--accent`, `--focus-ring-offset` (2px) outside it. SegToggle draws it inside, because it clips.
 
-| Keyframe   | Used by                                                   |
-| ---------- | --------------------------------------------------------- |
-| `pulse`    | `StatusDot state="live"`, `TicketCard live`               |
-| `toast-in` | `Toast`                                                   |
-| `card-in`  | Staggered card entry (available; not used by the app yet) |
-| `slide-in` | Slide-over panels (available; not used by the app yet)    |
+## Animations — `tailwind/theme.css`
 
-**These keyframes are why components need the stylesheet.** Importing a component from `../ds`
-pulls in `styles.css` automatically, so they are always present.
+Four Tailwind theme keys, each with its keyframe. A Tailwind app writes the class; a build
+writes the keyframe only when something uses it. Bob's components run them only under
+`motion-safe` (the user has not asked for reduced motion).
+
+| Theme key            | Class              | Value                                   | Used by                                     |
+| -------------------- | ------------------ | --------------------------------------- | ------------------------------------------- |
+| `--animate-live`     | `animate-live`     | `live-pulse` 1.8s ease-in-out, infinite | `StatusDot state="live"`, `TicketCard live` |
+| `--animate-toast-in` | `animate-toast-in` | `toast-in` 0.18s ease                   | `Toast`                                     |
+| `--animate-card-in`  | `animate-card-in`  | `card-in` 0.18s ease                    | Staggered card entry (not used by Bob)      |
+| `--animate-slide-in` | `animate-slide-in` | `slide-in` 0.18s ease                   | Slide-over panels (not used by Bob)         |
+
+`live-pulse` was named `pulse` up to 0.3.0. It is not named `pulse` any more, so it does not
+replace Tailwind's own `animate-pulse` keyframe in an app. Storybook's Animations / Live dot
+story shows it next to Tailwind's `animate-pulse` and `animate-ping`.
 
 ## Fonts — `tokens/fonts.css`
 

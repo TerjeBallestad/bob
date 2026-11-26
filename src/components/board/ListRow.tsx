@@ -1,4 +1,5 @@
 import React from 'react';
+import { clickable } from './clickable';
 
 export interface ListRowProps {
   id?: React.ReactNode;
@@ -22,7 +23,7 @@ export function ListRow({
   style,
 }: ListRowProps) {
   return (
-    <div onClick={onClick} className={done ? 'list-row list-row-done' : 'list-row'} style={style}>
+    <div {...clickable(onClick)} className={done ? 'list-row list-row-done' : 'list-row'} style={style}>
       <span className="list-row-id" style={{ color: idColor }}>
         {id}
       </span>

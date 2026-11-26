@@ -65,3 +65,57 @@
   --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
 }
+
+/* Bob's animations, as Tailwind theme keys: an app writes animate-live, animate-card-in,
+   animate-toast-in or animate-slide-in (best as motion-safe:animate-live), and a build writes
+   a keyframe only when something uses its key. Bob's components run them only under
+   motion-safe (prefers-reduced-motion: no-preference).
+   live is Bob's own pulse (to 0.45 opacity over 1.8s). It is not named pulse, so Tailwind's
+   animate-pulse (0.5 over 2s) and its keyframe stay as they are in an app; the Storybook story
+   Animations / Live dot compares the two and animate-ping. */
+@theme {
+  --animate-live: live-pulse 1.8s ease-in-out infinite;
+  --animate-card-in: card-in 0.18s ease;
+  --animate-toast-in: toast-in 0.18s ease;
+  --animate-slide-in: slide-in 0.18s ease;
+
+  @keyframes live-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.45;
+    }
+  }
+  @keyframes card-in {
+    from {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes slide-in {
+    from {
+      transform: translateX(24px);
+      opacity: 0;
+    }
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+}

@@ -23,7 +23,7 @@ export const Live: StoryObj = {
     <div style={{ display: 'grid', gap: 10, width: 260 }}>
       <SearchInput placeholder="Filter…" />
       <SearchInput expandOnFocus placeholder="Search" />
-      <SearchInput defaultValue="widget" />
+      <SearchInput defaultValue="widget" aria-label="Search" />
     </div>
   ),
 };

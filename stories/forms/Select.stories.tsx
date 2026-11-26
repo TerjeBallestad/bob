@@ -16,7 +16,7 @@ export default {
 
 export const Default: StoryObj<typeof Select> = {
   render: (args) => <Select {...args} />,
-  args: { options: ['inbox', 'exploring', 'planned', { value: 'done', label: 'Done' }] },
+  args: { options: ['inbox', 'exploring', 'planned', { value: 'done', label: 'Done' }], 'aria-label': 'Stage' },
 };
 
 /** An interaction test: Tab reaches the select, and a choice by value or by label reaches onChange. */

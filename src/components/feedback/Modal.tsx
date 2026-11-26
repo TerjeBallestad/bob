@@ -10,6 +10,7 @@ export interface ModalProps {
 }
 
 export function Modal({ title, onClose, children, footer, open = true, style }: ModalProps) {
+  const titleId = React.useId();
   if (!open) return null;
   return (
     <div
@@ -18,10 +19,10 @@ export function Modal({ title, onClose, children, footer, open = true, style }: 
         if (e.target === e.currentTarget && onClose) onClose();
       }}
     >
-      <div className="modal-box" style={style}>
+      <div className="modal-box" style={style} role="dialog" aria-modal="true" aria-labelledby={titleId}>
         <div className="modal-header">
-          <h2 className="modal-title">{title}</h2>
-          <button className="modal-close" onClick={onClose}>
+          <h2 className="modal-title" id={titleId}>{title}</h2>
+          <button type="button" className="modal-close" aria-label="Close" onClick={onClose}>
             &times;
           </button>
         </div>

@@ -18,6 +18,8 @@ const preview: Preview = {
         order: ['Foundations', ['Introduction', 'Tokens'], 'Core', 'Forms', 'Feedback', 'Board'],
       },
     },
+    // The a11y panel checks WCAG 2.2 AA, as visual/a11y.visual.ts does.
+    a11y: { options: { runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'] } },
   },
 };
 export default preview;

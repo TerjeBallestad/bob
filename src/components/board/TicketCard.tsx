@@ -1,4 +1,5 @@
 import React from 'react';
+import { clickable } from './clickable';
 
 export type TicketKind = 'research' | 'probe' | 'grill' | 'task' | 'gap';
 
@@ -59,7 +60,7 @@ export function TicketCard({
 
   return (
     <div
-      onClick={onClick}
+      {...clickable(onClick)}
       className="ticket-card"
       style={{ ['--tc-border' as string]: border, boxShadow: shadow, ...style } as React.CSSProperties}
     >
