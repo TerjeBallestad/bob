@@ -3,7 +3,7 @@ import { ContrastPairs, ContrastText, GrayScale, HueScales, RolesHue, RolesNeutr
 
 // The token pages. Tokens.mdx puts them together with the text; each one is also a
 // story, so the screenshot suite covers it.
-export default { title: 'Tokens', tags: ['!autodocs'], parameters: { layout: 'fullscreen' } } satisfies Meta;
+export default { title: 'Foundations/Tokens', id: 'tokens', tags: ['!autodocs'], parameters: { layout: 'fullscreen' } } satisfies Meta;
 
 type Story = StoryObj;
 export const Gray: Story = { render: () => <GrayScale /> };

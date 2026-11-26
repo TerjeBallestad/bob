@@ -7,6 +7,11 @@ const preview: Preview = {
     layout: 'centered',
     backgrounds: { disable: true },
     controls: { expanded: true },
+    options: {
+      storySort: {
+        order: ['Foundations', ['Introduction', 'Tokens'], 'Core', 'Forms', 'Feedback', 'Board'],
+      },
+    },
   },
   tags: ['autodocs'],
 };
