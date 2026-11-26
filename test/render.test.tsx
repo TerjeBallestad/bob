@@ -14,13 +14,13 @@ describe('render', () => {
   });
 
   for (const name of Object.keys(samples)) {
-    // A component on CSS modules gets scoped names (bob_...). One moved to the Tailwind layer
-    // gets Bob's component classes (btn, chip), and the built bob.css must define them.
+    // Every class a component renders is one of Bob's component classes, defined in the
+    // built bob.css. A bob_ class comes from a CSS module not yet moved to @utility.
     it(`${name} renders from the built package with Bob's class names`, () => {
       const html = renderToString(samples[name]());
-      const tw = html.match(/class="(btn|chip)\b/);
-      if (tw) expect(css).toContain(`.${tw[1]}{`);
-      else expect(html).toMatch(/class="[^"]*bob_/);
+      const classes = [...html.matchAll(/class="([^"]*)"/g)].flatMap((m) => m[1].split(/\s+/)).filter(Boolean);
+      expect(classes.length).toBeGreaterThan(0);
+      for (const cls of classes.filter((c) => !c.startsWith('bob_'))) expect(css, cls).toMatch(new RegExp(`\\.${cls}[{:]`));
     });
   }
 

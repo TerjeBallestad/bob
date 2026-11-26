@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './StatusDot.module.css';
 
 /** dashed = inbox/unset · outline = in progress · staged = staged · solid = done · live = pulsing agent */
 export type StatusDotState = 'dashed' | 'outline' | 'staged' | 'live' | 'solid';
@@ -26,12 +25,12 @@ export function StatusDot({
     borderRadius: square ? 2 : '50%',
     ...style,
   };
-  if (state === 'dashed') return <span className={styles.dot} style={{ ...s, border: '1.5px dashed var(--text-3)' }} />;
-  if (state === 'outline') return <span className={styles.dot} style={{ ...s, border: `1.5px solid ${color}` }} />;
+  if (state === 'dashed') return <span className="status-dot" style={{ ...s, border: '1.5px dashed var(--text-3)' }} />;
+  if (state === 'outline') return <span className="status-dot" style={{ ...s, border: `1.5px solid ${color}` }} />;
   if (state === 'staged') {
     return (
       <span
-        className={styles.dot}
+        className="status-dot"
         style={{
           ...s,
           border: `1.5px solid ${color}`,
@@ -43,10 +42,10 @@ export function StatusDot({
   if (state === 'live') {
     return (
       <span
-        className={styles.dot}
+        className="status-dot"
         style={{ ...s, background: color, boxShadow: `0 0 6px ${color}`, animation: 'pulse 1.8s ease-in-out infinite' }}
       />
     );
   }
-  return <span className={styles.dot} style={{ ...s, background: color }} />;
+  return <span className="status-dot" style={{ ...s, background: color }} />;
 }

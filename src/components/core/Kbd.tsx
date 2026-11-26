@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './Kbd.module.css';
 
 export interface KbdProps {
   children?: React.ReactNode;
@@ -8,7 +7,7 @@ export interface KbdProps {
 
 export function Kbd({ children, style }: KbdProps) {
   return (
-    <kbd className={styles.kbd} style={style}>
+    <kbd className="kbd" style={style}>
       {children}
     </kbd>
   );

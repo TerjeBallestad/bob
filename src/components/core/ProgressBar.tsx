@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './ProgressBar.module.css';
 
 export interface ProgressBarProps {
   value?: number;
@@ -20,8 +19,8 @@ export function ProgressBar({
 }: ProgressBarProps) {
   const pct = max > 0 ? Math.min(100, (value / max) * 100) : 0;
   return (
-    <span className={styles.track} style={{ width, height, ...style }}>
-      <span className={styles.fill} style={{ width: pct + '%', background: color }} />
+    <span className="progress" style={{ width, height, ...style }}>
+      <span className="progress-fill" style={{ width: pct + '%', background: color }} />
     </span>
   );
 }

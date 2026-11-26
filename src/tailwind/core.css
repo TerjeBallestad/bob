@@ -1,0 +1,211 @@
+/* Core components: Button, Chip, Avatar, Kbd, ProgressBar, SegToggle, StatusDot. */
+
+/* Button */
+@utility btn {
+  border: 1px solid transparent;
+  border-radius: var(--radius-btn);
+  font-family: var(--sans);
+  transition:
+    filter 0.1s ease,
+    color 0.1s ease,
+    border-color 0.1s ease;
+  cursor: pointer;
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+}
+
+@utility btn-sm {
+  font-size: 11.5px;
+  padding: 4px 10px;
+}
+@utility btn-md {
+  font-size: 12px;
+  padding: 6px 14px;
+}
+
+@utility btn-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  &:hover:not(:disabled) {
+    filter: brightness(1.12);
+  }
+}
+@utility btn-secondary {
+  background: var(--input);
+  color: var(--text-2);
+  border: 1px solid var(--input-border);
+  font-weight: 600;
+  &:hover:not(:disabled) {
+    filter: brightness(1.12);
+  }
+}
+@utility btn-ghost {
+  background: transparent;
+  color: var(--text-2);
+  border: 1px solid var(--border-2);
+  font-weight: 500;
+  &:hover:not(:disabled) {
+    color: var(--text);
+    border-color: #333849;
+  }
+}
+@utility btn-accent {
+  background: var(--accent-deep);
+  color: #fff;
+  font-weight: 600;
+  &:hover:not(:disabled) {
+    filter: brightness(1.12);
+  }
+}
+@utility btn-danger {
+  background: var(--danger);
+  color: #fff;
+  font-weight: 600;
+  &:hover:not(:disabled) {
+    filter: brightness(1.12);
+  }
+}
+@utility btn-danger-ghost {
+  background: transparent;
+  color: #d47f82;
+  border: 1px solid var(--border-2);
+  font-weight: 500;
+  &:hover:not(:disabled) {
+    color: var(--danger);
+    border-color: rgba(229, 72, 77, 0.4);
+  }
+}
+
+/* Chip */
+@utility chip {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 400;
+  padding: 2px 8px;
+  border-radius: var(--radius-chip);
+  white-space: nowrap;
+}
+@utility chip-mono {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: var(--radius-kbd);
+}
+
+@utility chip-neutral {
+  color: var(--text-2);
+  background: var(--input);
+}
+@utility chip-accent {
+  color: var(--accent);
+  background: var(--tint-accent);
+}
+@utility chip-blue {
+  color: var(--blue);
+  background: var(--tint-blue);
+}
+@utility chip-green {
+  color: var(--green);
+  background: var(--tint-green);
+}
+@utility chip-orange {
+  color: var(--orange);
+  background: var(--tint-orange);
+}
+@utility chip-danger {
+  color: var(--danger);
+  background: var(--tint-danger);
+}
+@utility chip-yellow {
+  color: var(--yellow);
+  background: var(--tint-yellow);
+}
+@utility chip-claim {
+  color: #e6db74;
+  background: rgba(230, 219, 116, 0.1);
+  font-weight: 600;
+}
+
+/* Avatar. Size, radius and font size come from the size prop, inline. */
+@utility avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--sans);
+  font-weight: 700;
+}
+@utility avatar-gold {
+  background: rgba(211, 176, 120, 0.18);
+  color: var(--gold);
+}
+@utility avatar-accent {
+  background: rgba(123, 131, 235, 0.18);
+  color: var(--accent);
+}
+@utility avatar-green {
+  background: rgba(70, 194, 136, 0.18);
+  color: var(--green);
+}
+@utility avatar-neutral {
+  background: var(--input-border);
+  color: var(--text-2);
+}
+
+/* Kbd */
+@utility kbd {
+  font-family: var(--mono);
+  font-size: 10px;
+  background: var(--input-border);
+  padding: 1px 5px;
+  border-radius: var(--radius-kbd);
+  color: var(--text-2);
+}
+
+/* ProgressBar. Width, height and the fill's colour come from props, inline. */
+@utility progress {
+  display: inline-block;
+  background: var(--input-border);
+  border-radius: 2px;
+  overflow: hidden;
+  vertical-align: middle;
+}
+@utility progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+}
+
+/* SegToggle */
+@utility seg {
+  display: inline-flex;
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-btn);
+  overflow: hidden;
+  font-size: 11.5px;
+}
+@utility seg-opt {
+  padding: 4px 10px;
+  border: none;
+  background: transparent;
+  color: var(--text-3);
+  font-weight: 400;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  cursor: pointer;
+}
+@utility seg-active {
+  background: var(--panel-hover);
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* StatusDot. Size, shape, colour and state come from props, inline. */
+@utility status-dot {
+  display: inline-block;
+  flex-shrink: 0;
+}

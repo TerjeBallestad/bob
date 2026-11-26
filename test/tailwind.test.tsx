@@ -46,6 +46,23 @@ describe('the Tailwind entry', () => {
     expect(utilities.indexOf('.px-8 {')).toBeGreaterThan(utilities.indexOf('.btn-md {'));
   });
 
+  // A modifier class sets some of the same properties as its base class, so it must come
+  // later in the stylesheet. Tailwind sorts utilities by its own rules, not by file order.
+  const ORDER: [string, string][] = [
+    ['btn', 'btn-primary'], ['btn', 'btn-secondary'], ['btn', 'btn-ghost'], ['btn', 'btn-danger-ghost'],
+    ['chip', 'chip-mono'], ['seg-opt', 'seg-active'],
+  ];
+  const ruleAt = (css: string, cls: string) => css.search(new RegExp(`\\.${cls}\\s*\\{`));
+
+  it('writes each modifier class after its base class, in the app build and in bob.css', async () => {
+    for (const css of [await buildApp(), readFileSync('dist/bob.css', 'utf8')]) {
+      for (const [base, mod] of ORDER) {
+        expect(ruleAt(css, base), base).toBeGreaterThan(-1);
+        expect(ruleAt(css, mod), `${mod} after ${base}`).toBeGreaterThan(ruleAt(css, base));
+      }
+    }
+  });
+
   it('writes no theme variable that refers to itself', async () => {
     const css = await buildApp();
     expect(css).not.toMatch(/(--[\w-]+):\s*var\(\1\)/);

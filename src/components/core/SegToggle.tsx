@@ -1,6 +1,5 @@
 import React from 'react';
 import { normalizeOption, type DSOptionInput } from '../../types';
-import styles from './SegToggle.module.css';
 
 export interface SegToggleProps {
   options?: DSOptionInput[];
@@ -11,7 +10,7 @@ export interface SegToggleProps {
 
 export function SegToggle({ options = [], value, onChange, style }: SegToggleProps) {
   return (
-    <div className={styles.seg} style={style}>
+    <div className="seg" style={style}>
       {options.map((o) => {
         const opt = normalizeOption(o);
         const active = opt.value === value;
@@ -19,7 +18,7 @@ export function SegToggle({ options = [], value, onChange, style }: SegTogglePro
           <button
             key={opt.value}
             onClick={() => onChange && onChange(opt.value)}
-            className={[styles.opt, active && styles.active].filter(Boolean).join(' ')}
+            className={active ? 'seg-opt seg-active' : 'seg-opt'}
           >
             {opt.label}
           </button>
