@@ -1,0 +1,62 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './StatusDot.stories';
+import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# StatusDot
+
+<Lede>A dot that shows a record's state at a glance. Bob has no icons; dots do their work.</Lede>
+
+<Facts items={[
+  ['Import', "import { StatusDot } from '@terjeballestad/bob'"],
+  ['Renders', '<span>, styled inline from its props'],
+  ['Classes', 'status-dot'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- Before a name in a list, a sidebar row or a section label, to show its state.
+
+| State | Means |
+| --- | --- |
+| `dashed` | Inbox or unset. The colour is always `--text-3`. |
+| `outline` | In progress. |
+| `staged` | Staged: outline with a 25% fill. |
+| `solid` | Done. |
+| `live` | An agent works on it now. It pulses. |
+
+`square` makes a rounded square: use it for a different kind of thing in the same list, such as a
+project beside its tickets.
+
+## When not to use
+
+- As the only sign of a state. Say it in text too, or in the row's label.
+- For a count or a word. Use [Chip](?path=/docs/core-chip--docs).
+
+<DoDont>
+<Do>
+
+- Keep one meaning per state across the app.
+- Pass a colour role: `var(--green)`, `var(--accent)`.
+
+</Do>
+<Dont>
+
+- Put more than one `live` dot in view without a reason. Motion pulls the eye.
+
+</Dont>
+</DoDont>
+
+## Props
+
+<Controls of={Stories.Default} />
+
+## Accessibility
+
+- The dot is a `<span>` with no role and no name: a screen reader skips it. The state must be in
+  text as well.
+
+<Gap>The `live` pulse runs also when the system asks for reduced motion. Bob moves it under `motion-safe` in PLAN-005.</Gap>

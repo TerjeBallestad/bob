@@ -1,6 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import remarkGfm from 'remark-gfm';
 
 const root = join(import.meta.dirname, '..');
 const tokenDir = join(root, 'src/tokens');
@@ -9,11 +10,23 @@ const version = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).ver
 const config: StorybookConfig = {
   framework: '@storybook/react-vite',
   stories: ['../stories/**/*.mdx', '../stories/**/*.stories.tsx'],
-  addons: ['@storybook/addon-docs'],
+  addons: [
+    // GitHub tables in the docs pages.
+    { name: '@storybook/addon-docs', options: { mdxPluginOptions: { mdxCompileOptions: { remarkPlugins: [remarkGfm] } } } },
+  ],
   typescript: { reactDocgen: 'react-docgen-typescript' },
   core: { disableTelemetry: true },
   // The manager theme (theme.ts) reads Bob's tokens, and the manager cannot import CSS, so the
   // token files go to it as text. The fonts are Bob's own.
+  // Docs tables in Bob's colours: Storybook's dark stripe is lighter than any Bob surface.
+  previewHead: (head) => `${head}
+<style>
+  .sbdocs.sbdocs-content table { border-collapse: collapse; font-size: 14px; }
+  .sbdocs.sbdocs-content table tr,
+  .sbdocs.sbdocs-content table tr:nth-of-type(2n) { background: var(--surface-card); border-top: 1px solid var(--border); }
+  .sbdocs.sbdocs-content table th { text-align: left; color: var(--text-2); font-weight: 600; background: var(--surface-sidebar); }
+  .sbdocs.sbdocs-content table th, .sbdocs.sbdocs-content table td { border: 1px solid var(--border); padding: 8px 14px; }
+</style>`,
   managerHead: (head) => {
     const css = readdirSync(tokenDir)
       .filter((f) => f.endsWith('.css'))

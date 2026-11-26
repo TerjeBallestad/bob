@@ -1,0 +1,47 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './SectionLabel.stories';
+import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# SectionLabel
+
+<Lede>The small capitals over a group: a board column, a sidebar section, a block of a form.</Lede>
+
+<Facts items={[
+  ['Import', "import { SectionLabel } from '@terjeballestad/bob'"],
+  ['Renders', '<div> with the dot, a <span> for the name, and the action'],
+  ['Classes', 'section-label  section-label-action'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- To name a group of rows or cards, with a dot for its state and a count or action on the right.
+
+## When not to use
+
+- As a page or modal title. Those are headings in the type scale (`--fs-title`, `--fs-doc`).
+
+<DoDont>
+<Do>
+
+- Write the name in sentence case. CSS sets the capitals and the letter spacing.
+- Keep the action small: a `mono` Chip for a count, or a ghost `sm` Button.
+
+</Do>
+<Dont>
+
+- Write the name in capitals. A screen reader may spell it letter by letter.
+
+</Dont>
+</DoDont>
+
+## Props
+
+<Controls of={Stories.Default} />
+
+## Accessibility
+
+<Gap>The label is a `<div>`, not a heading, and it takes only `style`. A screen reader user cannot jump between sections. Wrap it in an `<h2>` or `<h3>` where it starts a section.</Gap>

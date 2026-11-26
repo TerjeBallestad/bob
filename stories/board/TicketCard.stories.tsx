@@ -14,7 +14,7 @@ export default {
     title: { control: 'text', description: 'The ticket title. Long titles wrap.' },
     age: { control: 'text', description: 'Time since the last change, short: `2d`.' },
     priority: { control: 'text', description: '`critical` is red; any other value is orange. Leave it out for normal priority.' },
-    blocked: { control: 'text', description: 'The id of the record that blocks this one. Shown in red in the foot.' },
+    blocked: { control: 'text', description: 'The id of the record that blocks this one, in orange in the foot.' },
     progress: { control: 'object', description: '`{ done, total }`: a bar and a count in the foot, for plans.' },
     live: { control: 'boolean', description: 'A pulsing green dot: an agent works on it now.' },
     emphasis: { control: 'inline-radio', options: [undefined, 'sdd', 'plan'], description: 'An indigo glow (sdd) or a green border (plan), for the records a board is built around.' },

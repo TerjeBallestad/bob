@@ -1,0 +1,71 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './SearchInput.stories';
+import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# SearchInput
+
+<Lede>A search field, or a button with a key hint that opens search somewhere else.</Lede>
+
+<Facts items={[
+  ['Import', "import { SearchInput } from '@terjeballestad/bob'"],
+  ['Renders', '<input type="search">, or <button> when kbd is set'],
+  ['Classes', 'search  search-expand  search-kbd  search-kbd-hint'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## Two forms
+
+- **A field** (no `kbd`): the user types here, and the app filters as they type.
+- **A button** (`kbd` set): it shows the placeholder and the key hint, and its `onClick` opens a
+  command palette or a search dialog. Bob does not bind the key: the app listens for `/` or `⌘K`
+  and opens the same thing.
+
+<Canvas of={Stories.Live} />
+
+The second field above has `expandOnFocus`: it widens from 150 to 210px while it has focus, for a
+topbar where space is tight.
+
+## When to use
+
+- To filter the list on the screen, or to open search from a topbar.
+
+## When not to use
+
+- For a form field that is not a search. Use [Input](?path=/docs/forms-input--docs).
+
+<DoDont>
+<Do>
+
+- Show the key hint only when the app binds that key.
+- Filter as the user types; a search field needs no submit button.
+
+</Do>
+<Dont>
+
+- Use the button form inside a form. It is a `<button>` and submits the form unless you set `type="button"`.
+
+</Dont>
+</DoDont>
+
+## Props
+
+<Controls of={Stories.Default} />
+
+All other props go to the `<input>` (or, with `kbd`, to the `<button>`).
+
+## Accessibility
+
+<Keys rows={[
+  ['Tab', 'Moves focus to the field or the button.'],
+  ['Esc', 'Clears the field (the browser does this for type="search").'],
+  ['Enter Space', 'With kbd: opens search, as a click does.'],
+]} />
+
+- The field needs an `aria-label`, such as "Search tickets", when no visible label names it.
+- The button's name is its placeholder and its hint, for example "Search /". Pass an `aria-label`
+  if that reads badly.
+
+<Gap>As Input: the field's focus is a border colour only.</Gap>

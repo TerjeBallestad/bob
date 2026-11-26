@@ -1,0 +1,53 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './ProgressBar.stories';
+import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# ProgressBar
+
+<Lede>A thin bar that shows how much of a known total is done.</Lede>
+
+<Facts items={[
+  ['Import', "import { ProgressBar } from '@terjeballestad/bob'"],
+  ['Renders', '<span> track with a <span> fill'],
+  ['Classes', 'progress  progress-fill'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- For steps done out of a total: tasks in a plan, items in an import.
+
+## When not to use
+
+- For work with no known total. Show a live [StatusDot](?path=/docs/core-statusdot--docs) instead.
+- For a single yes or no.
+
+<DoDont>
+<Do>
+
+- Put the count in text next to the bar: **3/7**. [TicketCard](?path=/docs/board-ticketcard--docs) does this with `progress`.
+- Pass a colour role: `color="var(--green)"` for done work.
+
+</Do>
+<Dont>
+
+- Make it taller than 6px. It is a hint, not a chart.
+
+</Dont>
+</DoDont>
+
+## Props
+
+<Controls of={Stories.Default} />
+
+The fill is `value / max`, capped at 100%. With `max` of 0 the track stays empty.
+
+## Accessibility
+
+- The bar is two spans with no role. Assistive technology does not see it, so the count in text is
+  what a screen reader user gets.
+
+<Gap>No `role="progressbar"` and no `aria-valuenow`, `aria-valuemax`: the bar is invisible to a screen reader.</Gap>

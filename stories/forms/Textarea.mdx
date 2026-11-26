@@ -1,0 +1,51 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Textarea.stories';
+import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# Textarea
+
+<Lede>A text field for more than one line: a note, a description, a comment.</Lede>
+
+<Facts items={[
+  ['Import', "import { Textarea } from '@terjeballestad/bob'"],
+  ['Renders', '<textarea>, with every native attribute passed on'],
+  ['Classes', 'textarea'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- For free text that can run to several lines.
+
+## When not to use
+
+- For a title or a name. Use [Input](?path=/docs/forms-input--docs).
+
+<DoDont>
+<Do>
+
+- Set `rows` to the length you expect: 3 for a comment, 8 for a description.
+
+</Do>
+<Dont>
+
+- Make it one row high. Then it reads as an Input that does not take Enter.
+
+</Dont>
+</DoDont>
+
+## Props
+
+<Controls of={Stories.Default} />
+
+Textarea takes every attribute of `<textarea>`.
+
+## Accessibility
+
+- Tab moves into the field; Enter adds a line, so Tab is the way out.
+- Name it as you name an [Input](?path=/docs/forms-input--docs): a linked `<label>` or an `aria-label`.
+
+<Gap>As Input: focus is a border colour only, and there is no error state.</Gap>

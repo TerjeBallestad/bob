@@ -1,0 +1,72 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './TicketCard.stories';
+import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# TicketCard
+
+<Lede>A record on a board column: its id and kind, its title, and what blocks it or how far it is.</Lede>
+
+<Facts items={[
+  ['Import', "import { TicketCard } from '@terjeballestad/bob'"],
+  ['Renders', '<div> with a head, a title and a foot'],
+  ['Classes', 'ticket-card  ticket-card-head | -live | -id | -kind | -priority | -age  ticket-card-title  ticket-card-foot | -blocked | -note | -track | -fill | -count'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- In the columns of a board: inbox, exploring, planned, done.
+
+## When not to use
+
+- In a long list where people scan. Use [ListRow](?path=/docs/board-listrow--docs): one line per
+  record.
+
+<DoDont>
+<Do>
+
+- Set `kind` for tickets; it colours the id and names the kind.
+- Use `emphasis` for the few records a board is built around: an SDD, a plan.
+- Leave `priority` out for normal priority. Only high and critical earn the space.
+
+</Do>
+<Dont>
+
+- Mark many cards `live`. The pulse means an agent works on it right now.
+- Pass both `kind` and `label`. A kind wins, and the label is ignored.
+
+</Dont>
+</DoDont>
+
+## States
+
+<Canvas of={Stories.States} />
+
+| Prop | What changes |
+| --- | --- |
+| `kind` | The id and kind label take the kind's colour: research blue, probe purple, grill orange, task green, gap yellow. Grill and probe also tint the border. |
+| `priority` | `critical` in red, any other value in orange, in the head. |
+| `blocked` | The blocking id in orange on an orange tint, in the foot. |
+| `progress` | A bar and a count, `3/7`, in the foot. |
+| `live` | A pulsing green dot before the id. |
+| `emphasis` | `sdd`: indigo border and glow. `plan`: green border. |
+
+<Canvas of={Stories.LabelsAndNotes} />
+
+A record with no kind (a map, a plan) takes a `label` and an `idColor`. `note` puts small grey
+text in the foot.
+
+## Props
+
+<Controls of={Stories.Default} />
+
+## Accessibility
+
+- The kind, priority and blocking id are all text, so they reach a screen reader; colour only
+  repeats them.
+
+<Gap>With `onClick` the card is clickable by mouse only: it takes no focus and has no keys. It should render a button or a link.</Gap>
+<Gap>The `live` pulse runs also when the system asks for reduced motion.</Gap>

@@ -1,0 +1,51 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Kbd.stories';
+import { Lede, Facts, DoDont, Do, Dont } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# Kbd
+
+<Lede>A key or a shortcut, written the way the user presses it.</Lede>
+
+<Facts items={[
+  ['Import', "import { Kbd } from '@terjeballestad/bob'"],
+  ['Renders', '<kbd>'],
+  ['Classes', 'kbd'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- To teach a shortcut: in a tooltip, a menu, an empty state, a search button
+  ([SearchInput](?path=/docs/forms-searchinput--docs) with `kbd`).
+
+## When not to use
+
+- As a button. Kbd shows a key; it does not press one.
+
+<DoDont>
+<Do>
+
+- Write the key as it is printed on the keyboard: `⌘K`, `Esc`, `/`.
+- Bind the shortcut in the app before you show it.
+
+</Do>
+<Dont>
+
+- Show a Mac key (`⌘`) to Windows users with no other hint.
+
+</Dont>
+</DoDont>
+
+## Props
+
+<Controls of={Stories.Default} />
+
+## Accessibility
+
+- `<kbd>` tells assistive technology the text is keyboard input. A screen reader reads `⌘` as
+  "command" or "place of interest", depending on the reader; say "Command K" in text where it
+  matters.
+- Kbd takes no focus.

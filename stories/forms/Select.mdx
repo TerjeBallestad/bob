@@ -1,0 +1,76 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Select.stories';
+import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# Select
+
+<Lede>A choice of one option from a list, in the browser's own dropdown.</Lede>
+
+<Facts items={[
+  ['Import', "import { Select } from '@terjeballestad/bob'"],
+  ['Renders', '<select> with one <option> per option, and every native attribute passed on'],
+  ['Classes', 'select  select-option'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- For one choice from five or more options, or from options with long names: a stage, an assignee.
+
+## When not to use
+
+- For two to four short options that switch a view. Use [SegToggle](?path=/docs/core-segtoggle--docs): all options stay in sight.
+- For a search over many records. A select with a hundred options is hard to use.
+
+<DoDont>
+<Do>
+
+- Order the options in a way the user can predict: by flow (inbox, planned, done) or A to Z.
+- Pass `{ value, label }` when the stored value is not the word to show.
+
+</Do>
+<Dont>
+
+- Use an empty first option as the label. Put the label in a [FormRow](?path=/docs/forms-formrow--docs).
+
+</Dont>
+</DoDont>
+
+## Usage
+
+```tsx
+<Select
+  value={stage}
+  onChange={(e) => setStage(e.target.value)}
+  options={['inbox', 'planned', { value: 'done', label: 'Done' }]}
+/>
+```
+
+## Props
+
+<Controls of={Stories.Default} />
+
+## Interaction test
+
+**Choose an option (test)** checks that Tab reaches the select and that a choice, by value or by
+an option's label, reaches `onChange`. CI runs it in the built Storybook.
+
+<Canvas of={Stories.ChooseAnOption} />
+
+## Accessibility
+
+Select is the native `<select>`, so the browser gives it its keys and its list.
+
+<Keys rows={[
+  ['Tab', 'Moves focus to the select.'],
+  ['↑ ↓', 'Changes the option (Windows, Linux), or opens the list (macOS).'],
+  ['Space Alt+↓', 'Opens the list.'],
+  ['A–Z', 'Jumps to the next option that starts with the letter.'],
+]} />
+
+- Name it with a linked `<label>` or an `aria-label`.
+
+<Gap>As Input: focus is a border colour only.</Gap>

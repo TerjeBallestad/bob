@@ -1,0 +1,47 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './FormRow.stories';
+import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# FormRow
+
+<Lede>A field with its label above it, and the space between rows of a form.</Lede>
+
+<Facts items={[
+  ['Import', "import { FormRow } from '@terjeballestad/bob'"],
+  ['Renders', '<div> with a <label> and the field'],
+  ['Classes', 'form-row  form-label'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- For every field in a form: in a modal, a settings page, a new-record panel.
+
+## When not to use
+
+- For a search field in a toolbar. It has no visible label; give it an `aria-label`.
+
+<DoDont>
+<Do>
+
+- Write the label as a noun in sentence case: **Name**, **Stage**. CSS sets it in capitals.
+- Put one field in each row.
+
+</Do>
+<Dont>
+
+- Put a sentence of help in the label. Write it below the field.
+
+</Dont>
+</DoDont>
+
+## Props
+
+<Controls of={Stories.Default} />
+
+## Accessibility
+
+<Gap>The label is not linked to the field: FormRow sets no `htmlFor`, and the field is not inside the label. A click on the label does not focus the field, and a screen reader does not read it as the field's name. Until that changes, also give the field an `aria-label` with the same text.</Gap>

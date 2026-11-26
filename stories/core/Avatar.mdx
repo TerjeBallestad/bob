@@ -1,0 +1,56 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Avatar.stories';
+import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# Avatar
+
+<Lede>A person's initials in a tinted circle, beside their name or their work.</Lede>
+
+<Facts items={[
+  ['Import', "import { Avatar } from '@terjeballestad/bob'"],
+  ['Renders', '<span>'],
+  ['Classes', 'avatar  avatar-gold | avatar-accent | avatar-green | avatar-neutral'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- To show who owns or changed something: an assignee on a card, an author in an activity line.
+
+## When not to use
+
+- As the only place a name appears. Put the name in text next to it, or in a tooltip of the parent.
+- For a team or a board. Avatar is for people.
+
+<DoDont>
+<Do>
+
+- Use the 18px default in rows and cards; 32px in a header.
+- Give each person the same tone on every screen.
+
+</Do>
+<Dont>
+
+- Put three letters in it. Two fit; three overflow at 18px.
+
+</Dont>
+</DoDont>
+
+## Sizes and shape
+
+Under 24px the avatar is a circle with 9px text. At 24px and over it is a rounded square (8px
+radius) with 11px text: the last avatar above is 32px.
+
+## Props
+
+<Controls of={Stories.Default} />
+
+## Accessibility
+
+- A screen reader reads the letters, "T B". Say the person's name in text close by.
+- Avatar takes no focus and has no keys.
+
+<Gap>Avatar takes only `style`, so it cannot carry an `aria-label` or a `title`. Wrap it in an element that has one.</Gap>

@@ -1,0 +1,93 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Button.stories';
+import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# Button
+
+<Lede>Starts an action on the current screen: save, archive, open a dialog.</Lede>
+
+<Facts items={[
+  ['Import', "import { Button } from '@terjeballestad/bob'"],
+  ['Renders', '<button>, with every native attribute passed on'],
+  ['Classes', 'btn  btn-md | btn-sm  btn-primary | btn-secondary | btn-ghost | btn-accent | btn-danger | btn-danger-ghost'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- For an action that changes something here: save a form, archive a ticket, open a modal.
+- In a modal footer, a toolbar, or at the end of a form.
+
+## When not to use
+
+- To go to another page. Use a link (`<a>`): it opens in a new tab and shows its address.
+- For a choice between views or ranges. Use [SegToggle](?path=/docs/core-segtoggle--docs).
+- For an entry in the sidebar. Use [NavRow](?path=/docs/board-navrow--docs).
+
+<DoDont>
+<Do>
+
+- Use one `primary` button per view, for the action most people take.
+- Write the label as a verb: **Save**, **Archive**, **Add task**.
+- Put Cancel first and the main action last.
+
+</Do>
+<Dont>
+
+- Put two `primary` buttons side by side. Make the second `secondary` or `ghost`.
+- Use `danger` for an action that can be undone. It is for data that is gone after the click.
+- Write **OK** or **Yes**. Say what happens.
+
+</Dont>
+</DoDont>
+
+## Variants
+
+<Canvas of={Stories.Variants} />
+
+| Variant | Use it for |
+| --- | --- |
+| `primary` | The main action of a view. One per view. |
+| `secondary` | Other actions of the same weight, beside a primary. |
+| `ghost` | Quiet actions: Cancel, toolbar actions, actions in a row. |
+| `accent` | An action that starts something new, in the indigo accent. |
+| `danger` | An action that destroys data: Delete, Archive for good. |
+| `danger-ghost` | The first step to a destructive action, which then asks in a modal. |
+
+`sm` is for toolbars, rows and dense forms. `md` is the default.
+
+## Props
+
+<Controls of={Stories.Default} />
+
+Button also takes every attribute of `<button>`: `onClick`, `type`, `aria-label`, `form`. In a
+form, set `type="button"` on every button that does not submit it.
+
+### Override with Tailwind
+
+In a Tailwind app, utilities in `className` win over Bob's classes, because both come out of the
+same build (DD-031):
+
+```tsx
+<Button className="px-8 w-full">Save</Button>
+```
+
+## Accessibility
+
+Button is a native `<button>`, so the browser gives it its role, focus and keys.
+
+<Keys rows={[
+  ['Tab', 'Moves focus to the button. A disabled button is skipped.'],
+  ['Enter Space', 'Runs the action.'],
+]} />
+
+- **Name.** The label is the accessible name. A button with only a symbol (`×`, `⋯`) needs an
+  `aria-label` that says the action: `aria-label="Close"`.
+- **Disabled.** `disabled` removes the button from the tab order, and a screen reader user may not
+  find it. When the reason matters, keep the button enabled and say what is missing after the click.
+- **Focus.** The focus ring shows on keyboard focus only (`:focus-visible`).
+
+<Gap>Contrast: white on `danger` is 3.9:1, under the 4.5:1 AA asks for text of this size. The design pass decides the fix (Tokens, "Contrast").</Gap>

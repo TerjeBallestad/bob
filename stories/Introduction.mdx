@@ -1,6 +1,149 @@
-import { Meta, Markdown } from '@storybook/addon-docs/blocks';
-import readme from '../README.md?raw';
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
+import { Lede, Facts } from './docs/blocks';
+import { Button, Chip, StatusDot, TicketCard } from '../src';
 
 <Meta title="Foundations/Introduction" />
 
-<Markdown>{readme}</Markdown>
+# Bob
+
+<Lede>Bob is the design system of Time Turtle and pm-board: React components, the CSS tokens they read, and a Tailwind entry that builds Bob's classes in your app. One dark theme, dense, for tools people work in all day.</Lede>
+
+<Unstyled>
+<div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap', padding: '22px 24px', margin: '0 0 32px', background: 'var(--surface-sidebar)', border: '1px solid var(--border)', borderRadius: 'var(--radius-xl)' }}>
+  <div style={{ width: 260 }}>
+    <TicketCard id="SB-042" kind="task" title="The id counter refuses a second SB-042" age="2d" priority="high" live />
+  </div>
+  <div style={{ display: 'grid', gap: 12 }}>
+    <div style={{ display: 'flex', gap: 8 }}>
+      <Button variant="ghost" size="sm">Cancel</Button>
+      <Button size="sm">Save</Button>
+    </div>
+    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+      <StatusDot state="live" color="var(--green)" size={8} />
+      <Chip mono tone="green">admin</Chip>
+      <Chip tone="danger">blocked</Chip>
+    </div>
+  </div>
+</div>
+</Unstyled>
+
+## Who uses it
+
+- **pm-board**, the dashboard of the pm boards, through the Tailwind entry.
+- **Time Turtle**, through the JS import. It moves to Tailwind next.
+
+Both apps pin an exact version. A release reaches an app when the app bumps it.
+
+## Install
+
+```sh
+npm i @terjeballestad/bob
+```
+
+`react` and `react-dom` 18.3 or later, and `@types/react`, are peer dependencies.
+
+### In a Tailwind v4 app
+
+Add one line after your Tailwind import:
+
+```css
+@import "tailwindcss";
+@import "@terjeballestad/bob/tailwind.css";
+```
+
+Your Tailwind build then writes Bob's component classes (`btn`, `chip`, `ticket-card`, …) next to
+your utilities, and only the ones in use. They take variants (`md:btn-sm`), and your utilities win
+over them: `<Button className="px-8">` gets 32px of side padding.
+
+```tsx
+import { Button } from '@terjeballestad/bob';
+
+<Button variant="primary" onClick={save}>Save</Button>
+
+// The same look, without React:
+<button className="btn btn-md btn-primary">Save</button>
+```
+
+The import from `@terjeballestad/bob` also loads Bob's precompiled stylesheet, which brings the
+webfonts (Schibsted Grotesk and JetBrains Mono). It sits in the `base` layer, so your build's
+classes win over it.
+
+### In an app without Tailwind
+
+Import the components. The import loads `bob.css` with the tokens, the fonts and every class:
+
+```tsx
+import { Button, Chip } from '@terjeballestad/bob';
+```
+
+If your bundler drops CSS that a package imports, add `import '@terjeballestad/bob/styles.css'`
+once at the root of the app.
+
+### Two rules for your own CSS
+
+- **Element rules go in `@layer base`.** Bob's classes sit in a cascade layer. An unlayered rule
+  such as `button { color: inherit }` beats every layered class, Bob's too:
+
+  ```css
+  @layer base {
+    button { font: inherit; color: inherit; }
+  }
+  ```
+
+- **Preflight changes the look.** Bob assumes its own reset, not Tailwind's preflight. With
+  preflight, text sits at line-height 1.5 and Bob's rows grow. An app written without preflight
+  imports Tailwind's theme and utilities only, as pm-board does:
+
+  ```css
+  @layer theme, base, components, utilities;
+  @import "tailwindcss/theme.css" layer(theme);
+  @import "tailwindcss/utilities.css" layer(utilities);
+  @import "@terjeballestad/bob/tailwind.css";
+  ```
+
+## Tokens: scales, then roles
+
+Every value is a CSS custom property on `:root`. Colour has two layers:
+
+- A **scale** holds the values: `--gray-1` to `--gray-26`, and indigo, blue, green, orange,
+  purple, yellow, red and gold, numbered on the 12 steps of Radix Colors. Only scale steps hold colour literals; a test fails on
+  any other.
+- A **role** says what a colour is for and points at a step: `--surface-card` is `--gray-8`,
+  `--text-2` is `--gray-24`. Components use roles, never steps.
+
+In Tailwind, the theme maps the tokens: `bg-surface-card`, `rounded-btn`, `font-mono`. A later
+major version renames the roles to read as classes (`bg-card`, `text-secondary`,
+`border-subtle`, DD-033). These pages use today's names.
+
+[Tokens](?path=/docs/tokens--tokens) shows every scale, each role with its step, and the WCAG
+contrast of each text role on each surface.
+
+## Components
+
+Each component has a page: what it is for, when to use it and when not, its props, its states,
+and its keyboard and screen reader behaviour. Where a component falls short today, the page says
+so in a **Gap** note.
+
+| Group | Components |
+| --- | --- |
+| Core | [Avatar](?path=/docs/core-avatar--docs), [Button](?path=/docs/core-button--docs), [Chip](?path=/docs/core-chip--docs), [Kbd](?path=/docs/core-kbd--docs), [ProgressBar](?path=/docs/core-progressbar--docs), [SegToggle](?path=/docs/core-segtoggle--docs), [StatusDot](?path=/docs/core-statusdot--docs) |
+| Forms | [FormRow](?path=/docs/forms-formrow--docs), [Input](?path=/docs/forms-input--docs), [SearchInput](?path=/docs/forms-searchinput--docs), [Select](?path=/docs/forms-select--docs), [Textarea](?path=/docs/forms-textarea--docs) |
+| Feedback | [Modal](?path=/docs/feedback-modal--docs), [Toast](?path=/docs/feedback-toast--docs), [ToastStack](?path=/docs/feedback-toaststack--docs) |
+| Board | [ListRow](?path=/docs/board-listrow--docs), [NavRow](?path=/docs/board-navrow--docs), [SectionLabel](?path=/docs/board-sectionlabel--docs), [TicketCard](?path=/docs/board-ticketcard--docs) |
+
+## Conventions
+
+- **Overrides.** Components that wrap a native element (Button, Chip, Input, Select, Textarea,
+  SearchInput) take `className` and every attribute of that element. The others take `style`.
+- **No state.** Bob's components keep no state. The app owns `open`, `value` and the list of
+  toasts.
+- **No icons.** Bob shows state with dots, mono chips and a few unicode characters.
+- **Tests.** Every story has a screenshot test with no pixel tolerance. Modal, Select, SegToggle
+  and Toast also have interaction tests: the stories marked *(test)*, which CI plays in the built
+  Storybook.
+
+<Facts items={[
+  ['Package', '@terjeballestad/bob on npm'],
+  ['Source', 'github.com/TerjeBallestad/bob'],
+  ['Changes', 'CHANGELOG.md in the package. A changed or removed prop or token is a major version.'],
+]} />

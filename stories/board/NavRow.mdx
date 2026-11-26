@@ -1,0 +1,54 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './NavRow.stories';
+import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# NavRow
+
+<Lede>One destination in a sidebar, with an optional dot and count.</Lede>
+
+<Facts items={[
+  ['Import', "import { NavRow } from '@terjeballestad/bob'"],
+  ['Renders', '<button>, full width'],
+  ['Classes', 'nav-row  nav-row-active  nav-row-label  nav-row-count'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- For the views of an app in its sidebar: Inbox, Planned, Done.
+
+## When not to use
+
+- For a list of records. Use [ListRow](?path=/docs/board-listrow--docs).
+- For an action. Use [Button](?path=/docs/core-button--docs) with `variant="ghost"`.
+
+<DoDont>
+<Do>
+
+- Mark exactly one row `active`: the view on screen.
+- Show a count when it helps the user decide where to go. `count={0}` shows 0; leave it out to show none.
+
+</Do>
+<Dont>
+
+- Put a long label in it. It truncates at the sidebar's width.
+
+</Dont>
+</DoDont>
+
+## Props
+
+<Controls of={Stories.Default} />
+
+## Accessibility
+
+<Keys rows={[
+  ['Tab', 'Moves to the next row. Each row is a tab stop.'],
+  ['Enter Space', 'Goes to the view.'],
+]} />
+
+<Gap>The active row is not marked for assistive technology. It should carry `aria-current="page"`.</Gap>
+<Gap>NavRow is a button, so it cannot open in a new tab. Views with their own address should be links.</Gap>

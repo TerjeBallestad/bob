@@ -1,0 +1,47 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './ToastStack.stories';
+import { Lede, Facts, DoDont, Do, Dont } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# ToastStack
+
+<Lede>The place on screen where toasts appear: bottom centre, over everything, oldest on top.</Lede>
+
+<Facts items={[
+  ['Import', "import { ToastStack } from '@terjeballestad/bob'"],
+  ['Renders', '<div>, fixed 18px above the bottom, centred, z-index 400'],
+  ['Classes', 'toast-stack'],
+]} />
+
+<Canvas of={Stories.Default} story={{ inline: false, height: '240px' }} />
+
+## When to use
+
+- Once, at the root of the app, holding every [Toast](?path=/docs/feedback-toast--docs).
+
+## When not to use
+
+- Inside a scrolling panel or a modal. It is fixed to the window.
+
+<DoDont>
+<Do>
+
+- Render one ToastStack and keep it mounted, also when it is empty.
+
+</Do>
+<Dont>
+
+- Render a stack per screen. Toasts from two stacks overlap.
+
+</Dont>
+</DoDont>
+
+## Props
+
+<Controls of={Stories.Default} />
+
+## Accessibility
+
+ToastStack is a plain `<div>`. Keep it mounted: when it becomes a live region (see Toast's gaps),
+a screen reader will hear only the changes to a region that was already on the page.

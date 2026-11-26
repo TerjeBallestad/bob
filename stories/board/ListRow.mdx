@@ -1,0 +1,50 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './ListRow.stories';
+import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# ListRow
+
+<Lede>One record in a dense list: id, title, a little meta, and its age.</Lede>
+
+<Facts items={[
+  ['Import', "import { ListRow } from '@terjeballestad/bob'"],
+  ['Renders', '<div> with spans for id, title, meta and age'],
+  ['Classes', 'list-row  list-row-done  list-row-id  list-row-title  list-row-title-done  list-row-meta  list-row-age'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- For lists of records where people scan ids and titles: search results, decisions, a backlog.
+
+## When not to use
+
+- On a board column, where state and kind matter. Use [TicketCard](?path=/docs/board-ticketcard--docs).
+- For navigation. Use [NavRow](?path=/docs/board-navrow--docs).
+
+<DoDont>
+<Do>
+
+- Keep `meta` to one Chip or a few words. The title truncates first.
+- Use `done` for closed records you still show; it strikes the title and dims the row.
+
+</Do>
+<Dont>
+
+- Give rows in one list different `idColor`s without a meaning for each.
+
+</Dont>
+</DoDont>
+
+## Props
+
+<Controls of={Stories.Default} />
+
+## Accessibility
+
+- The row is a `<div>`: a screen reader reads id, title, meta and age in that order.
+
+<Gap>With `onClick` the row is clickable by mouse only: it takes no focus and has no keys. Put a link or a button in the title for keyboard users, or wait for ListRow to render one.</Gap>

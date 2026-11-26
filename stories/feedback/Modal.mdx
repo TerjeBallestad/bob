@@ -1,0 +1,95 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Modal.stories';
+import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# Modal
+
+<Lede>A dialog over a dimmed screen, for a decision the user must make before going on.</Lede>
+
+<Facts items={[
+  ['Import', "import { Modal } from '@terjeballestad/bob'"],
+  ['Renders', '<div> backdrop with a box: <h2> title, × button, body, footer'],
+  ['Classes', 'modal  modal-box  modal-header  modal-title  modal-close  modal-footer'],
+]} />
+
+<Canvas of={Stories.Default} story={{ inline: false, height: '420px' }} />
+
+## When to use
+
+- To confirm an action that is hard to undo: archive, delete, leave with unsaved changes.
+- For a short form that belongs to one action: rename, new ticket.
+
+## When not to use
+
+- To tell the user something went well. Use a [Toast](?path=/docs/feedback-toast--docs).
+- For a long document or a record to read beside the board. Use a side panel.
+- For an error the user can do nothing about in this step. Show it where it happened.
+
+<DoDont>
+<Do>
+
+- Phrase the title as the decision: **Archive SB-042?**
+- Say in the body what happens and what can be undone.
+- Name the main button with the action (**Archive**), put it last, and Cancel first.
+
+</Do>
+<Dont>
+
+- Open a modal from a modal.
+- Open one the user did not ask for.
+
+</Dont>
+</DoDont>
+
+## Usage
+
+Modal keeps no state. The parent opens it and closes it in `onClose`, which the × button and a
+click on the backdrop call:
+
+```tsx
+const [open, setOpen] = useState(false);
+<Button variant="danger-ghost" onClick={() => setOpen(true)}>Archive</Button>
+<Modal
+  open={open}
+  title="Archive SB-042?"
+  onClose={() => setOpen(false)}
+  footer={<>
+    <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+    <Button variant="danger" onClick={archive}>Archive</Button>
+  </>}
+>
+  The ticket leaves the board. You can find it again under Archive.
+</Modal>
+```
+
+The box is 560px wide (92% of a narrow screen) and scrolls past 80% of the screen height.
+
+## Props
+
+<Controls of={Stories.Default} />
+
+## Interaction test
+
+**Open and close (test)** runs the wiring above in a play function: Enter on the opener opens the
+dialog, Tab reaches the close button and Enter closes it, a click inside the box keeps it open, and
+a click on the backdrop closes it. CI runs it in the built Storybook.
+
+<Canvas of={Stories.OpenAndClose} story={{ inline: false, height: '360px' }} />
+
+## Accessibility
+
+What works today:
+
+<Keys rows={[
+  ['Tab', 'Moves through the × button, the body and the footer buttons, after the elements before the modal in the page.'],
+  ['Enter Space', 'On × or a footer button: runs it.'],
+]} />
+
+The title is an `<h2>`, so a screen reader user can find it in the heading list.
+
+<Gap>No `role="dialog"`, `aria-modal` or `aria-labelledby`: a screen reader does not announce a dialog.</Gap>
+<Gap>Focus does not move into the dialog when it opens, is not kept inside it, and does not go back to the opener when it closes.</Gap>
+<Gap>Escape does not close it.</Gap>
+<Gap>The × button's name is "×". It needs `aria-label="Close"`.</Gap>

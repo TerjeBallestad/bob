@@ -1,0 +1,68 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Toast.stories';
+import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# Toast
+
+<Lede>A short message that confirms an action, at the bottom of the screen, and goes away.</Lede>
+
+<Facts items={[
+  ['Import', "import { Toast, ToastStack } from '@terjeballestad/bob'"],
+  ['Renders', '<div>, which fades in (toast-in, 0.18s)'],
+  ['Classes', 'toast  toast-error'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- To confirm that an action worked when its result is not in view: **SB-341 archived**.
+- To say that an action failed, with `error`, when the user can try again.
+
+## When not to use
+
+- For a decision. Use a [Modal](?path=/docs/feedback-modal--docs).
+- For an error in a form field. Show it at the field.
+- For something the user must read later. A toast goes away.
+
+<DoDont>
+<Do>
+
+- Write two to five words, past tense, no subject: **Title updated**, **SB-341 archived**.
+- Remove it after about four seconds, and keep an error until the user acts.
+
+</Do>
+<Dont>
+
+- Toast an action whose result the user can already see.
+- Show more than three at once.
+
+</Dont>
+</DoDont>
+
+## Usage
+
+Toast shows a message; it does not time itself out or stack itself. The app keeps the list, puts
+the toasts in one [ToastStack](?path=/docs/feedback-toaststack--docs), and removes each after a
+timer.
+
+## Props
+
+<Controls of={Stories.Default} />
+
+## Interaction test
+
+**Show toasts (test)** checks that each action adds a toast to the one stack, that the error toast
+has its style, and that the focus stays on the button that was pressed. CI runs it in the built
+Storybook.
+
+<Canvas of={Stories.ShowToasts} story={{ inline: false, height: '360px' }} />
+
+## Accessibility
+
+- A toast never takes focus, so the user's place is kept.
+
+<Gap>No `role="status"` (or `alert` for an error) and no live region: a screen reader does not read a new toast.</Gap>
+<Gap>The fade-in runs also when the system asks for reduced motion.</Gap>

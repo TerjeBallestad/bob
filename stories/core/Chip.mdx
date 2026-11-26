@@ -1,0 +1,64 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Chip.stories';
+import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# Chip
+
+<Lede>A small label in a tint: a role, a state, a kind, a count.</Lede>
+
+<Facts items={[
+  ['Import', "import { Chip } from '@terjeballestad/bob'"],
+  ['Renders', '<span>, with every native attribute passed on'],
+  ['Classes', 'chip  chip-mono  chip-neutral | chip-accent | chip-blue | chip-green | chip-orange | chip-danger | chip-yellow | chip-claim'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- To mark a record with a short word: `admin`, `blocked`, `task`.
+- For a count beside a heading, in `mono`: see [SectionLabel](?path=/docs/board-sectionlabel--docs).
+
+## When not to use
+
+- For an action. A chip is not a button: use [Button](?path=/docs/core-button--docs) with `variant="ghost" size="sm"`.
+- For a state an agent changes live. Use [StatusDot](?path=/docs/core-statusdot--docs).
+
+<DoDont>
+<Do>
+
+- Keep it to one or two words.
+- Use `mono` for machine words: ids, roles, counts.
+- Pick a tone for its meaning, the same way on every screen: `danger` for blocked, `green` for done.
+
+</Do>
+<Dont>
+
+- Put a sentence in a chip. It wraps badly and reads as a button.
+- Use tones to decorate. Five colours in one row mean nothing.
+
+</Dont>
+</DoDont>
+
+## Tones
+
+<Canvas of={Stories.Tones} />
+
+The top row is the sans face, the bottom row `mono`. `claim` is the yellow of a claimed ticket;
+`neutral` is grey on the input fill.
+
+## Props
+
+<Controls of={Stories.Default} />
+
+Chip also takes every attribute of `<span>`, for example `title` and `aria-label`.
+
+## Accessibility
+
+- A chip is plain text in a `<span>`. A screen reader reads its words and nothing of its colour, so
+  the words must carry the meaning.
+- A chip takes no focus and has no keys.
+
+<Gap>Contrast: `danger` text on its own tint is 4.1:1, under AA (Tokens, "Contrast: pairs in use").</Gap>

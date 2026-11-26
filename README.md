@@ -111,8 +111,13 @@ npm run build-storybook    # static build in storybook-static/
 npm run test:visual:docker # one screenshot per story, in the Playwright Linux image
 ```
 
-Each component has a story with controls for its props. The Introduction and Tokens pages show
-this README and [TOKENS.md](./TOKENS.md).
+Each component has a docs page (`stories/<group>/<Component>.mdx`): purpose, when to use it and
+when not, props, states and accessibility, with its stories in `<Component>.stories.tsx`. The
+blocks the pages share are in `stories/docs/blocks.tsx`. `.storybook/theme.ts` gives Storybook
+Bob's look, from the tokens.
+
+Stories with a play function are interaction tests. `visual/play.visual.ts` plays each one in the
+built Storybook and fails when Storybook reports an error; it runs with the screenshot tests.
 
 The screenshot test opens every story in the built Storybook and compares it with a baseline in
 `visual/__screenshots__/`, with no pixel tolerance. Baselines come from the Playwright Linux image,

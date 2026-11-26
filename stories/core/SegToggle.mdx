@@ -1,0 +1,76 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './SegToggle.stories';
+import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# SegToggle
+
+<Lede>Two to four segments in one control, for switching a view or a range. One is always active.</Lede>
+
+<Facts items={[
+  ['Import', "import { SegToggle } from '@terjeballestad/bob'"],
+  ['Renders', '<div> with one <button> per option'],
+  ['Classes', 'seg  seg-opt  seg-active'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- To switch how the same data shows: day, week, month; list or board.
+
+## When not to use
+
+- For more than four options, or options with long names. Use [Select](?path=/docs/forms-select--docs).
+- For an action. Use [Button](?path=/docs/core-button--docs).
+- For a setting that is saved, on or off. A toggle switch reads better (Bob has none yet).
+
+<DoDont>
+<Do>
+
+- Keep labels to one short word each.
+- Keep the value in the parent and set it in `onChange`.
+
+</Do>
+<Dont>
+
+- Leave `value` unset. Then no segment is active, and the control says nothing.
+
+</Dont>
+</DoDont>
+
+## Usage
+
+SegToggle keeps no state. The parent owns the value:
+
+```tsx
+const [range, setRange] = useState('week');
+<SegToggle options={['day', 'week', 'month']} value={range} onChange={setRange} />
+```
+
+An option is a string, or `{ value, label }` when the label differs from the value.
+
+## Props
+
+<Controls of={Stories.Default} />
+
+## Interaction test
+
+The story **Switch segments (test)** runs this wiring in a play function: a click and Enter each
+make a segment active and call `onChange`. CI runs it in the built Storybook. Open the story and
+the Interactions panel to step through it.
+
+<Canvas of={Stories.SwitchSegments} />
+
+## Accessibility
+
+Each segment is a native `<button>`.
+
+<Keys rows={[
+  ['Tab', 'Moves to the next segment. Each segment is its own tab stop.'],
+  ['Enter Space', 'Makes the focused segment active.'],
+]} />
+
+<Gap>The active segment shows only in its colour and weight: no `aria-pressed`, so a screen reader cannot tell which one is on.</Gap>
+<Gap>The group has `overflow: hidden`, which cuts off the browser's focus ring on the first and last segment.</Gap>

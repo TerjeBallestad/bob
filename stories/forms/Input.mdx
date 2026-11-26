@@ -1,0 +1,66 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Input.stories';
+import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
+
+<Meta of={Stories} />
+
+# Input
+
+<Lede>A one-line text field.</Lede>
+
+<Facts items={[
+  ['Import', "import { Input } from '@terjeballestad/bob'"],
+  ['Renders', '<input type="text">, with every native attribute passed on'],
+  ['Classes', 'input'],
+]} />
+
+<Canvas of={Stories.Default} />
+
+## When to use
+
+- For short text: a name, a title, an id.
+- In a [FormRow](?path=/docs/forms-formrow--docs), which puts its label above it.
+
+## When not to use
+
+- For text over one line. Use [Textarea](?path=/docs/forms-textarea--docs).
+- To filter or search a list. Use [SearchInput](?path=/docs/forms-searchinput--docs).
+- For a choice from a known list. Use [Select](?path=/docs/forms-select--docs).
+
+<DoDont>
+<Do>
+
+- Give every field a visible label.
+- Use the placeholder for an example of the format: `SB-042`.
+- Set `type` when it is not text: `type="email"`, `type="number"`.
+
+</Do>
+<Dont>
+
+- Use the placeholder as the label. It disappears as soon as the user types.
+
+</Dont>
+</DoDont>
+
+## Props
+
+<Controls of={Stories.Default} />
+
+Input takes every attribute of `<input>`: `value` and `onChange` for a controlled field,
+`defaultValue` for an uncontrolled one, and `name`, `required`, `autoFocus`.
+
+## States
+
+- **Focus:** the border turns indigo (`--accent-deep`).
+- **Disabled:** the native attribute; the field leaves the tab order.
+
+## Accessibility
+
+<Keys rows={[
+  ['Tab', 'Moves focus into the field.'],
+]} />
+
+- The field needs a name. A `<label>` linked by `htmlFor` and `id`, or an `aria-label`.
+
+<Gap>The focus shows only as a border colour change, with the outline turned off. A shared focus ring is planned (PLAN-005).</Gap>
+<Gap>There is no error state: no red border and no style for `aria-invalid`.</Gap>
