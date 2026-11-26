@@ -1,31 +1,112 @@
-/* PM Board — color tokens (extracted verbatim from dashboard/style.css) */
+/* Bob — colour tokens, in two layers.
+   Scales hold every colour value Bob has. A step is `--<scale>-<n>`; an alpha step is
+   `--<scale>-<n>-a<percent>`, the solid step at that opacity.
+   Roles say what a colour is for, and point at a step. Components use roles, never steps.
+   The values are the source dashboard's, exact (TOKENS.md, "Colours"). */
 :root {
+  /* gray: Bob's neutral ramp, numbered from dark to light. 1–13 surfaces, 14–21 borders,
+     22–26 text. Several steps differ by one level in one channel; they stay apart so that
+     nothing moves a pixel until the design pass merges them. */
+  --gray-1: #050609;
+  --gray-2: #0d0e12;
+  --gray-3: #0f1014;
+  --gray-4: #111218;
+  --gray-5: #121318;
+  --gray-6: #131419;
+  --gray-7: #13141a;
+  --gray-8: #15161b;
+  --gray-9: #16171d;
+  --gray-10: #16181f;
+  --gray-11: #191b21;
+  --gray-12: #1b1d24;
+  --gray-13: #1d1f27;
+  --gray-14: #1f222b;
+  --gray-15: #22252f;
+  --gray-16: #262933;
+  --gray-17: #2b2f3d;
+  --gray-18: #2e3342;
+  --gray-19: #33374a;
+  --gray-20: #333849;
+  --gray-21: #3b3e4d;
+  --gray-22: #4a4e5e;
+  --gray-23: #62667a;
+  --gray-24: #9b9fad;
+  --gray-25: #c9cbd4;
+  --gray-26: #e6e7ec;
+  --gray-1-a55: rgba(5, 6, 9, 0.55);
+  --white: #ffffff;
+  --black-a40: rgba(0, 0, 0, 0.4);
+  --black-a50: rgba(0, 0, 0, 0.5);
+  --black-a55: rgba(0, 0, 0, 0.55);
+
+  /* Hue scales use the 12 steps of Radix Colors: 1–2 backgrounds, 3–5 component fills,
+     6–8 borders, 9 the solid colour, 10 its hover, 11 low-contrast text, 12 high-contrast
+     text. Bob fills only the steps it uses. */
+  --indigo-6: #2a2d52;
+  --indigo-8: #4c56c0;
+  --indigo-9: #7b83eb;
+  --indigo-9-a10: rgba(123, 131, 235, 0.1);
+  --indigo-9-a12: rgba(123, 131, 235, 0.12);
+  --indigo-9-a18: rgba(123, 131, 235, 0.18);
+
+  --blue-9: #52a9ff;
+  --blue-9-a8: rgba(82, 169, 255, 0.08);
+
+  --green-6: #1f4436;
+  --green-9: #46c288;
+  --green-9-a10: rgba(70, 194, 136, 0.1);
+  --green-9-a18: rgba(70, 194, 136, 0.18);
+  --green-9-a70: rgba(70, 194, 136, 0.7);
+
+  --orange-9: #f0883e;
+  --orange-9-a9: rgba(240, 136, 62, 0.09);
+  --orange-9-a30: rgba(240, 136, 62, 0.3);
+
+  --purple-9: #c084fc;
+  --purple-9-a28: rgba(192, 132, 252, 0.28);
+
+  --yellow-9: #e2c541;
+  --yellow-9-a10: rgba(226, 197, 65, 0.1);
+  --yellow-11: #e6db74;
+  --yellow-11-a10: rgba(230, 219, 116, 0.1);
+
+  --red-9: #e5484d;
+  --red-9-a12: rgba(229, 72, 77, 0.12);
+  --red-9-a40: rgba(229, 72, 77, 0.4);
+  --red-9-a50: rgba(229, 72, 77, 0.5);
+  --red-11: #d47f82;
+  --red-12: #f4a6a8;
+
+  --gold-9: #d3b078;
+  --gold-9-a18: rgba(211, 176, 120, 0.18);
+
+  /* Roles. */
   /* Backgrounds */
-  --bg: #0f1014;
-  --bg-side: #121318;
-  --bg-rail: #111218;
-  --panel: #15161b;
-  --panel-dim: #13141a;
-  --panel-hover: #1b1d24;
-  --input: #191b21;
-  --input-border: #22252f;
-  --border: #1f222b;
-  --border-2: #262933;
+  --bg: var(--gray-3);
+  --bg-side: var(--gray-5);
+  --bg-rail: var(--gray-4);
+  --panel: var(--gray-8);
+  --panel-dim: var(--gray-7);
+  --panel-hover: var(--gray-12);
+  --input: var(--gray-11);
+  --input-border: var(--gray-15);
+  --border: var(--gray-14);
+  --border-2: var(--gray-16);
   /* Text ramp */
-  --text: #e6e7ec;
-  --text-2: #9b9fad;
-  --text-3: #62667a;
-  --text-4: #4a4e5e;
+  --text: var(--gray-26);
+  --text-2: var(--gray-24);
+  --text-3: var(--gray-23);
+  --text-4: var(--gray-22);
   /* Accents */
-  --accent: #7b83eb;
-  --accent-deep: #4c56c0;
-  --blue: #52a9ff;
-  --green: #46c288;
-  --orange: #f0883e;
-  --purple: #c084fc;
-  --yellow: #e2c541;
-  --danger: #e5484d;
-  --gold: #d3b078;
+  --accent: var(--indigo-9);
+  --accent-deep: var(--indigo-8);
+  --blue: var(--blue-9);
+  --green: var(--green-9);
+  --orange: var(--orange-9);
+  --purple: var(--purple-9);
+  --yellow: var(--yellow-9);
+  --danger: var(--red-9);
+  --gold: var(--gold-9);
   /* Semantic aliases */
   --surface-app: var(--bg);
   --surface-sidebar: var(--bg-side);
@@ -33,23 +114,23 @@
   --surface-card: var(--panel);
   --surface-card-hover: var(--panel-hover);
   --surface-input: var(--input);
-  --surface-overlay: #131419;
-  --surface-modal: #16171d;
-  --surface-code: #0d0e12;
-  --surface-toast: #1d1f27;
-  --border-card-hover: #2e3342;
+  --surface-overlay: var(--gray-6);
+  --surface-modal: var(--gray-9);
+  --surface-code: var(--gray-2);
+  --surface-toast: var(--gray-13);
+  --border-card-hover: var(--gray-18);
   --text-body: var(--text);
   --text-secondary: var(--text-2);
   --text-muted: var(--text-3);
   --text-faint: var(--text-4);
-  --text-prose: #c9cbd4;
-  --on-accent: #0f1014;
+  --text-prose: var(--gray-25);
+  --on-accent: var(--gray-3);
   /* Tinted fills (color at low alpha over dark) */
-  --tint-accent: rgba(123, 131, 235, 0.1);
-  --tint-blue: rgba(82, 169, 255, 0.08);
-  --tint-green: rgba(70, 194, 136, 0.1);
-  --tint-orange: rgba(240, 136, 62, 0.09);
-  --tint-danger: rgba(229, 72, 77, 0.12);
-  --tint-yellow: rgba(226, 197, 65, 0.1);
-  --scrim: rgba(5, 6, 9, 0.55);
+  --tint-accent: var(--indigo-9-a10);
+  --tint-blue: var(--blue-9-a8);
+  --tint-green: var(--green-9-a10);
+  --tint-orange: var(--orange-9-a9);
+  --tint-danger: var(--red-9-a12);
+  --tint-yellow: var(--yellow-9-a10);
+  --scrim: var(--gray-1-a55);
 }

@@ -34,12 +34,12 @@ a:hover {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #262933;
+  background: var(--gray-16);
   border-radius: 5px;
   border: 2px solid var(--bg);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #33374a;
+  background: var(--gray-19);
 }
 @keyframes pulse {
   0%,
