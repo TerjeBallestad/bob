@@ -70,7 +70,7 @@
   font-family: var(--sans);
   cursor: pointer;
   &:hover {
-    border-color: #2b2f3d;
+    border-color: var(--gray-17);
     color: var(--text-2);
   }
 }

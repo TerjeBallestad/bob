@@ -35,7 +35,7 @@
 }
 @utility list-row-title-done {
   text-decoration: line-through;
-  text-decoration-color: #3b3e4d;
+  text-decoration-color: var(--gray-21);
 }
 @utility list-row-meta {
   display: flex;
@@ -72,7 +72,7 @@
   font-family: var(--sans);
   cursor: pointer;
   &:hover {
-    background: #16181f;
+    background: var(--gray-10);
     color: var(--text);
   }
 }

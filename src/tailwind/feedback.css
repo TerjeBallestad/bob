@@ -64,8 +64,8 @@
   animation: toast-in 0.18s ease;
 }
 @utility toast-error {
-  border-color: rgba(229, 72, 77, 0.5);
-  color: #f4a6a8;
+  border-color: var(--red-9-a50);
+  color: var(--red-12);
 }
 @utility toast-stack {
   position: fixed;

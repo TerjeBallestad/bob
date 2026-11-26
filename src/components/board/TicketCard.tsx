@@ -3,11 +3,11 @@ import React from 'react';
 export type TicketKind = 'research' | 'probe' | 'grill' | 'task' | 'gap';
 
 const KIND_COLORS: Record<TicketKind, string> = {
-  research: '#52a9ff',
-  probe: '#c084fc',
-  grill: '#f0883e',
-  task: '#46c288',
-  gap: '#e2c541',
+  research: 'var(--blue)',
+  probe: 'var(--purple)',
+  grill: 'var(--orange)',
+  task: 'var(--green)',
+  gap: 'var(--yellow)',
 };
 
 export interface TicketCardProps {
@@ -51,11 +51,11 @@ export function TicketCard({
   let border = 'var(--border)';
   let shadow = 'none';
   if (emphasis === 'sdd') {
-    border = '#2a2d52';
+    border = 'var(--indigo-6)';
     shadow = 'var(--glow-accent)';
-  } else if (emphasis === 'plan') border = '#1f4436';
-  else if (kind === 'grill') border = 'rgba(240,136,62,.3)';
-  else if (kind === 'probe') border = 'rgba(192,132,252,.28)';
+  } else if (emphasis === 'plan') border = 'var(--green-6)';
+  else if (kind === 'grill') border = 'var(--orange-9-a30)';
+  else if (kind === 'probe') border = 'var(--purple-9-a28)';
 
   return (
     <div

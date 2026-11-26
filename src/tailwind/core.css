@@ -49,12 +49,12 @@
   font-weight: 500;
   &:hover:not(:disabled) {
     color: var(--text);
-    border-color: #333849;
+    border-color: var(--gray-20);
   }
 }
 @utility btn-accent {
   background: var(--accent-deep);
-  color: #fff;
+  color: var(--white);
   font-weight: 600;
   &:hover:not(:disabled) {
     filter: brightness(1.12);
@@ -62,7 +62,7 @@
 }
 @utility btn-danger {
   background: var(--danger);
-  color: #fff;
+  color: var(--white);
   font-weight: 600;
   &:hover:not(:disabled) {
     filter: brightness(1.12);
@@ -70,12 +70,12 @@
 }
 @utility btn-danger-ghost {
   background: transparent;
-  color: #d47f82;
+  color: var(--red-11);
   border: 1px solid var(--border-2);
   font-weight: 500;
   &:hover:not(:disabled) {
     color: var(--danger);
-    border-color: rgba(229, 72, 77, 0.4);
+    border-color: var(--red-9-a40);
   }
 }
 
@@ -125,8 +125,8 @@
   background: var(--tint-yellow);
 }
 @utility chip-claim {
-  color: #e6db74;
-  background: rgba(230, 219, 116, 0.1);
+  color: var(--yellow-11);
+  background: var(--yellow-11-a10);
   font-weight: 600;
 }
 
@@ -140,15 +140,15 @@
   font-weight: 700;
 }
 @utility avatar-gold {
-  background: rgba(211, 176, 120, 0.18);
+  background: var(--gold-9-a18);
   color: var(--gold);
 }
 @utility avatar-accent {
-  background: rgba(123, 131, 235, 0.18);
+  background: var(--indigo-9-a18);
   color: var(--accent);
 }
 @utility avatar-green {
-  background: rgba(70, 194, 136, 0.18);
+  background: var(--green-9-a18);
   color: var(--green);
 }
 @utility avatar-neutral {
