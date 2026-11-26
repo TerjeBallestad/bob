@@ -17,7 +17,11 @@ import {
 
 // The page reads the token files themselves, so it cannot drift from them.
 const sources = import.meta.glob('../../src/tokens/*.css', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
-const componentCss = import.meta.glob('../../src/components/**/*.module.css', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+// Component CSS: the CSS modules, and the @utility classes that replace them (PLAN-005 Task 1).
+const componentCss = {
+  ...import.meta.glob('../../src/components/**/*.module.css', { query: '?raw', import: 'default', eager: true }),
+  ...import.meta.glob('../../src/tailwind/*.css', { query: '?raw', import: 'default', eager: true }),
+} as Record<string, string>;
 export const tokens = new Tokens(...Object.values(sources));
 
 const short = (name: string) => name.replace(/^--/, '');
