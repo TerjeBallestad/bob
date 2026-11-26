@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './ListRow.module.css';
 
 export interface ListRowProps {
   id?: React.ReactNode;
@@ -23,13 +22,13 @@ export function ListRow({
   style,
 }: ListRowProps) {
   return (
-    <div onClick={onClick} className={[styles.row, done && styles.done].filter(Boolean).join(' ')} style={style}>
-      <span className={styles.id} style={{ color: idColor }}>
+    <div onClick={onClick} className={done ? 'list-row list-row-done' : 'list-row'} style={style}>
+      <span className="list-row-id" style={{ color: idColor }}>
         {id}
       </span>
-      <span className={[styles.title, done && styles.titleDone].filter(Boolean).join(' ')}>{title}</span>
-      {meta && <span className={styles.meta}>{meta}</span>}
-      {age && <span className={styles.age}>{age}</span>}
+      <span className={done ? 'list-row-title list-row-title-done' : 'list-row-title'}>{title}</span>
+      {meta && <span className="list-row-meta">{meta}</span>}
+      {age && <span className="list-row-age">{age}</span>}
     </div>
   );
 }

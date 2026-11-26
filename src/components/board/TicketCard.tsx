@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './TicketCard.module.css';
 
 export type TicketKind = 'research' | 'probe' | 'grill' | 'task' | 'gap';
 
@@ -61,48 +60,48 @@ export function TicketCard({
   return (
     <div
       onClick={onClick}
-      className={styles.card}
+      className="ticket-card"
       style={{ ['--tc-border' as string]: border, boxShadow: shadow, ...style } as React.CSSProperties}
     >
-      <div className={styles.head}>
-        {live && <span className={styles.live} />}
-        <span className={styles.id} style={{ color: (kind && KIND_COLORS[kind]) || idColor || 'var(--text-2)' }}>
+      <div className="ticket-card-head">
+        {live && <span className="ticket-card-live" />}
+        <span className="ticket-card-id" style={{ color: (kind && KIND_COLORS[kind]) || idColor || 'var(--text-2)' }}>
           {id}
         </span>
         {kind && (
-          <span className={styles.kind} style={{ color: KIND_COLORS[kind] }}>
+          <span className="ticket-card-kind" style={{ color: KIND_COLORS[kind] }}>
             {kind}
           </span>
         )}
         {!kind && label && (
-          <span className={styles.kind} style={{ color: label.color || 'var(--text-2)' }}>
+          <span className="ticket-card-kind" style={{ color: label.color || 'var(--text-2)' }}>
             {label.text}
           </span>
         )}
         {priority && (
           <span
-            className={styles.priority}
+            className="ticket-card-priority"
             style={{ color: priority === 'critical' ? 'var(--danger)' : 'var(--orange)' }}
           >
             {priority}
           </span>
         )}
-        {age && <span className={styles.age}>{age}</span>}
+        {age && <span className="ticket-card-age">{age}</span>}
       </div>
-      <div className={styles.title}>{title}</div>
+      <div className="ticket-card-title">{title}</div>
       {(blocked || note || progress) && (
-        <div className={styles.foot}>
-          {blocked && <span className={styles.blocked}>{blocked}</span>}
-          {note && <span className={styles.note}>{note}</span>}
+        <div className="ticket-card-foot">
+          {blocked && <span className="ticket-card-blocked">{blocked}</span>}
+          {note && <span className="ticket-card-note">{note}</span>}
           {progress && (
             <>
-              <span className={styles.track}>
+              <span className="ticket-card-track">
                 <span
-                  className={styles.fill}
+                  className="ticket-card-fill"
                   style={{ width: Math.min(100, (progress.done / progress.total) * 100) + '%' }}
                 />
               </span>
-              <span className={styles.count}>
+              <span className="ticket-card-count">
                 {progress.done}/{progress.total}
               </span>
             </>

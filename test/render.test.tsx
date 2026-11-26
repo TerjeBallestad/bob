@@ -15,12 +15,12 @@ describe('render', () => {
 
   for (const name of Object.keys(samples)) {
     // Every class a component renders is one of Bob's component classes, defined in the
-    // built bob.css. A bob_ class comes from a CSS module not yet moved to @utility.
+    // built bob.css.
     it(`${name} renders from the built package with Bob's class names`, () => {
       const html = renderToString(samples[name]());
       const classes = [...html.matchAll(/class="([^"]*)"/g)].flatMap((m) => m[1].split(/\s+/)).filter(Boolean);
       expect(classes.length).toBeGreaterThan(0);
-      for (const cls of classes.filter((c) => !c.startsWith('bob_'))) expect(css, cls).toMatch(new RegExp(`\\.${cls}[{:]`));
+      for (const cls of classes) expect(css, cls).toMatch(new RegExp(`\\.${cls}[{:]`));
     });
   }
 

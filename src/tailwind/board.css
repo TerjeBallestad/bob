@@ -1,0 +1,212 @@
+/* Board components: ListRow, NavRow, SectionLabel, TicketCard. */
+
+/* ListRow */
+@utility list-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  min-width: 0;
+  background: transparent;
+  font-family: var(--sans);
+  &:hover {
+    background: var(--panel);
+  }
+}
+@utility list-row-done {
+  opacity: 0.55;
+}
+@utility list-row-id {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+@utility list-row-title {
+  font-size: 12.5px;
+  font-weight: 500;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+}
+@utility list-row-title-done {
+  text-decoration: line-through;
+  text-decoration-color: #3b3e4d;
+}
+@utility list-row-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 10.5px;
+  color: var(--text-3);
+  flex-shrink: 0;
+  margin-left: auto;
+}
+@utility list-row-age {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-4);
+  flex-shrink: 0;
+  width: 30px;
+  text-align: right;
+}
+
+/* NavRow */
+@utility nav-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: var(--radius-btn);
+  background: transparent;
+  color: var(--text-2);
+  font-size: 12.5px;
+  font-weight: 400;
+  width: 100%;
+  text-align: left;
+  font-family: var(--sans);
+  cursor: pointer;
+  &:hover {
+    background: #16181f;
+    color: var(--text);
+  }
+}
+@utility nav-row-active {
+  background: var(--panel-hover);
+  color: var(--text);
+  font-weight: 600;
+  &:hover {
+    background: var(--panel-hover);
+  }
+}
+@utility nav-row-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+@utility nav-row-count {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text-3);
+}
+
+/* SectionLabel */
+@utility section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-family: var(--sans);
+}
+@utility section-label-action {
+  margin-left: auto;
+}
+
+/* TicketCard. The border colour comes in as --tc-border from the emphasis and kind props;
+   the hover border overrides it. pulse is a keyframe in src/tokens/base.css. */
+@utility ticket-card {
+  background: var(--panel);
+  border: 1px solid var(--tc-border, var(--border));
+  border-radius: var(--radius);
+  padding: 9px 11px;
+  cursor: pointer;
+  transition: border-color 0.12s ease;
+  font-family: var(--sans);
+  &:hover {
+    border-color: var(--border-card-hover);
+  }
+}
+@utility ticket-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+@utility ticket-card-live {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: var(--glow-green);
+  align-self: center;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+@utility ticket-card-id {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+@utility ticket-card-kind {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+@utility ticket-card-priority {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+@utility ticket-card-age {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-4);
+}
+@utility ticket-card-title {
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--text);
+}
+@utility ticket-card-foot {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 7px;
+  flex-wrap: wrap;
+}
+@utility ticket-card-blocked {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--orange);
+  background: var(--tint-orange);
+  padding: 1px 6px;
+  border-radius: var(--radius-kbd);
+}
+@utility ticket-card-track {
+  flex: 1;
+  min-width: 40px;
+  height: 4px;
+  background: var(--input-border);
+  border-radius: 2px;
+  overflow: hidden;
+  display: inline-block;
+}
+@utility ticket-card-fill {
+  display: block;
+  height: 100%;
+  background: var(--green);
+  border-radius: 2px;
+}
+@utility ticket-card-note {
+  font-size: 10.5px;
+  color: var(--text-3);
+}
+@utility ticket-card-count {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text-2);
+}

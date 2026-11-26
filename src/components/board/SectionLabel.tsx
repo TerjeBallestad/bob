@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './SectionLabel.module.css';
 
 /** The uppercase 10.5px label pattern — an intentional addition, see readme.md. */
 export interface SectionLabelProps {
@@ -11,10 +10,10 @@ export interface SectionLabelProps {
 
 export function SectionLabel({ children, action, dot, style }: SectionLabelProps) {
   return (
-    <div className={styles.label} style={style}>
+    <div className="section-label" style={style}>
       {dot}
       <span>{children}</span>
-      {action && <span className={styles.action}>{action}</span>}
+      {action && <span className="section-label-action">{action}</span>}
     </div>
   );
 }

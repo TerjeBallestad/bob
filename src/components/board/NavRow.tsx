@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './NavRow.module.css';
 
 export interface NavRowProps {
   label?: React.ReactNode;
@@ -12,10 +11,10 @@ export interface NavRowProps {
 
 export function NavRow({ label, count, active = false, dot, onClick, style }: NavRowProps) {
   return (
-    <button onClick={onClick} className={[styles.nav, active && styles.active].filter(Boolean).join(' ')} style={style}>
+    <button onClick={onClick} className={active ? 'nav-row nav-row-active' : 'nav-row'} style={style}>
       {dot}
-      <span className={styles.label}>{label}</span>
-      {count != null && <span className={styles.count}>{count}</span>}
+      <span className="nav-row-label">{label}</span>
+      {count != null && <span className="nav-row-count">{count}</span>}
     </button>
   );
 }

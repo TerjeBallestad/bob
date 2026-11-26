@@ -14,5 +14,4 @@ export default defineConfig({
     rollupOptions: { external: ['react', 'react-dom', 'react/jsx-runtime'] },
     sourcemap: true,
   },
-  css: { modules: { generateScopedName: 'bob_[name]_[local]_[hash:base64:5]' } },
 });

@@ -31,8 +31,7 @@ describe('the Tailwind entry', () => {
     const css = await buildApp();
     const missing: string[] = [];
     for (const [name, sample] of Object.entries(samples)) {
-      // bob_ classes come from CSS modules not yet moved to @utility.
-      for (const cls of classesOf(renderToString(sample())).filter((c) => !c.startsWith('bob_'))) {
+      for (const cls of classesOf(renderToString(sample()))) {
         if (!css.includes(`.${cls} {`) && !css.includes(`.${cls}:`)) missing.push(`${name}: ${cls}`);
       }
     }
@@ -50,7 +49,7 @@ describe('the Tailwind entry', () => {
   // later in the stylesheet. Tailwind sorts utilities by its own rules, not by file order.
   const ORDER: [string, string][] = [
     ['btn', 'btn-primary'], ['btn', 'btn-secondary'], ['btn', 'btn-ghost'], ['btn', 'btn-danger-ghost'],
-    ['chip', 'chip-mono'], ['seg-opt', 'seg-active'], ['search', 'search-expand'], ['toast', 'toast-error'],
+    ['chip', 'chip-mono'], ['seg-opt', 'seg-active'], ['search', 'search-expand'], ['toast', 'toast-error'], ['nav-row', 'nav-row-active'],
   ];
   const ruleAt = (css: string, cls: string) => css.search(new RegExp(`\\.${cls}\\s*\\{`));
 
@@ -83,8 +82,7 @@ describe('the Tailwind entry', () => {
     const layer = sheet.slice(start, end);
     const outside = sheet.slice(0, start) + sheet.slice(end);
     for (const rule of [':root{', '.btn{', '.btn-md{', '.chip{']) expect(layer).toContain(rule);
-    // Outside the layer: the webfont import, Tailwind's @property fallbacks, and CSS modules
-    // not yet moved to @utility (bob_ classes).
-    expect(outside.match(/(^|})\.(?!bob_)[\w-]+[{:]/g)).toBeNull();
+    // Outside the layer: only the webfont import and Tailwind's @property fallbacks.
+    expect(outside.match(/(^|})\.[\w-]+[{:]/g)).toBeNull();
   });
 });
