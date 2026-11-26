@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './Modal.module.css';
 
 export interface ModalProps {
   title?: React.ReactNode;
@@ -14,20 +13,20 @@ export function Modal({ title, onClose, children, footer, open = true, style }: 
   if (!open) return null;
   return (
     <div
-      className={styles.overlay}
+      className="modal"
       onClick={(e) => {
         if (e.target === e.currentTarget && onClose) onClose();
       }}
     >
-      <div className={styles.dialog} style={style}>
-        <div className={styles.header}>
-          <h2 className={styles.title}>{title}</h2>
-          <button className={styles.close} onClick={onClose}>
+      <div className="modal-box" style={style}>
+        <div className="modal-header">
+          <h2 className="modal-title">{title}</h2>
+          <button className="modal-close" onClick={onClose}>
             &times;
           </button>
         </div>
         {children}
-        {footer && <div className={styles.footer}>{footer}</div>}
+        {footer && <div className="modal-footer">{footer}</div>}
       </div>
     </div>
   );

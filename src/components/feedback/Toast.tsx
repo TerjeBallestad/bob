@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './Toast.module.css';
 
 export interface ToastProps {
   children?: React.ReactNode;
@@ -10,7 +9,7 @@ export interface ToastProps {
 /** Copy rule: 2–5 words, past tense, no subject — "Title updated", "SB-341 archived". */
 export function Toast({ children, error = false, style }: ToastProps) {
   return (
-    <div className={[styles.toast, error && styles.error].filter(Boolean).join(' ')} style={style}>
+    <div className={error ? 'toast toast-error' : 'toast'} style={style}>
       {children}
     </div>
   );
@@ -21,5 +20,5 @@ export interface ToastStackProps {
 }
 
 export function ToastStack({ children }: ToastStackProps) {
-  return <div className={styles.stack}>{children}</div>;
+  return <div className="toast-stack">{children}</div>;
 }
