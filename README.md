@@ -19,6 +19,35 @@ An import from `@terjeballestad/bob` also loads `bob.css`: the tokens, the keyfr
 component styles. You do not import a stylesheet yourself. If your bundler drops CSS that a
 package imports, import `@terjeballestad/bob/styles.css` once at the root of your app.
 
+### In a Tailwind v4 app
+
+Add one line after your Tailwind import (DD-031):
+
+```css
+@import "tailwindcss";
+@import "@terjeballestad/bob/tailwind.css";
+```
+
+Your Tailwind build then writes Bob's component classes (`btn`, `chip`, `ticket-card`, ...) in its
+utilities layer, and only the ones in use. They take variants (`md:btn-sm`) and mix with your
+utilities: `<Button className="px-8">` gets 32px of side padding over Bob's. The theme maps Bob's
+tokens, so `bg-surface-card`, `rounded-btn` and `font-mono` work.
+
+- **Preflight.** Bob's components and Storybook assume Bob's own reset, not Tailwind's preflight.
+  With preflight, text sits at line-height 1.5. An app written without preflight imports the theme
+  and the utilities only:
+
+  ```css
+  @layer theme, base, components, utilities;
+  @import "tailwindcss/theme.css" layer(theme);
+  @import "tailwindcss/utilities.css" layer(utilities);
+  @import "@terjeballestad/bob/tailwind.css";
+  ```
+- **Your element rules go in `@layer base`.** An unlayered `button { color: inherit }` beats every
+  class in a layer, Bob's too.
+- The JS import still loads the precompiled `bob.css`, and that brings the webfonts. Everything
+  else in it sits in the `base` layer, so your build's copy of Bob's classes wins over it.
+
 `react`, `react-dom` and `@types/react` 18.3 or later are peer dependencies. The types are a
 required peer, because Bob's declarations import React's types, and npm must place them where
 Bob can see them.
@@ -29,7 +58,10 @@ Bob can see them.
 src/
   index.ts               barrel: every component and its prop types
   types.ts               DSOption / DSOptionInput, shared by Select and SegToggle
-  styles.css             entry stylesheet, @imports tokens/
+  styles.css             the precompiled stylesheet (dist/bob.css), in the base layer
+  tailwind.css           the Tailwind entry (dist/tailwind.css): tokens, theme, @utility classes
+  tailwind/              theme.css (@theme over the tokens), components.css and one file of
+                         @utility classes per group: core, forms, feedback, board
   tokens/                colors, typography, layout, fonts, base (reset + keyframes)
   components/
     core/                Avatar Button Chip Kbd ProgressBar SegToggle StatusDot
@@ -41,11 +73,14 @@ TOKENS.md                what each CSS custom property means
 
 ## Conventions
 
-- **Each component has a CSS Module** next to it (`Button.module.css`). The rules read the tokens as
-  `var(--token)`. [TOKENS.md](./TOKENS.md) lists every token. Hover is a CSS `:hover` rule. No
-  component keeps state.
-- **Class names are scoped**, for example `bob_Button-module_btn_<hash>`, so they cannot clash with the app.
-  Do not write app CSS that targets them. Pass `className` or `style` instead.
+- **Each component renders Bob's component classes**, in the daisyUI style: `btn btn-md
+  btn-primary`, `chip chip-green`, `ticket-card`. Each class is a Tailwind `@utility` in
+  `src/tailwind/<group>.css`. The rules read the tokens as `var(--token)`, never a generated class.
+  [TOKENS.md](./TOKENS.md) lists every token. Hover is a CSS `:hover` rule. No component keeps state.
+- **Class names have no prefix.** A component writes each class name whole in its source, so
+  Tailwind finds it when it scans `dist/index.js`. Tailwind sorts utilities by the properties they
+  set, so `test/tailwind.test.tsx` checks that a modifier (`btn-primary`) comes after its base
+  (`btn`).
 - **Overrides.** Components that wrap a native element (`Button`, `Chip`, `Input`, `Select`,
   `Textarea`, `SearchInput`) take `className` and forward every other attribute of that element.
   The other components take a `style` prop.
@@ -64,8 +99,9 @@ npm run typecheck  # also checks every exported type through the package name
 ```
 
 `npm test` checks the built package, not the source: the exports match Time Turtle's original
-barrel, every component renders with Bob's scoped class names, and `dist/index.js` imports
-`bob.css`.
+barrel, every class a component renders is defined in `bob.css`, and `dist/index.js` imports
+`bob.css`. `test/tailwind.test.tsx` builds a Tailwind app with `dist/tailwind.css` and checks that
+it writes every class the components render.
 
 ## Storybook and screenshot tests
 

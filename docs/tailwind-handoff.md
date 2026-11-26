@@ -86,3 +86,28 @@ All checks pass:
 3. Move the other 18 components, a few in each commit. Run the screenshot tests after each one.
 4. Add the `./tailwind.css` export and a CHANGELOG entry. The release is 0.3.0: it adds and
    changes no prop or token.
+
+## Settled in PLAN-005 Task 1 (26 Nov 2026)
+
+The decision is DD-031 on the pm board; its comments hold the proof in pm-board.
+
+1. **Cascade layers.** The second entry exists: `@terjeballestad/bob/tailwind.css`. The JS import
+   still loads `bob.css`, so `bob.css` now puts all of Bob except the webfont import in the layer
+   `base`. In pm-board, `<Button className="px-8">` gave 10px of padding before and 32px after.
+   Bob's `base.css` reset is in the same layer, before the classes, so nothing changed in
+   Storybook.
+2. **Radius and font tokens.** They are in an `@theme inline reference` block. Tailwind learns the
+   keys (`rounded-btn`, `font-mono`) and writes no variable, so nothing refers to itself. No token
+   changed.
+3. **Class names** such as `text-text-2` belong to Task 2 (DD-033, a proposal). The `@utility`
+   rules use `var(--token)` only, so a rename of the theme keys does not touch them.
+4. **Hover and focus.** A script hovered and focused every element with `cursor: pointer` and
+   every form control in every story, in the Storybook from before the move and after it, and
+   compared the screenshots byte for byte. Task 3 adds state stories.
+5. **The package export.** `./tailwind.css` is in `package.json`. `scripts/copy-tailwind.mjs`
+   copies `src/tailwind.css`, `src/tokens/` and `src/tailwind/` to `dist/`.
+
+Found on the way: preflight sets line-height 1.5 on `html`, so an app written without it imports
+`tailwindcss/theme.css` and `tailwindcss/utilities.css` only (README.md). And the CSS modules had
+scoped the animation names `toast-in` and `pulse` to keyframes that did not exist, so a toast did
+not slide in and a live card's dot did not pulse. As utilities, both run.
