@@ -150,7 +150,7 @@ export const PAIRS: { fg: string; bg: string; tint?: string; use: string }[] = [
   { fg: '--white', bg: '--accent-deep', use: 'Button accent' },
   { fg: '--white', bg: '--danger', use: 'Button danger' },
   { fg: '--red-11', bg: '--surface-app', use: 'Button danger-ghost' },
-  { fg: '--text-2', bg: '--surface-input', use: 'Button secondary, Chip neutral' },
+  { fg: '--text-2', bg: '--surface-input', use: 'Button secondary' },
   { fg: '--accent', bg: '--surface-card', tint: '--tint-accent', use: 'Chip accent' },
   { fg: '--blue', bg: '--surface-card', tint: '--tint-blue', use: 'Chip blue' },
   { fg: '--green', bg: '--surface-card', tint: '--tint-green', use: 'Chip green' },
@@ -166,3 +166,31 @@ export const PAIRS: { fg: string; bg: string; tint?: string; use: string }[] = [
 export function pairBackground(t: Tokens, p: { bg: string; tint?: string }): Rgba {
   return p.tint ? over(t.color(p.tint), t.color(p.bg)) : t.color(p.bg);
 }
+
+/** The roles in the order the colour page shows them. test/tokens.test.ts checks that it names every role. */
+export const ROLE_GROUPS: { title: string; roles: string[] }[] = [
+  {
+    title: 'Surfaces',
+    roles: [
+      '--surface-code', '--bg', '--surface-app', '--bg-rail', '--surface-rail', '--bg-side', '--surface-sidebar',
+      '--surface-overlay', '--panel-dim', '--panel', '--surface-card', '--surface-modal', '--input', '--surface-input',
+      '--panel-hover', '--surface-card-hover', '--surface-toast',
+    ],
+  },
+  { title: 'Borders', roles: ['--border', '--input-border', '--border-2', '--border-card-hover'] },
+  {
+    title: 'Text',
+    roles: [
+      '--text', '--text-body', '--text-prose', '--text-2', '--text-secondary', '--text-3', '--text-muted', '--text-4',
+      '--text-faint', '--on-accent',
+    ],
+  },
+  {
+    title: 'Accent and status',
+    roles: ['--accent', '--accent-deep', '--blue', '--green', '--orange', '--purple', '--yellow', '--danger', '--gold'],
+  },
+  {
+    title: 'Tints and scrim',
+    roles: ['--tint-accent', '--tint-blue', '--tint-green', '--tint-orange', '--tint-danger', '--tint-yellow', '--scrim'],
+  },
+];

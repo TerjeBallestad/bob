@@ -1,6 +1,59 @@
-import { Meta, Markdown } from '@storybook/addon-docs/blocks';
-import tokens from '../TOKENS.md?raw';
+import { Meta, Story } from '@storybook/addon-docs/blocks';
+import * as TokenStories from './tokens.stories';
 
-<Meta title="Tokens" />
+<Meta of={TokenStories} />
 
-<Markdown>{tokens}</Markdown>
+# Tokens
+
+Bob's look lives in CSS custom properties on `:root`, in `src/tokens/*.css`. One dark theme.
+The values come from the source dashboard, exact. Everything on this page is computed from those
+files, so it cannot drift from them. TOKENS.md in the package says the same in text.
+
+## Colour: scales, then roles
+
+Colour has two layers.
+
+- A **scale** holds the values. Each step is a token: `--gray-12`, `--indigo-9`. An alpha step is a
+  solid step at an opacity: `--indigo-9-a10` is indigo 9 at 10%.
+- A **role** says what a colour is for and points at a step: `--surface-card` is `--panel`, which is
+  `--gray-8`. Components use roles, never steps.
+
+A colour literal appears only in a scale step. The token test fails on any other.
+
+<Story of={TokenStories.Gray} />
+
+Gray holds every neutral Bob uses, 26 steps. Some steps differ by one level in one channel, for
+example gray 6 and gray 7. They stay apart for now so that no pixel moves; the design pass merges
+them into a 12-step ramp.
+
+<Story of={TokenStories.Hues} />
+
+<Story of={TokenStories.RolesSurfacesBordersText} />
+
+<Story of={TokenStories.RolesAccentStatusTints} />
+
+## Contrast
+
+The ratios are WCAG 2.2, computed from the tokens. Tints are painted over the surface they sit on
+before the ratio is taken.
+
+<Story of={TokenStories.ContrastTextOnSurfaces} />
+
+`--text-3` (placeholders, section labels) and `--text-4` (timestamps, ages) fail AA everywhere. They
+are kept as they are until the design pass, which decides each use: lift the colour, or accept the
+text as decorative.
+
+<Story of={TokenStories.ContrastPairsInUse} />
+
+White on `--danger` (Button danger, 3.9:1) and `--danger` on its tint (Chip danger, 4.1:1) fail AA.
+
+## Type
+
+<Story of={TokenStories.Type} />
+
+## Radius, shadow and space
+
+<Story of={TokenStories.RadiusShadowSpace} />
+
+Structure: `--sidebar-w` 226px, `--rail-w` 290px, `--topbar-h` 48px. Motion: `--dur-fast` .1s,
+`--dur` .12s, `--dur-slow` .18s, all `--ease`.

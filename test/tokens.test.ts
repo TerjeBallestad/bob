@@ -3,6 +3,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import {
   COLOR_LITERAL,
   PAIRS,
+  ROLE_GROUPS,
   SURFACES,
   TEXT_ROLES,
   Tokens,
@@ -44,6 +45,11 @@ describe('colour tokens', () => {
     const colorRoles = [...tokens.decls.keys()].filter((n) => !stepOf(n, '') && parseColor(tokens.resolve(`var(${n})`)));
     expect(colorRoles.length).toBeGreaterThan(40);
     for (const r of colorRoles) expect(tokens.stepFor(r), r).toBeDefined();
+  });
+
+  it('show every colour role on the colour page, once', () => {
+    const shown = ROLE_GROUPS.flatMap((g) => g.roles);
+    expect([...shown].sort()).toEqual(tokens.roles().filter((r) => !r.startsWith('--shadow') && !r.startsWith('--glow')).sort());
   });
 
   it('make an alpha step its solid step at that opacity', () => {

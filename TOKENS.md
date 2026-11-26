@@ -5,69 +5,118 @@ Every token is a CSS custom property on `:root`, declared in `src/tokens/*.css` 
 `var(--name)`. There is no theme switcher: **one dark theme only.**
 
 Values were extracted verbatim from the source dashboard design bundle (not part of this repo).
+The Tokens page in Storybook shows every token, computed from these files.
 
-## Colors — `tokens/colors.css`
+## Colours — `tokens/colors.css`
 
-### Surfaces
+Colour has two layers. The Tokens page in Storybook shows both, computed from the CSS.
 
-| Token            | Value     | Use                                                  |
-| ---------------- | --------- | ---------------------------------------------------- |
-| `--bg`           | `#0f1014` | App background (near-black base)                     |
-| `--bg-side`      | `#121318` | Sidebar                                              |
-| `--bg-rail`      | `#111218` | Right rail                                           |
-| `--panel`        | `#15161b` | Cards, raised rows                                   |
-| `--panel-dim`    | `#13141a` | Recessed panels                                      |
-| `--panel-hover`  | `#1b1d24` | Hover/selected fill                                  |
-| `--input`        | `#191b21` | Input, select, textarea fill                         |
-| `--input-border` | `#22252f` | Input border; also progress-bar track and `Kbd` fill |
-| `--border`       | `#1f222b` | Default hairline                                     |
-| `--border-2`     | `#262933` | Stronger hairline (buttons, modals)                  |
+- A **scale** holds the values. A step is `--<scale>-<n>`. An alpha step is `--<scale>-<n>-a<percent>`,
+  the solid step at that opacity: `--indigo-9-a10` is indigo 9 at 10%.
+- A **role** says what a colour is for and points at a step. Components use roles, never steps.
 
-The ramp moves one step at a time: `transparent → #16181f → --panel-hover` on hover. Depth comes
-from 1px borders, never elevation.
+Only scale steps hold colour literals. `test/tokens.test.ts` fails on a literal anywhere else, on a role
+that does not end at a step, and on a 0.2.0 token whose value changed. The scales are kept by hand
+(DD-032). DD-033 proposes new role names for Tailwind; until it is accepted, the names below stay.
 
-### Text ramp
+### Scales
 
-| Token          | Value     | Use                                  |
-| -------------- | --------- | ------------------------------------ |
-| `--text`       | `#e6e7ec` | Primary                              |
-| `--text-2`     | `#9b9fad` | Secondary, button labels             |
-| `--text-3`     | `#62667a` | Muted — section labels, placeholders |
-| `--text-4`     | `#4a4e5e` | Faint — timestamps, ages             |
-| `--text-prose` | `#c9cbd4` | Long-form document body              |
+**gray**, 26 steps, dark to light. 1–13 surfaces, 14–21 borders, 22–26 text. Some steps differ by
+one level in one channel (gray 6 and 7). They stay apart so that no pixel moves; the design pass
+merges them.
 
-De-emphasis is a ramp step down or opacity (.55–.85), never a hue change. Disabled is `opacity: .5`.
+| Step | Value | Step | Value | Step | Value |
+| --- | --- | --- | --- | --- | --- |
+| 1 | `#050609` | 10 | `#16181f` | 19 | `#33374a` |
+| 2 | `#0d0e12` | 11 | `#191b21` | 20 | `#333849` |
+| 3 | `#0f1014` | 12 | `#1b1d24` | 21 | `#3b3e4d` |
+| 4 | `#111218` | 13 | `#1d1f27` | 22 | `#4a4e5e` |
+| 5 | `#121318` | 14 | `#1f222b` | 23 | `#62667a` |
+| 6 | `#131419` | 15 | `#22252f` | 24 | `#9b9fad` |
+| 7 | `#13141a` | 16 | `#262933` | 25 | `#c9cbd4` |
+| 8 | `#15161b` | 17 | `#2b2f3d` | 26 | `#e6e7ec` |
+| 9 | `#16171d` | 18 | `#2e3342` | | |
 
-### Accent and functional hues
+**Hues** use the 12 steps of Radix Colors: 1–2 backgrounds, 3–5 fills, 6–8 borders, 9 the solid,
+10 its hover, 11 low-contrast text, 12 high-contrast text. Bob fills only the steps it uses.
 
-| Token           | Value     | Meaning                                    |
-| --------------- | --------- | ------------------------------------------ |
-| `--accent`      | `#7b83eb` | The single brand indigo                    |
-| `--accent-deep` | `#4c56c0` | Pressed/focus border, `accent` button fill |
-| `--on-accent`   | `#0f1014` | Text on an `--accent` fill                 |
-| `--blue`        | `#52a9ff` | Docs, references                           |
-| `--green`       | `#46c288` | Done, plans, live agents                   |
-| `--orange`      | `#f0883e` | Blocked, warnings                          |
-| `--purple`      | `#c084fc` | Probe                                      |
-| `--yellow`      | `#e2c541` | Gap                                        |
-| `--danger`      | `#e5484d` | Destructive                                |
-| `--gold`        | `#d3b078` | Human avatar                               |
+| Scale | Solid steps | Alpha steps |
+| --- | --- | --- |
+| indigo | 6 `#2a2d52` · 8 `#4c56c0` · 9 `#7b83eb` | 9-a10 · 9-a12 · 9-a18 |
+| blue | 9 `#52a9ff` | 9-a8 |
+| green | 6 `#1f4436` · 9 `#46c288` | 9-a10 · 9-a18 · 9-a70 |
+| orange | 9 `#f0883e` | 9-a9 · 9-a30 |
+| purple | 9 `#c084fc` | 9-a28 |
+| yellow | 9 `#e2c541` · 11 `#e6db74` | 9-a10 · 11-a10 |
+| red | 9 `#e5484d` · 11 `#d47f82` · 12 `#f4a6a8` | 9-a12 · 9-a40 · 9-a50 |
+| gold | 9 `#d3b078` | 9-a18 |
 
-Color carries _meaning_, not decoration. It appears mostly as an 8–12% alpha tint behind small text.
+Also `--white` `#ffffff`, `--black-a40` / `-a50` / `-a55` (shadows) and `--gray-1-a55` (the scrim).
+Some steps have no role yet: components use those values raw, and Task 1 moves them onto roles.
 
-### Tints and scrim
+### Roles
 
-`--tint-accent` `rgba(123,131,235,.10)` · `--tint-blue` `rgba(82,169,255,.08)` ·
-`--tint-green` `rgba(70,194,136,.10)` · `--tint-orange` `rgba(240,136,62,.09)` ·
-`--tint-danger` `rgba(229,72,77,.12)` · `--tint-yellow` `rgba(226,197,65,.10)` ·
-`--scrim` `rgba(5,6,9,.55)` (modal backdrop — no `backdrop-filter`).
+Surfaces. Depth comes from 1px borders, never elevation; hover moves one step up.
 
-### Semantic aliases
+| Role | Step | Use |
+| --- | --- | --- |
+| `--surface-code` | gray-2 | Code blocks |
+| `--bg` = `--surface-app` | gray-3 | App background |
+| `--bg-rail` = `--surface-rail` | gray-4 | Right rail |
+| `--bg-side` = `--surface-sidebar` | gray-5 | Sidebar |
+| `--surface-overlay` | gray-6 | Slide-over |
+| `--panel-dim` | gray-7 | Recessed panels |
+| `--panel` = `--surface-card` | gray-8 | Cards, raised rows |
+| `--surface-modal` | gray-9 | Modal |
+| `--input` = `--surface-input` | gray-11 | Input, select, textarea fill |
+| `--panel-hover` = `--surface-card-hover` | gray-12 | Hover/selected fill |
+| `--surface-toast` | gray-13 | Toast |
 
-`--surface-app` `--surface-sidebar` `--surface-rail` `--surface-card` `--surface-card-hover`
-`--surface-input` alias the raw surfaces above. Standalone: `--surface-overlay` `#131419`,
-`--surface-modal` `#16171d`, `--surface-code` `#0d0e12`, `--surface-toast` `#1d1f27`,
-`--border-card-hover` `#2e3342`. Prefer the semantic name in new code.
+Borders: `--border` gray-14 (default hairline) · `--input-border` gray-15 (inputs; also the
+progress track and `Kbd` fill) · `--border-2` gray-16 (buttons, modals) · `--border-card-hover`
+gray-18.
+
+Text. De-emphasis is a step down or opacity (.55–.85), never a hue change. Disabled is `opacity: .5`.
+
+| Role | Step | Use |
+| --- | --- | --- |
+| `--text` = `--text-body` | gray-26 | Primary |
+| `--text-prose` | gray-25 | Long-form document body |
+| `--text-2` = `--text-secondary` | gray-24 | Secondary, button labels |
+| `--text-3` = `--text-muted` | gray-23 | Section labels, placeholders |
+| `--text-4` = `--text-faint` | gray-22 | Timestamps, ages |
+| `--on-accent` | gray-3 | Text on an `--accent` fill |
+
+Accent and status. Colour carries meaning, not decoration; it shows mostly as a tint behind small text.
+
+| Role | Step | Meaning |
+| --- | --- | --- |
+| `--accent` | indigo-9 | The single brand indigo |
+| `--accent-deep` | indigo-8 | Focus border, `accent` button fill |
+| `--blue` | blue-9 | Docs, references |
+| `--green` | green-9 | Done, plans, live agents |
+| `--orange` | orange-9 | Blocked, warnings |
+| `--purple` | purple-9 | Probe |
+| `--yellow` | yellow-9 | Gap |
+| `--danger` | red-9 | Destructive |
+| `--gold` | gold-9 | Human avatar |
+
+Tints: `--tint-accent` indigo-9-a10 · `--tint-blue` blue-9-a8 · `--tint-green` green-9-a10 ·
+`--tint-orange` orange-9-a9 · `--tint-danger` red-9-a12 · `--tint-yellow` yellow-9-a10.
+`--scrim` gray-1-a55 is the modal backdrop (no `backdrop-filter`).
+
+### Contrast
+
+WCAG 2.2, computed from the tokens; a tint is painted over its card first. AA asks 4.5:1. Bob's
+text is under 18px, so the 3:1 large-text limit does not apply. The token test checks these findings.
+
+- `--text`, `--text-prose` and `--text-2` pass AA on every surface (`--text-2`: 6.2 on
+  `--surface-toast` to 7.3 on `--surface-code`).
+- `--text-3` fails AA on every surface (2.9 to 3.4). `--text-4` fails on every surface (2.0 to 2.3).
+  The design pass decides each use: lift the colour, or accept the text as decorative.
+- Pairs in use that fail AA: white on `--danger` (Button danger, 3.9) and `--danger` on
+  `--tint-danger` (Chip danger, 4.1). All other pairs pass: Button primary 5.7, Chip accent 4.8,
+  Button accent 6.2, the rest above 6.
 
 ## Typography — `tokens/typography.css`
 
@@ -100,9 +149,12 @@ Radii: `--radius-kbd` 4px (chips/kbd) · `--radius-chip` 5px · `--radius-btn` 7
 (buttons, inputs, nav rows) · `--radius` 8px (cards) · `--radius-lg` 10px (featured) ·
 `--radius-xl` 12px (modals). Dots are circles; swatches are 2px squares.
 
-Shadows only on floating layers: `--shadow-modal` `0 24px 60px rgba(0,0,0,.5)` ·
-`--shadow-overlay` `-24px 0 60px rgba(0,0,0,.55)` · `--shadow-toast` `0 8px 24px rgba(0,0,0,.4)`.
-Emphasis rings: `--glow-accent` `0 0 0 1px rgba(123,131,235,.12)` · `--glow-green` `0 0 6px rgba(70,194,136,.7)`.
+Shadows only on floating layers: `--shadow-modal` `0 24px 60px` black-a50 ·
+`--shadow-overlay` `-24px 0 60px` black-a55 · `--shadow-toast` `0 8px 24px` black-a40.
+Emphasis rings: `--glow-accent` `0 0 0 1px` indigo-9-a12 · `--glow-green` `0 0 6px` green-9-a70.
+
+Space: Bob has no spacing tokens yet. The Tokens page shows the padding, margin and gap values the
+components use today.
 
 Structure: `--sidebar-w` 226px · `--rail-w` 290px · `--topbar-h` 48px.
 
