@@ -89,7 +89,8 @@ What works today:
 
 The title is an `<h2>`, so a screen reader user can find it in the heading list.
 
-<Gap>No `role="dialog"`, `aria-modal` or `aria-labelledby`: a screen reader does not announce a dialog.</Gap>
+- The box is a `dialog` with `aria-modal="true"`, named by its title (`aria-labelledby`). The ×
+  button's name is "Close".
+
 <Gap>Focus does not move into the dialog when it opens, is not kept inside it, and does not go back to the opener when it closes.</Gap>
 <Gap>Escape does not close it.</Gap>
-<Gap>The × button's name is "×". It needs `aria-label="Close"`.</Gap>

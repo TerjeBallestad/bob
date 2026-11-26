@@ -72,5 +72,7 @@ Each segment is a native `<button>`.
   ['Enter Space', 'Makes the focused segment active.'],
 ]} />
 
-<Gap>The active segment shows only in its colour and weight: no `aria-pressed`, so a screen reader cannot tell which one is on.</Gap>
-<Gap>The group has `overflow: hidden`, which cuts off the browser's focus ring on the first and last segment.</Gap>
+- Each segment has `aria-pressed`: a screen reader tells which one is on.
+- The focus ring is drawn inside the segment, because the group clips.
+
+<Gap>Arrow keys do not move between segments: the group is not a radio group with one tab stop. It moves to Base UI (DD-034).</Gap>

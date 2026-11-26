@@ -8,7 +8,7 @@ import { expect, openStory, test } from './fixtures';
 
 test.describe('Modal', () => {
   test.beforeEach(async ({ page }) => {
-    await openStory(page, 'states-board--modal-keyboard');
+    await openStory(page, 'feedback-states--modal-keyboard');
     await page.getByRole('button', { name: 'Open' }).click();
   });
 
@@ -88,8 +88,8 @@ test.describe('Toast', () => {
 
 test.describe('ListRow and TicketCard with onClick', () => {
   for (const [story, name] of [
-    ['states-board--rows', /SB-042/],
-    ['states-board--cards', /SB-042/],
+    ['board-states--rows', /SB-042/],
+    ['board-states--cards', /SB-042/],
   ] as const) {
     test(`${story}: Tab reaches it, Enter and Space click it`, async ({ page }) => {
       await openStory(page, story);
@@ -117,4 +117,25 @@ test.describe('focus ring', () => {
       await expect(el).toHaveCSS('outline-color', 'rgb(123, 131, 235)');
     });
   }
+});
+
+test.describe('roles and states', () => {
+  test('the active NavRow is the current page', async ({ page }) => {
+    await openStory(page, 'board-navrow--default');
+    await expect(page.locator('[aria-current="page"]')).toHaveCount(1);
+    await expect(page.locator('[aria-current="page"]')).toHaveClass(/nav-row-active/);
+  });
+
+  test('ProgressBar is a progressbar with its values', async ({ page }) => {
+    await openStory(page, 'core-progressbar--default');
+    const bar = page.getByRole('progressbar');
+    await expect(bar).toHaveAttribute('aria-valuenow', '3');
+    await expect(bar).toHaveAttribute('aria-valuemin', '0');
+    await expect(bar).toHaveAttribute('aria-valuemax', '7');
+  });
+
+  test('FormRow names its field with its label', async ({ page }) => {
+    await openStory(page, 'forms-formrow--default');
+    await expect(page.getByLabel('Name')).toHaveValue('Time Turtle');
+  });
 });

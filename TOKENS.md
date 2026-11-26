@@ -180,7 +180,7 @@ writes the keyframe only when something uses it. Bob's components run them only 
 | `--animate-slide-in` | `animate-slide-in` | `slide-in` 0.18s ease                   | Slide-over panels (not used by Bob)         |
 
 `live-pulse` was named `pulse` up to 0.3.0. It is not named `pulse` any more, so it does not
-replace Tailwind's own `animate-pulse` keyframe in an app. Storybook's Animations / Live dot
+replace Tailwind's own `animate-pulse` keyframe in an app. Storybook's Foundations / Animations / Live dot
 story shows it next to Tailwind's `animate-pulse` and `animate-ping`.
 
 ## Fonts — `tokens/fonts.css`

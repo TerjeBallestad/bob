@@ -68,5 +68,8 @@ text in the foot.
 - The kind, priority and blocking id are all text, so they reach a screen reader; colour only
   repeats them.
 
-<Gap>With `onClick` the card is clickable by mouse only: it takes no focus and has no keys. It should render a button or a link.</Gap>
-<Gap>The `live` pulse runs also when the system asks for reduced motion.</Gap>
+- With `onClick` the card is a button (`role="button"`): Tab reaches it, Enter and Space click it,
+  and it shows the focus ring. Without `onClick` it is a plain `<div>`.
+- The `live` pulse runs only when the system allows motion (`motion-safe`).
+
+<Gap>With `onClick` the card is a button, so it cannot open in a new tab. A card for a record with its own address should be a link.</Gap>

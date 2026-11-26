@@ -47,4 +47,7 @@ import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
 
 - The row is a `<div>`: a screen reader reads id, title, meta and age in that order.
 
-<Gap>With `onClick` the row is clickable by mouse only: it takes no focus and has no keys. Put a link or a button in the title for keyboard users, or wait for ListRow to render one.</Gap>
+- With `onClick` the row is a button (`role="button"`): Tab reaches it, Enter and Space click it,
+  and it shows the focus ring. Without `onClick` it stays a plain `<div>`.
+
+<Gap>With `onClick` the row is a button, so it cannot open in a new tab. A row for a record with its own address should be a link.</Gap>

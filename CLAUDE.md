@@ -17,7 +17,7 @@ npm run build-storybook && npm run test:visual:docker   # one screenshot per sto
 `test:visual:docker` also runs axe on every story (WCAG 2.2 AA, visual/a11y.visual.ts), the
 keyboard checks (visual/keyboard.visual.ts) and the reduced-motion checks. A contrast failure
 that is not in visual/axe.ts fails it. The tests serve the webfonts from visual/fonts/, not
-from Google. State stories (hover, focus, disabled, error) live in stories/states/.
+from Google. State stories (hover, focus, disabled, error) live in stories/<group>/States.stories.tsx.
 
 The screenshot baselines come from the Playwright Linux image, never from macOS. Colima must run
 (`colima start`). A change that looks different on purpose: take new baselines for the stories it

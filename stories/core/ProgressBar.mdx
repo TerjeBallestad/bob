@@ -47,7 +47,6 @@ The fill is `value / max`, capped at 100%. With `max` of 0 the track stays empty
 
 ## Accessibility
 
-- The bar is two spans with no role. Assistive technology does not see it, so the count in text is
-  what a screen reader user gets.
+- The bar is a `progressbar` with `aria-valuenow`, `aria-valuemin` 0 and `aria-valuemax`.
 
-<Gap>No `role="progressbar"` and no `aria-valuenow`, `aria-valuemax`: the bar is invisible to a screen reader.</Gap>
+- Its name is `label`, "Progress" by default. Pass one that says what is counted, such as "Tasks done".

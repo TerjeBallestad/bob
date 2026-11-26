@@ -72,7 +72,7 @@
    motion-safe (prefers-reduced-motion: no-preference).
    live is Bob's own pulse (to 0.45 opacity over 1.8s). It is not named pulse, so Tailwind's
    animate-pulse (0.5 over 2s) and its keyframe stay as they are in an app; the Storybook story
-   Animations / Live dot compares the two and animate-ping. */
+   Foundations / Animations / Live dot compares the two and animate-ping. */
 @theme {
   --animate-live: live-pulse 1.8s ease-in-out infinite;
   --animate-card-in: card-in 0.18s ease;

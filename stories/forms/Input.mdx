@@ -62,5 +62,6 @@ Input takes every attribute of `<input>`: `value` and `onChange` for a controlle
 
 - The field needs a name. A `<label>` linked by `htmlFor` and `id`, or an `aria-label`.
 
-<Gap>The focus shows only as a border colour change, with the outline turned off. A shared focus ring is planned (PLAN-005).</Gap>
-<Gap>There is no error state: no red border and no style for `aria-invalid`.</Gap>
+- Focus shows Bob's focus ring (2px, in the accent) and the accent border.
+- Error state: set `aria-invalid="true"`. The border turns `danger`, and a screen reader says the
+  field is invalid. Put the message in text next to it.

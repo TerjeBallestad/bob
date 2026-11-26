@@ -15,7 +15,7 @@ const config: StorybookConfig = {
     { name: '@storybook/addon-docs', options: { mdxPluginOptions: { mdxCompileOptions: { remarkPlugins: [remarkGfm] } } } },
     // axe in the Storybook panel (the same rules as visual/axe.ts).
     '@storybook/addon-a11y',
-    // Forces :hover and :focus-visible for the state stories (stories/states/).
+    // Forces :hover and :focus-visible for the state stories (stories/<group>/States.stories.tsx).
     'storybook-addon-pseudo-states',
   ],
   typescript: { reactDocgen: 'react-docgen-typescript' },

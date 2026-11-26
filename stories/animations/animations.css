@@ -2,7 +2,7 @@
    Tailwind's default theme, next to Bob's animate-live. Bob's build does not load Tailwind's
    theme, so this file builds the two classes for the story. */
 @import 'tailwindcss/theme.css';
-@source './animations.stories.tsx';
+@source './Animations.stories.tsx';
 @tailwind utilities source(none);
 
 /* The TicketCard dot with Tailwind's animate-pulse instead of Bob's animate-live. */

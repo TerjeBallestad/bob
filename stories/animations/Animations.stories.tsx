@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { TicketCard } from '../../src';
-import { STATE_LABEL } from './states';
+import { STATE_LABEL } from '../shared/StateGrid';
 import './animations.css';
 
 // Bob's live pulse next to Tailwind's two built-in loops, on the TicketCard dot, for Terje to
 // choose (PLAN-005 TASK-032). Bob keeps animate-live until he does. With reduced motion on,
 // none of the three moves, and the screenshot test shows them still.
-export default { title: 'Animations', tags: ['!autodocs'] } satisfies Meta;
+export default { title: 'Foundations/Animations', tags: ['!autodocs'] } satisfies Meta;
 
 const OPTIONS = [
   { cls: '', name: "Bob's animate-live", note: 'opacity 1 → 0.45, 1.8s ease-in-out' },

@@ -10,6 +10,7 @@ export default {
     width: { control: 'text', description: 'Track width: px as a number, or any CSS length.' },
     height: { control: 'number', description: 'Track height in px.' },
     color: { control: 'text', description: 'Fill colour. A role such as `var(--green)`, not a hex value.' },
+    label: { control: 'text', description: 'The name a screen reader reads, such as "Tasks done". Defaults to "Progress".' },
     style: { control: false, description: 'Inline styles on the track, merged last.' },
   },
 } satisfies Meta<typeof ProgressBar>;

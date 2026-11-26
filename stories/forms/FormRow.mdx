@@ -44,4 +44,8 @@ import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
 
 ## Accessibility
 
-<Gap>The label is not linked to the field: FormRow sets no `htmlFor`, and the field is not inside the label. A click on the label does not focus the field, and a screen reader does not read it as the field's name. Until that changes, also give the field an `aria-label` with the same text.</Gap>
+- With one element child, the label is linked to it: FormRow sets `htmlFor`, and gives the child
+  an id if it has none. A click on the label focuses the field, and a screen reader reads it as
+  the field's name.
+
+<Gap>With several children the label is linked to none. Give the field an `aria-label`.</Gap>

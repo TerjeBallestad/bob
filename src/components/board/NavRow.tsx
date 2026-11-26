@@ -11,7 +11,13 @@ export interface NavRowProps {
 
 export function NavRow({ label, count, active = false, dot, onClick, style }: NavRowProps) {
   return (
-    <button type="button" onClick={onClick} className={active ? 'nav-row nav-row-active' : 'nav-row'} style={style}>
+    <button
+      type="button"
+      onClick={onClick}
+      aria-current={active ? 'page' : undefined}
+      className={active ? 'nav-row nav-row-active' : 'nav-row'}
+      style={style}
+    >
       {dot}
       <span className="nav-row-label">{label}</span>
       {count != null && <span className="nav-row-count">{count}</span>}

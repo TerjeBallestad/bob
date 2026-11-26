@@ -11,6 +11,8 @@ PLAN-005 Task 3 (TASK-032): focus, accessibility checks, state screenshots, anim
   order, Enter and Space click them. Without `onClick` they stay plain.
 - **ARIA**: Modal is a `dialog` with `aria-modal`, named by its title; its close button is named
   Close. SegToggle options have `aria-pressed`. A Toast is a `status`, an error Toast an `alert`.
+  ProgressBar is a `progressbar` with its values and a name, the new optional prop `label`
+  ("Progress" by default). NavRow's active row has `aria-current="page"`.
   FormRow's label names its one child control (`htmlFor` and an id). Bob's buttons have
   `type="button"`, so they do not submit a form.
 - **Error state**: Input, Select, Textarea and SearchInput show a `--danger` border with
