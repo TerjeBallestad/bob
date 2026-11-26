@@ -1,8 +1,9 @@
 # Changelog
 
-## Unreleased
+## 0.4.0
 
-PLAN-005 Task 3 (TASK-032): focus, accessibility checks, state screenshots, animations.
+PLAN-005 Task 3 (TASK-032): focus, accessibility checks, state screenshots, animations. Task 4
+(TASK-033): the Storybook documents Bob.
 
 - **Every control shows keyboard focus**: a 2px `--accent` ring, 2px outside, on
   `:focus-visible` (new tokens `--focus-ring-width`, `--focus-ring-offset`). Input, Select,
@@ -23,6 +24,11 @@ PLAN-005 Task 3 (TASK-032): focus, accessibility checks, state screenshots, anim
   the same timing. `bob.css` holds only the keyframes Bob's components use, so `card-in` and
   `slide-in` are no longer in it; a Tailwind app gets them from `animate-card-in` and
   `animate-slide-in`.
+
+- **Storybook documents every component** (no change to the package): a page per component with
+  when to use it, do and don't, states, props and keyboard notes; a new Introduction with the
+  one-line import; a Bob theme; interaction tests for Modal, Select, SegToggle and Toast. Story
+  ids changed (`core--button-story` is now `core-button--default`), so old links to stories break.
 
 ## 0.3.0
 
