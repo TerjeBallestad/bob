@@ -50,7 +50,7 @@ describe('the Tailwind entry', () => {
   // later in the stylesheet. Tailwind sorts utilities by its own rules, not by file order.
   const ORDER: [string, string][] = [
     ['btn', 'btn-primary'], ['btn', 'btn-secondary'], ['btn', 'btn-ghost'], ['btn', 'btn-danger-ghost'],
-    ['chip', 'chip-mono'], ['seg-opt', 'seg-active'],
+    ['chip', 'chip-mono'], ['seg-opt', 'seg-active'], ['search', 'search-expand'],
   ];
   const ruleAt = (css: string, cls: string) => css.search(new RegExp(`\\.${cls}\\s*\\{`));
 

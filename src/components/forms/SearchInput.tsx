@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './SearchInput.module.css';
 
 export interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   /** When set, renders a click-to-open button showing this key hint (e.g. "⌘K") instead of a live input. */
@@ -13,9 +12,9 @@ export function SearchInput({ kbd, expandOnFocus = false, className, ...rest }: 
     // The kbd variant is a button, not an input — rest carries the shared placeholder/onClick props.
     const buttonRest = rest as unknown as React.ButtonHTMLAttributes<HTMLButtonElement>;
     return (
-      <button className={[styles.kbdBtn, className].filter(Boolean).join(' ')} {...buttonRest}>
+      <button className={['search-kbd', className].filter(Boolean).join(' ')} {...buttonRest}>
         <span>{rest.placeholder || 'Search'}</span>
-        <kbd className={styles.kbdHint}>{kbd}</kbd>
+        <kbd className="search-kbd-hint">{kbd}</kbd>
       </button>
     );
   }
@@ -23,7 +22,7 @@ export function SearchInput({ kbd, expandOnFocus = false, className, ...rest }: 
   return (
     <input
       type="search"
-      className={[styles.search, expandOnFocus && styles.expand, className].filter(Boolean).join(' ')}
+      className={['search', expandOnFocus && 'search-expand', className].filter(Boolean).join(' ')}
       {...rest}
     />
   );

@@ -1,0 +1,121 @@
+/* Form components: FormRow, Input, SearchInput, Select, Textarea. */
+
+/* FormRow */
+@utility form-row {
+  margin-bottom: 14px;
+}
+@utility form-label {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 6px;
+  font-family: var(--sans);
+}
+
+/* Input */
+@utility input {
+  width: 100%;
+  background: var(--input);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-btn);
+  color: var(--text);
+  font-size: 12.5px;
+  padding: 8px 10px;
+  outline: none;
+  font-family: var(--sans);
+  &:focus {
+    border-color: var(--accent-deep);
+  }
+}
+
+/* SearchInput: a live input (search, search-expand), or a button with a key hint (search-kbd). */
+@utility search {
+  width: 100%;
+  padding: 5px 10px;
+  background: var(--input);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-btn);
+  color: var(--text);
+  font-size: 12px;
+  outline: none;
+  transition:
+    width 0.15s ease,
+    border-color 0.15s ease;
+  font-family: var(--sans);
+  &:focus {
+    border-color: var(--accent-deep);
+  }
+}
+@utility search-expand {
+  width: 150px;
+  &:focus {
+    width: 210px;
+  }
+}
+@utility search-kbd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--input);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-btn);
+  color: var(--text-3);
+  font-size: 12px;
+  width: 100%;
+  text-align: left;
+  font-family: var(--sans);
+  cursor: pointer;
+  &:hover {
+    border-color: #2b2f3d;
+    color: var(--text-2);
+  }
+}
+@utility search-kbd-hint {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  background: var(--input-border);
+  padding: 1px 5px;
+  border-radius: var(--radius-kbd);
+}
+
+/* Select */
+@utility select {
+  width: 100%;
+  background: var(--input);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-btn);
+  color: var(--text);
+  font-size: 12.5px;
+  padding: 8px 10px;
+  outline: none;
+  font-family: var(--sans);
+  &:focus {
+    border-color: var(--accent-deep);
+  }
+}
+@utility select-option {
+  background: var(--panel);
+}
+
+/* Textarea */
+@utility textarea {
+  width: 100%;
+  background: var(--input);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-btn);
+  color: var(--text);
+  font-size: 12.5px;
+  padding: 8px 10px;
+  outline: none;
+  resize: vertical;
+  line-height: 1.5;
+  font-family: var(--sans);
+  &:focus {
+    border-color: var(--accent-deep);
+  }
+}

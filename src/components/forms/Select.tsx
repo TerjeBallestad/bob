@@ -1,6 +1,5 @@
 import React from 'react';
 import { normalizeOption, type DSOptionInput } from '../../types';
-import styles from './Select.module.css';
 
 export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   options?: DSOptionInput[];
@@ -8,11 +7,11 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
 
 export function Select({ options = [], className, ...rest }: SelectProps) {
   return (
-    <select className={[styles.select, className].filter(Boolean).join(' ')} {...rest}>
+    <select className={['select', className].filter(Boolean).join(' ')} {...rest}>
       {options.map((o) => {
         const opt = normalizeOption(o);
         return (
-          <option key={opt.value} value={opt.value} className={styles.opt}>
+          <option key={opt.value} value={opt.value} className="select-option">
             {opt.label}
           </option>
         );

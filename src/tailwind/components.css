@@ -6,3 +6,4 @@
    (text-text-2), so a later rename of the theme keys does not touch these files. */
 
 @import './core.css';
+@import './forms.css';

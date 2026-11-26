@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './FormRow.module.css';
 
 export interface FormRowProps {
   label?: React.ReactNode;
@@ -9,8 +8,8 @@ export interface FormRowProps {
 
 export function FormRow({ label, children, style }: FormRowProps) {
   return (
-    <div className={styles.row} style={style}>
-      {label && <label className={styles.label}>{label}</label>}
+    <div className="form-row" style={style}>
+      {label && <label className="form-label">{label}</label>}
       {children}
     </div>
   );
