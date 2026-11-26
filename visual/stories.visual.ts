@@ -1,11 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { readFileSync } from 'node:fs';
+import { openStory, stories } from './story';
 
 // One screenshot per story in the built Storybook. A story added later gets a
 // test with no baseline, which fails until someone runs with --update-snapshots.
-type Entry = { id: string; type: string };
-const index = JSON.parse(readFileSync('storybook-static/index.json', 'utf8')) as { entries: Record<string, Entry> };
-const stories = Object.values(index.entries).filter((e) => e.type === 'story');
 
 test('the Storybook has a story for each of the 19 components', () => {
   expect(stories.length).toBeGreaterThanOrEqual(19);
@@ -13,7 +10,8 @@ test('the Storybook has a story for each of the 19 components', () => {
 
 for (const { id } of stories) {
   test(id, async ({ page }) => {
-    await page.goto(`/iframe.html?id=${id}&viewMode=story`);
+    // Waits for the play function too, so a story with one is shot in its final state.
+    await openStory(page, id);
     await page.locator('#storybook-root > *').first().waitFor();
     // fonts.ready alone resolves before a font the page has not asked for yet,
     // such as an input's placeholder. Load every family and weight first.
