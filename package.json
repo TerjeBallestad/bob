@@ -34,7 +34,7 @@
     "typecheck": "tsc -p tsconfig.json",
     "test": "npm run build && vitest run",
     "prepublishOnly": "npm test",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6106",
     "build-storybook": "storybook build -o storybook-static --quiet",
     "test:visual": "playwright test",
     "test:visual:docker": "docker run --rm --ipc=host -v \"$PWD\":/work -w /work mcr.microsoft.com/playwright:v1.65.1-noble sh -c 'npx playwright test \"$@\"' --",

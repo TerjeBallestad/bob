@@ -106,7 +106,7 @@ it writes every class the components render.
 ## Storybook and screenshot tests
 
 ```sh
-npm run storybook          # http://localhost:6006
+npm run storybook          # http://localhost:6106 (6006 is Godot's debug adapter port)
 npm run build-storybook    # static build in storybook-static/
 npm run test:visual:docker # one screenshot per story, in the Playwright Linux image
 ```
