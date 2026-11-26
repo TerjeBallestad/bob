@@ -15,6 +15,16 @@ export const SearchInputStory: StoryObj<typeof SearchInput> = {
   args: { placeholder: 'Search', kbd: '/' },
 };
 
+export const SearchInputLive: StoryObj = {
+  render: () => (
+    <div style={{ display: 'grid', gap: 10, width: 260 }}>
+      <SearchInput placeholder="Filter…" />
+      <SearchInput expandOnFocus placeholder="Search" />
+      <SearchInput defaultValue="widget" />
+    </div>
+  ),
+};
+
 export const SelectStory: StoryObj<typeof Select> = {
   name: 'Select',
   render: (args) => <Select {...args} />,
