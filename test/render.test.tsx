@@ -50,10 +50,12 @@ describe('Button', () => {
     expect(stop.className).toBe('btn btn-xs btn-danger-tint font-mono');
   });
 
-  it('the other variants keep the native default type', () => {
+  it('every variant is type="button" unless the app says otherwise (1.2)', () => {
     const save = button(<Bob.Button variant="ghost">Save</Bob.Button>);
     expect(save.className).toBe('btn btn-md btn-ghost');
-    expect(save.hasAttribute('type')).toBe(false);
+    expect(save.getAttribute('type')).toBe('button');
+    expect(button(<Bob.Button>Save</Bob.Button>).getAttribute('type')).toBe('button');
+    expect(button(<Bob.Button type="submit">Save</Bob.Button>).getAttribute('type')).toBe('submit');
   });
 });
 

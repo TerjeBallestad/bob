@@ -18,9 +18,9 @@ import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 
 <Controls of={Stories.Default} />
 
-Button also takes every attribute of `<button>`: `onClick`, `type`, `aria-label`, `form`. In a
-form, set `type="button"` on every button that does not submit it. The `text` variant is
-`type="button"` already.
+Button also takes every attribute of `<button>`: `onClick`, `type`, `aria-label`, `form`. Every
+Button is `type="button"` unless you set `type`, so it never submits a form by accident. The
+button that submits a form says `type="submit"`.
 
 ## When to use
 
@@ -84,8 +84,6 @@ form, set `type="button"` on every button that does not submit it. The `text` va
 <Button variant="text" aria-label="Delete entry" className="text-base text-faint hover:text-danger">×</Button>
 ```
 
-- It is `type="button"` unless you set `type`, so it never submits a form by accident. The other
-  variants keep the native default, `submit`.
 - It has no hover style of its own. Give it one with a class, as above.
 - It keeps Bob's focus ring and the disabled style of every Button (half opacity, no pointer).
 

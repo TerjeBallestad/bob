@@ -26,10 +26,10 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export function Button({ variant = 'primary', size = 'md', className, children, type, ...rest }: ButtonProps) {
   const text = variant === 'text';
   const cls = ['btn', !text && SIZE_CLASS[size], VARIANT_CLASS[variant], className].filter(Boolean).join(' ');
-  // A text button sits in rows and bars, often inside a form: it never submits one unless the
-  // app says type="submit". The other variants keep the native default.
+  // A Button never submits a form unless the app says type="submit" (1.2). The native default,
+  // submit, made every Cancel in a form send it.
   return (
-    <button className={cls} type={type ?? (text ? 'button' : undefined)} {...rest}>
+    <button className={cls} type={type ?? 'button'} {...rest}>
       {children}
     </button>
   );
