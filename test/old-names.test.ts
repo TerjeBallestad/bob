@@ -37,8 +37,12 @@ const escape = (s: string) => s.replace(/[-]/g, '\\-');
 const tokenRe = new RegExp(`(${oldTokens.map(escape).join('|')})(?![\\w-])`, 'g');
 const classRe = new RegExp(`(?<![\\w-])(${oldClasses.map(escape).join('|')})(?![\\w-])`, 'g');
 
-const SCAN = ['src', 'stories', '.storybook', 'README.md', 'TOKENS.md'];
-const EXT = /\.(css|ts|tsx|mdx|md|js|mjs)$/;
+// dist/ is the built package (npm test builds it first). docs/ holds the migration guide, which
+// lists the old names on purpose, and notes that say at the top they predate 1.0.
+const SCAN = ['src', 'stories', '.storybook', 'visual', 'scripts', 'dist', 'docs', 'README.md', 'TOKENS.md'];
+const SKIP = new Set(['docs/migration-1.0.md']);
+const HISTORICAL = /^Historical note from /;
+const EXT = /\.(css|ts|tsx|mdx|md|js|mjs|sh)$/;
 function files(path: string): string[] {
   const full = join(root, path);
   if (statSync(full).isFile()) return [path];
@@ -66,8 +70,13 @@ describe('no 0.x colour name is left (DD-033)', () => {
     expect(oldNames('x', 'var(--text-primary) var(--bg-card) bg-card text-muted border-subtle')).toEqual([]);
   });
 
-  it('in src, stories, .storybook, README and TOKENS.md', () => {
-    const found = SCAN.flatMap(files).flatMap((f) => oldNames(f, readFileSync(join(root, f), 'utf8')));
+  it('in src, stories, .storybook, visual, scripts, dist, docs, README and TOKENS.md', () => {
+    const texts = SCAN.flatMap(files)
+      .filter((f) => !SKIP.has(f))
+      .map((f) => [f, readFileSync(join(root, f), 'utf8')] as const)
+      .filter(([, text]) => !HISTORICAL.test(text));
+    expect(texts.map(([f]) => f)).toContain('dist/tailwind/theme.css');
+    const found = texts.flatMap(([f, text]) => oldNames(f, text));
     expect(found).toEqual([]);
   });
 });

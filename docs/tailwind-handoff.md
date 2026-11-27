@@ -1,3 +1,5 @@
+Historical note from 22 Nov 2026: it uses the names from before 1.0.
+
 # Handoff: Bob on Tailwind, in the DaisyUI style
 
 Written on 22 Nov 2026, at the end of a Claude Code session on branch `tailwind-prototype`.
