@@ -73,9 +73,9 @@ Backgrounds, `bg-*`. Depth comes from 1px borders, never elevation; hover moves 
 | `--bg-overlay` | gray-6 | Slide-over |
 | `--bg-card-dim` | gray-7 | Recessed panels |
 | `--bg-card` | gray-8 | Cards, raised rows |
-| `--bg-modal` | gray-9 | Modal |
+| `--bg-modal` | gray-9 | Modal, Select list |
 | `--bg-nav-hover` | gray-10 | NavRow hover |
-| `--bg-input` | gray-11 | Input, select, textarea fill |
+| `--bg-input` | gray-11 | Input, Select trigger, Textarea fill |
 | `--bg-card-hover` | gray-12 | Hover/selected fill |
 | `--bg-toast` | gray-13 | Toast |
 | `--bg-fill` | gray-15 | Kbd, progress track, neutral Avatar |

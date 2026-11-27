@@ -51,7 +51,7 @@ Bob can see them.
 ```
 src/
   index.ts               barrel: every component and its prop types
-  types.ts               DSOption / DSOptionInput, shared by Select and SegToggle
+  types.ts               DSOption / DSOptionInput, for SegToggle
   styles.css             the precompiled stylesheet (dist/bob.css), in the base layer
   tailwind.css           the Tailwind entry (dist/tailwind.css): tokens, theme, @utility classes
   tailwind/              theme.css (@theme over the tokens), components.css and one file of
@@ -59,8 +59,8 @@ src/
   tokens/                colors, typography, layout, fonts, base (reset + focus ring)
   components/
     core/                Avatar Button Chip Kbd ProgressBar SegToggle StatusDot
-    forms/               FormRow Input SearchInput Select Textarea
-    feedback/            Modal Toast ToastStack
+    forms/               FormRow Input SearchInput Select (and its parts) Textarea
+    feedback/            Modal Toast (ToastStack, createToastManager, useToastManager)
     board/               ListRow NavRow SectionLabel TicketCard
 TOKENS.md                what each CSS custom property means
 ```
@@ -70,14 +70,15 @@ TOKENS.md                what each CSS custom property means
 - **Each component renders Bob's component classes**, in the daisyUI style: `btn btn-md
   btn-primary`, `chip chip-green`, `ticket-card`. Each class is a Tailwind `@utility` in
   `src/tailwind/<group>.css`. The rules read the tokens as `var(--token)`, never a generated class.
-  [TOKENS.md](./TOKENS.md) lists every token. Hover is a CSS `:hover` rule. No component keeps state.
+  [TOKENS.md](./TOKENS.md) lists every token. Hover is a CSS `:hover` rule. No component keeps
+  state, except what Base UI keeps for Select and ToastStack.
 - **Class names have no prefix.** A component writes each class name whole in its source, so
   Tailwind finds it when it scans `dist/index.js`. Tailwind sorts utilities by the properties they
   set, so `test/tailwind.test.tsx` checks that a modifier (`btn-primary`) comes after its base
   (`btn`).
-- **Overrides.** Components that wrap a native element (`Button`, `Chip`, `Input`, `Select`,
-  `Textarea`, `SearchInput`) take `className` and forward every other attribute of that element.
-  The other components take a `style` prop.
+- **Overrides.** Components that wrap a native element (`Button`, `Chip`, `Input`, `Textarea`,
+  `SearchInput`) take `className` and forward every other attribute of that element. Select's
+  parts take `className` and Base UI's props. The other components take a `style` prop.
 - **One dark theme.** There is no light mode and no theme switcher yet.
 - **No icons.** Iconography is colored dots (`StatusDot`), mono text chips (`Chip mono`) and
   unicode characters. Do not add an icon set without a decision on the board.

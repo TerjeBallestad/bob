@@ -97,10 +97,12 @@ behaviour. A **Gap** note says where it falls short today.
 
 ## Conventions
 
-- **Overrides.** Components that wrap a native element (Button, Chip, Input, Select, Textarea,
-  SearchInput) take `className` and every attribute of that element. The others take `style`.
-- **No state.** Bob's components keep no state. The app owns `open`, `value` and the list of
-  toasts.
+- **Overrides.** Components that wrap a native element (Button, Chip, Input, Textarea,
+  SearchInput) take `className` and every attribute of that element. Select's parts take
+  `className` and Base UI's props. The others take `style`.
+- **Little state.** Bob's components keep no state, with two exceptions from Base UI: Select
+  keeps its value when the app passes `defaultValue`, and ToastStack keeps the list of toasts that
+  `toast.add` fills.
 - **No icons.** Bob shows state with dots, mono chips and a few unicode characters.
 - **Tests.** Every story has a screenshot test with no pixel tolerance. The stories marked
   *(test)* are interaction tests, which CI plays in the built Storybook.

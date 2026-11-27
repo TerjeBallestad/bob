@@ -2,9 +2,9 @@
 
 Bob 1.0 is a major version. An app moves to it once. This guide covers three changes:
 
-1. The colour roles get their DD-033 names (PLAN-005 Task 6, TASK-037). This section is done.
-2. Select moves onto Base UI, with Base UI's API (DD-036, Task 7, TASK-041). Its section waits for Task 7.
-3. Toast moves onto Base UI's toast manager (DD-036, Task 7). Its section waits for Task 7.
+1. The colour roles get their DD-033 names (PLAN-005 Task 6, TASK-037).
+2. Select moves onto Base UI, with Base UI's API (DD-036, Task 7, TASK-041).
+3. Toast moves onto Base UI's toast manager (DD-036, Task 7, TASK-041).
 
 ## Colour roles (DD-033)
 
@@ -219,10 +219,190 @@ these tokens, in 0.x or in 1.0.
 
 ## Select (DD-036)
 
-To be written by PLAN-005 Task 7 (TASK-041). Select moves from the native `<select>` to Base UI's
-Select: `value`, `onValueChange(value)`, items as children.
+### What changed
+
+- **Select is Base UI's Select**, from shadcn/ui's Base UI code. The native `<select>` is gone. The
+  list is Bob's: the same look on every platform, with typeahead.
+- **The items are children.** The `options` prop is gone. Select holds the state; SelectTrigger,
+  SelectValue, SelectContent and SelectItem lay it out. SelectGroup, SelectLabel and
+  SelectSeparator are new.
+- **`onValueChange(value)` replaces `onChange(event)`.** It gets the value itself, not an event.
+  Its type includes `null` (a select with no value), so a setter for a `string` needs a guard:
+  `onValueChange={(v) => v && setStage(v)}`.
+- **`items` shows the label.** Pass the `{ value, label }` list to Select as `items`, and the
+  trigger shows the chosen item's label. Without it the trigger shows the raw value.
+- **The attributes move to SelectTrigger**: `className`, `aria-label`, `aria-invalid`,
+  `aria-describedby`. Select itself takes `value`, `defaultValue`, `onValueChange`, `items`,
+  `name`, `disabled`, `required` and `id`. FormRow still names it: the `id` it gives Select lands on
+  the trigger.
+- **The trigger is a `<button role="combobox">`**, not a `<select>`. The list is a `listbox` in a
+  portal at the end of `<body>`. A form still gets the value: `name` writes a hidden input.
+- **Classes.** `select` is now `select-trigger`, and `select-option` is gone. New:
+  `select-value`, `select-icon`, `select-positioner`, `select-popup`, `select-list`,
+  `select-item`, `select-item-text`, `select-item-indicator`, `select-group`, `select-label`,
+  `select-separator`, `select-scroll-arrow`, `select-scroll-up`, `select-scroll-down`.
+- **No `DSOptionInput` in Select.** `normalizeOption` and the `DSOption` types stay, for SegToggle.
+
+### Before and after
+
+Before (0.x):
+
+```tsx
+<FormRow label="Stage">
+  <Select
+    value={stage}
+    onChange={(e) => setStage(e.target.value)}
+    options={['inbox', 'planned', { value: 'done', label: 'Done' }]}
+    className="w-40"
+    aria-invalid={error ? 'true' : undefined}
+  />
+</FormRow>
+```
+
+After (1.0):
+
+```tsx
+const stages = [
+  { value: 'inbox', label: 'inbox' },
+  { value: 'planned', label: 'planned' },
+  { value: 'done', label: 'Done' },
+];
+
+<FormRow label="Stage">
+  <Select items={stages} value={stage} onValueChange={(v) => v && setStage(v)}>
+    <SelectTrigger className="w-40" aria-invalid={error ? 'true' : undefined}>
+      <SelectValue />
+    </SelectTrigger>
+    <SelectContent>
+      {stages.map((s) => (
+        <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+      ))}
+    </SelectContent>
+  </Select>
+</FormRow>
+```
+
+An app with many selects can keep a small wrapper of its own that takes the 0.x `options`:
+
+```tsx
+function OptionSelect({ options, value, onChange, className }: {
+  options: DSOptionInput[]; value: string; onChange: (v: string) => void; className?: string;
+}) {
+  const items = options.map(normalizeOption);
+  return (
+    <Select items={items} value={value} onValueChange={(v) => v !== null && onChange(v)}>
+      <SelectTrigger className={className}><SelectValue /></SelectTrigger>
+      <SelectContent>
+        {items.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+      </SelectContent>
+    </Select>
+  );
+}
+```
+
+### Traps
+
+- **An empty string counts as no value.** 0.x apps used `{ value: '', label: '— no project' }` for
+  "none". It still works as an item, and the trigger shows its label, in the muted placeholder
+  colour. A `placeholder` on SelectValue would win over that label, so leave it out there.
+  Base UI's own way is an item with `value: null`.
+- **A test that read `e.target.value`, or used `selectOptions`, must change.** Click the trigger,
+  then click the option by its role (`getByRole('option', { name })`) in the whole page, since the
+  list is in a portal.
+- **CSS that targeted `select` or `.select`** (an app's own size overrides) must target
+  `.select-trigger`.
 
 ## Toast (DD-036)
 
-To be written by PLAN-005 Task 7 (TASK-041). Toast moves to Base UI's toast manager: an app adds a
-toast with a call (`toast.add`), and ToastStack becomes the viewport.
+### What changed
+
+- **A toast is a call.** An app adds one with `toast.add({ title, description, type })`, from a
+  manager (`createToastManager()`) or the hook (`useToastManager()`). It no longer renders
+  `<Toast>` elements or keeps its own list and timers. `Toast` and `ToastProps` are gone.
+- **ToastStack is the provider and the viewport.** It takes the app as `children`, and
+  `toastManager`, `timeout` (4000 ms) and `limit` (3). It still sits bottom centre, newest at the
+  bottom.
+- **Base UI does the behaviour**: the timers, a pause while the pointer is over the stack or
+  focus is in it, swipe down or right to close, F6 to the stack, Escape on a focused toast, and a
+  Close button on each toast.
+- **`type: 'error'` replaces `error`.** It keeps the red border and light red text
+  (`toast-error`), and a screen reader reads it at once (assertive). A success is read when the
+  screen reader is idle (polite). Do not pass Base UI's `priority`: Bob reads `type`.
+- **One announcement per toast.** The stack is a region named "Notifications", not a live
+  region. Two hidden live regions beside it read each toast once. 0.x put `role="status"` and
+  `role="alert"` toasts inside a polite region, which some screen readers read twice.
+- **New exports**: `createToastManager`, `useToastManager`, and the types `ToastOptions`,
+  `ToastManager`, `ToastObject`, `ToastType`.
+- **Classes.** `toast`, `toast-error` and `toast-stack` keep their names. New: `toast-text`,
+  `toast-title`, `toast-description`, `toast-close`.
+
+### Before and after
+
+Before (0.x): the app keeps the list and the timers.
+
+```tsx
+const [toasts, setToasts] = useState<{ id: number; text: string; error?: boolean }[]>([]);
+const toast = (text: string, error?: boolean) => {
+  const id = Date.now() + Math.random();
+  setToasts((t) => [...t, { id, text, error }]);
+  setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 3000);
+};
+
+<ToastStack>
+  {toasts.map((t) => <Toast key={t.id} error={t.error}>{t.text}</Toast>)}
+</ToastStack>
+```
+
+After (1.0): a manager, created once.
+
+```tsx
+// toast.ts
+import { createToastManager } from '@terjeballestad/bob';
+export const toast = createToastManager();
+
+// App.tsx
+<ToastStack toastManager={toast} timeout={3000}>
+  <App />
+</ToastStack>
+
+// anywhere
+toast.add({ title: 'Title updated' });
+toast.add({ title: 'Could not save', type: 'error' });
+```
+
+An app that passes a `toast(text, error)` function down (pm-board's BoardProvider) keeps that
+shape with one line:
+
+```tsx
+const notify = (text: string, error?: boolean) => toast.add({ title: text, type: error ? 'error' : 'success' });
+```
+
+### Traps
+
+- **Keep ToastStack mounted**, around the app or at its end. A screen reader reads only text
+  added to a live region that was already in the page.
+- **`useToastManager()` works only inside ToastStack.** Outside it, use a manager from
+  `createToastManager()` and pass it to ToastStack.
+- **A toast is a `dialog`, named by its title**, with a Close button. A test that looked for
+  `role="status"` or `role="alert"` must look for `getByRole('dialog', { name })`, or for the text.
+- **An error no longer stays by itself.** Pass `timeout: 0` to keep it until the user closes it.
+
+## Apps today: Select and Toast
+
+**pm-board** (client/src): no Select. Toast in App.tsx: a `useState` list, a `toast(text, error)`
+callback with a 3-second `setTimeout`, passed to BoardProvider, and a `<ToastStack>` of `<Toast>`
+elements. Change: a manager, `<ToastStack toastManager={toast} timeout={3000}>`, and the callback
+becomes `toast.add({ title: text, type: error ? 'error' : 'success' })`. Its e2e tests do not look
+for toasts.
+
+**Makron** (client/src, read only; Terje's PRs):
+
+- Toast: hooks/useToasts.ts keeps a list with a 2.4-second timer, and App.tsx renders
+  `<ToastStack>` of `<Toast>`. Change: a manager with `timeout={2400}`; `toast(msg)` becomes
+  `toast.add({ title: msg })`; useToasts.ts goes.
+- Select: 8 uses, each with `value`, `onChange={(e) => ...(e.target.value)}`, `options` and a
+  `className` for its size: TaskModal.tsx (in a FormRow, with an empty-string "no project"
+  option), settings/ClientsSection.tsx, UsersSection.tsx, GeneralSection.tsx, TasksSection.tsx,
+  ProjectsSection.tsx, and views/InvoiceView.tsx (2). Change: the parts as above, or the
+  `OptionSelect` wrapper. The size classes (`st.small`, `iv.sel170`, `iv.sel130`, `st.langSelect`)
+  go on SelectTrigger. Their doubled selectors (`.small.small`) still win over `select-trigger`.

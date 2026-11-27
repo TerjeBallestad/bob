@@ -1,10 +1,63 @@
 # Changelog
 
-## 0.4.1
+## Unreleased: Bob 1.0.0
 
-PLAN-005 Task 4 (TASK-033), review nits.
+Bob 1.0.0 is a major version with three breaking changes, so an app migrates once:
+docs/migration-1.0.md covers all three, with before-and-after code.
 
-### Bob 1.0.0, breaking: the colour roles get their DD-033 names
+1. The colour roles get their DD-033 names (PLAN-005 Task 6).
+2. Select is Base UI's Select, with Base UI's API (DD-036, PLAN-005 Task 7).
+3. Toast moves to Base UI's toast manager: an app adds a toast with a call (DD-036, Task 7).
+
+Modal, SegToggle and ToastStack moved onto Base UI earlier in this release (Task 5), with no prop
+change.
+
+### Breaking: Select and Toast on Base UI, with Base UI's API
+
+PLAN-005 Task 7 (TASK-041, DD-036). Both start from shadcn/ui's Base UI code, restyled as Bob
+classes (DD-031).
+
+- **Select** is Base UI's Select. The native `<select>`, its `options` prop and its `onChange`
+  event are gone. The items are children: `Select` holds the state (`value` or `defaultValue`,
+  `onValueChange(value)`, `items`, `name`, `disabled`, `required`), and `SelectTrigger`,
+  `SelectValue`, `SelectContent` and `SelectItem` lay it out. `SelectGroup`, `SelectLabel` and
+  `SelectSeparator` are new.
+  - The list is Bob's, the same on every platform. Enter, Space and ↓ open it; the arrows, Home,
+    End and typeahead move in it; Enter chooses; Escape and Tab close it and give focus back to
+    the trigger.
+  - `className`, `aria-label`, `aria-invalid` and `aria-describedby` go on `SelectTrigger`. A
+    FormRow label still names it.
+  - The list renders in a portal at the end of `<body>`. `name` writes a hidden input, so a form
+    gets the value.
+  - Classes: `select` is now `select-trigger`; `select-option` is gone; new `select-value`,
+    `select-icon`, `select-positioner`, `select-popup`, `select-list`, `select-item`,
+    `select-item-text`, `select-item-indicator`, `select-group`, `select-label`,
+    `select-separator`, `select-scroll-arrow`, `select-scroll-up`, `select-scroll-down`.
+- **Toast** comes from Base UI's toast manager. An app calls `toast.add({ title, description,
+  type })` on a manager from `createToastManager()`, or on `useToastManager()` inside the stack.
+  `Toast` and `ToastProps` are gone; `type: 'error'` replaces the `error` prop.
+  - **ToastStack** is the provider and the viewport. It takes the app as `children`, and
+    `toastManager`, `timeout` (4000 ms) and `limit` (3).
+  - Base UI brings the timers, a pause on hover and focus, swipe to close, F6 to the stack, and
+    Escape on a focused toast. Each toast has a Close button.
+  - A screen reader reads each toast once: two hidden live regions beside the stack, polite for
+    a success, assertive for an error. The stack is a region named "Notifications", not a live
+    region. 0.x nested `role="status"` and `role="alert"` in a polite region, which some screen
+    readers read twice.
+  - A toast is a `dialog` named by its title. New classes: `toast-text`, `toast-title`,
+    `toast-description`, `toast-close`. `toast`, `toast-error` and `toast-stack` keep their names.
+  - New exports: `createToastManager`, `useToastManager`, and the types `ToastOptions`,
+    `ToastManager`, `ToastObject`, `ToastType`.
+- **Bundle cost** (an app that imports one component; minified, gzip, React external, Base UI
+  included): ToastStack 31.4 kB, about 0.4 kB more than the viewport alone in Task 5; Select
+  48.8 kB; an app with Select, ToastStack and Modal shares Base UI's core, 62 kB for the three.
+  An app that imports neither pays nothing for them: test/treeshake.test.ts keeps a Button-only
+  app under 2 kB.
+- **Screenshots**: the Select and Toast stories have new baselines. Two other stories show the new
+  Select trigger, forms-states--fields and forms-formrow--form, and the Tokens page "Radius,
+  shadow and space" counts the new CSS's spacing values.
+
+### Breaking: the colour roles get their DD-033 names
 
 PLAN-005 Task 6 (TASK-037). A major version: every colour role has a new name, and the old names
 are gone. The migration guide has the tables from each old token and class to its new one:
@@ -39,10 +92,10 @@ https://github.com/TerjeBallestad/bob/blob/main/docs/migration-1.0.md
   stories/, .storybook/, visual/, scripts/, docs/ (except the guide), the built dist/, README.md
   and TOKENS.md.
 
-### Earlier in this release
+### Modal, SegToggle and ToastStack on Base UI
 
-PLAN-005 Task 5 (TASK-036): Modal, SegToggle and ToastStack run on Base UI (DD-034). A minor
-version: a new runtime dependency and new keyboard behaviour, with no change to any prop.
+PLAN-005 Task 5 (TASK-036): Modal, SegToggle and ToastStack run on Base UI (DD-034). Part of
+1.0.0: a new runtime dependency and new keyboard behaviour, with no change to any prop.
 
 - **New dependency: `@base-ui/react` 1.9.0**, pinned exactly. It is Bob's first runtime
   dependency (React is a peer). It needs React 18.3 or 19. Bob does not bundle it: the app
@@ -62,13 +115,13 @@ version: a new runtime dependency and new keyboard behaviour, with no change to 
   to the ends. Enter or Space presses the focused segment. The group has `role="group"`.
   - The segments are no longer separate Tab stops. An app test that Tabs through them must use
     the arrow keys.
-- **ToastStack** is built on Base UI's toast viewport: a polite live region named
-  "Notifications". Keep it mounted, and a screen reader reads each toast added to it. Toast
-  itself does not change.
-- **Select and Toast** stay as they are. They move onto Base UI, with Base UI's API, in Bob 1.0
-  (DD-036, PLAN-005 TASK-041).
+- **ToastStack** is built on Base UI's toast viewport. Task 7 then moved it to Base UI's toast
+  manager, above.
+- **Select and Toast** moved onto Base UI, with Base UI's API, in Task 7, above.
 
-Storybook, earlier in this release:
+## 0.4.1
+
+PLAN-005 Task 4 (TASK-033), review nits.
 
 - **Storybook** (no change to the package's code): the docs describe Bob as a design system and
   component library for productivity tools, with no app names. The Introduction is shorter and
