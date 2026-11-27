@@ -50,6 +50,7 @@
   --indigo-9-a10: rgba(123, 131, 235, 0.1);
   --indigo-9-a12: rgba(123, 131, 235, 0.12);
   --indigo-9-a18: rgba(123, 131, 235, 0.18);
+  --indigo-10: #9aa1f0; /* indigo-9's hover: a link under the pointer */
 
   --blue-9: #52a9ff;
   --blue-9-a8: rgba(82, 169, 255, 0.08);

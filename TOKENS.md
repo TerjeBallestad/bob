@@ -43,7 +43,7 @@ merges them.
 
 | Scale | Solid steps | Alpha steps |
 | --- | --- | --- |
-| indigo | 6 `#2a2d52` · 8 `#4c56c0` · 9 `#7b83eb` | 9-a10 · 9-a12 · 9-a18 |
+| indigo | 6 `#2a2d52` · 8 `#4c56c0` · 9 `#7b83eb` · 10 `#9aa1f0` | 9-a10 · 9-a12 · 9-a18 |
 | blue | 9 `#52a9ff` | 9-a8 |
 | green | 6 `#1f4436` · 9 `#46c288` | 9-a10 · 9-a18 · 9-a70 |
 | orange | 9 `#f0883e` | 9-a9 · 9-a30 |

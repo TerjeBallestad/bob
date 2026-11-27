@@ -97,6 +97,7 @@ describe('the Tailwind entry', () => {
       ['outline-focus', 'outline-color: var(--outline-focus)'],
       ['bg-gray-3', 'background-color: var(--gray-3)'],
       ['text-indigo-9', 'color: var(--indigo-9)'],
+      ['text-indigo-10', 'color: var(--indigo-10)'],
       ['border-red-9-a40', 'border-color: var(--red-9-a40)'],
       ['text-white', 'color: var(--white)'],
     ];
