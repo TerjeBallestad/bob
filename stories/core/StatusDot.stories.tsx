@@ -10,7 +10,7 @@ export default {
       options: ['dashed', 'outline', 'staged', 'live', 'solid'],
       description: 'dashed: inbox or unset. outline: in progress. staged: staged. solid: done. live: an agent works on it now (pulses).',
     },
-    color: { control: 'text', description: 'The dot\'s colour, a role such as `var(--bg-green)`. `dashed` ignores it and uses `--text-muted`.' },
+    color: { control: 'text', description: 'The dot\'s colour, a role such as `var(--bg-green)`. `dashed` ignores it and uses `--gray-23`.' },
     size: { control: 'number', description: 'Diameter in px.' },
     square: { control: 'boolean', description: 'A rounded square instead of a circle.' },
     style: { control: false, description: 'Inline styles, merged last.' },

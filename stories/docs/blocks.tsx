@@ -116,7 +116,7 @@ export function Gap({ children }: { children: React.ReactNode }) {
         margin: '8px 0',
         background: 'var(--bg-yellow-tint)',
         border: '1px solid var(--border-subtle)',
-        borderLeft: '2px solid var(--text-yellow)',
+        borderLeft: '2px solid var(--yellow-9)',
         borderRadius: 'var(--radius)',
         fontSize: 14,
         color: 'var(--text-secondary)',

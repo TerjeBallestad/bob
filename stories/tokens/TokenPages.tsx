@@ -25,8 +25,6 @@ const componentCss = {
 export const tokens = new Tokens(...Object.values(sources));
 
 const short = (name: string) => name.replace(/^--/, '');
-/** A role's key without its property: --bg-accent is accent. */
-const key = (name: string) => name.replace(/^--(bg|border|text|decoration|outline)-/, '');
 const css = (c: Rgba) => (c.a < 1 ? `rgba(${c.r}, ${c.g}, ${c.b}, ${c.a})` : hex(c));
 /** Dark or light ink for a label on a swatch, whichever reads better. */
 const ink = (c: Rgba) => (luminance(c) > 0.18 ? 'var(--text-on-accent)' : 'var(--text-primary)');
@@ -151,11 +149,11 @@ export function HueScales() {
                     </div>
                   );
                 const c = parseColor(s.value)!;
-                const role = byStep.get(s.name)?.[0];
+                const roles = byStep.get(s.name) ?? [];
                 return (
-                  <div key={n} title={`${s.name} ${hex(c)}`} style={{ width: slot, flex: 'none', height: 40, borderRadius: 5, background: s.value, color: ink(c), padding: '4px 5px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div key={n} title={[s.name, hex(c), ...roles.map(short)].join(' ')} style={{ width: slot, flex: 'none', height: 40, borderRadius: 5, background: s.value, color: ink(c), padding: '4px 5px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                     <span style={{ ...mono, fontSize: 'var(--fs-tiny)', fontWeight: 600 }}>{n}</span>
-                    <span style={{ ...mono, fontSize: 8, opacity: 0.8, whiteSpace: 'nowrap', overflow: 'hidden' }}>{role ? key(role) : hex(c).slice(1)}</span>
+                    <span style={{ ...mono, fontSize: 8, opacity: 0.8, whiteSpace: 'nowrap', overflow: 'hidden' }}>{hex(c).slice(1)}</span>
                   </div>
                 );
               })}
@@ -301,16 +299,16 @@ export function ContrastText() {
 export function ContrastPairs() {
   return (
     <Frame eyebrow="Colour · accessibility" title="Colour pairs in use" lede="The text and fill pairs Bob's components render. A tint is painted over the card it sits on before the ratio is taken.">
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 32, rowGap: 6 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 24, rowGap: 6 }}>
         {PAIRS.map((p) => {
           const bg = pairBackground(tokens, p);
           const r = contrast(tokens.color(p.fg), bg);
           return (
-            <div key={p.use} style={{ display: 'grid', gridTemplateColumns: '92px 1fr 34px 44px', alignItems: 'center', gap: 10, height: 44, borderBottom: '1px solid var(--border-subtle)' }}>
+            <div key={p.use} style={{ display: 'grid', gridTemplateColumns: '64px 1fr 34px 44px', alignItems: 'center', gap: 8, height: 44, borderBottom: '1px solid var(--border-subtle)' }}>
               <span style={{ background: css(bg), color: hex(tokens.color(p.fg)), borderRadius: 'var(--radius-chip)', padding: '4px 0', textAlign: 'center', fontSize: 'var(--fs-caption)', fontWeight: 600, boxShadow: 'inset 0 0 0 1px var(--border-subtle)' }}>Label</span>
               <span style={{ fontSize: 'var(--fs-caption)', lineHeight: 1.35 }}>
                 {p.use}
-                <div style={{ ...mono, fontSize: 'var(--fs-micro)', color: 'var(--text-muted)' }}>
+                <div style={{ ...mono, fontSize: 'var(--fs-micro)', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
                   {short(p.fg)} on {short(p.tint ?? p.bg)}
                 </div>
               </span>

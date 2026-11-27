@@ -26,7 +26,7 @@ export function StatusDot({
     borderRadius: square ? 2 : '50%',
     ...style,
   };
-  if (state === 'dashed') return <span className="status-dot" style={{ ...s, border: '1.5px dashed var(--text-muted)' }} />;
+  if (state === 'dashed') return <span className="status-dot" style={{ ...s, border: '1.5px dashed var(--gray-23)' }} />;
   if (state === 'outline') return <span className="status-dot" style={{ ...s, border: `1.5px solid ${color}` }} />;
   if (state === 'staged') {
     return (

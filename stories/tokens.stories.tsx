@@ -8,6 +8,8 @@ export default { title: 'Foundations/Tokens', id: 'tokens', tags: ['!autodocs'],
 type Story = StoryObj;
 export const Gray: Story = { render: () => <GrayScale /> };
 export const Hues: Story = { render: () => <HueScales /> };
+// The two role stories keep their 0.x export names (RolesSurfacesBordersText, RolesAccentStatusTints),
+// so their story ids and baseline file names stay the same across the DD-033 rename.
 export const RolesSurfacesBordersText: Story = { name: 'Roles: backgrounds, borders', render: () => <RolesNeutral /> };
 export const RolesAccentStatusTints: Story = { name: 'Roles: text, tints', render: () => <RolesHue /> };
 export const ContrastTextOnSurfaces: Story = { name: 'Contrast: text on surfaces', render: () => <ContrastText /> };
