@@ -1,10 +1,18 @@
 # Bob
 
-Bob is the design system that Time Turtle and pm-board share: React components and the CSS
-tokens they render against. One dark theme.
+Bob is a design system and component library for productivity tools: React components, the CSS
+tokens they read, and a Tailwind entry that builds Bob's classes in your app. One dark theme.
+The Storybook at https://bob.godstemning.dev documents every component.
 
 ```sh
 npm i @terjeballestad/bob
+```
+
+Add one line after your Tailwind v4 import (DD-031):
+
+```css
+@import "tailwindcss";
+@import "@terjeballestad/bob/tailwind.css";
 ```
 
 ```tsx
@@ -15,27 +23,15 @@ import { Button, Chip, StatusDot } from '@terjeballestad/bob';
 <StatusDot state="live" color="var(--green)" size={7} />
 ```
 
-An import from `@terjeballestad/bob` also loads `bob.css`: the tokens, the animations and the
-component styles. You do not import a stylesheet yourself. If your bundler drops CSS that a
-package imports, import `@terjeballestad/bob/styles.css` once at the root of your app.
-
-### In a Tailwind v4 app
-
-Add one line after your Tailwind import (DD-031):
-
-```css
-@import "tailwindcss";
-@import "@terjeballestad/bob/tailwind.css";
-```
-
 Your Tailwind build then writes Bob's component classes (`btn`, `chip`, `ticket-card`, ...) in its
 utilities layer, and only the ones in use. They take variants (`md:btn-sm`) and mix with your
 utilities: `<Button className="px-8">` gets 32px of side padding over Bob's. The theme maps Bob's
-tokens, so `bg-surface-card`, `rounded-btn` and `font-mono` work.
+tokens, so `bg-surface-card`, `rounded-btn` and `font-mono` work. The component import also loads
+Bob's webfonts.
 
 - **Preflight.** Bob's components and Storybook assume Bob's own reset, not Tailwind's preflight.
-  With preflight, text sits at line-height 1.5. An app written without preflight imports the theme
-  and the utilities only:
+  With preflight, text sits at line-height 1.5. To keep Bob's look, import the theme and the
+  utilities only:
 
   ```css
   @layer theme, base, components, utilities;
@@ -45,8 +41,6 @@ tokens, so `bg-surface-card`, `rounded-btn` and `font-mono` work.
   ```
 - **Your element rules go in `@layer base`.** An unlayered `button { color: inherit }` beats every
   class in a layer, Bob's too.
-- The JS import still loads the precompiled `bob.css`, and that brings the webfonts. Everything
-  else in it sits in the `base` layer, so your build's copy of Bob's classes wins over it.
 
 `react`, `react-dom` and `@types/react` 18.3 or later are peer dependencies. The types are a
 required peer, because Bob's declarations import React's types, and npm must place them where
@@ -98,7 +92,7 @@ npm test           # builds dist/, then runs the export and render tests
 npm run typecheck  # also checks every exported type through the package name
 ```
 
-`npm test` checks the built package, not the source: the exports match Time Turtle's original
+`npm test` checks the built package, not the source: the exports match Bob's original
 barrel, every class a component renders is defined in `bob.css`, and `dist/index.js` imports
 `bob.css`. `test/tailwind.test.tsx` builds a Tailwind app with `dist/tailwind.css` and checks that
 it writes every class the components render.
@@ -115,6 +109,11 @@ Each component has a docs page (`stories/<group>/<Component>.mdx`): purpose, whe
 when not, props, states and accessibility, with its stories in `<Component>.stories.tsx`. The
 blocks the pages share are in `stories/docs/blocks.tsx`. `.storybook/theme.ts` gives Storybook
 Bob's look, from the tokens.
+
+Write a story as an app writes the component: plain JSX, one element per variant, and Tailwind
+utilities on layout wrappers (`<div className="flex gap-2.5">`). `.storybook/tailwind.css` builds
+those utilities from the story files. "Show code" prints the rendered JSX. A story with state sets
+`parameters.docs.source.code` to its usage instead.
 
 Stories with a play function are interaction tests. `visual/play.visual.ts` plays each one in the
 built Storybook and fails when Storybook reports an error; it runs with the screenshot tests.

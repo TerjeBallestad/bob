@@ -6,7 +6,7 @@ import { Button, Chip, StatusDot, TicketCard } from '../src';
 
 # Bob
 
-<Lede>Bob is the design system of Time Turtle and pm-board: React components, the CSS tokens they read, and a Tailwind entry that builds Bob's classes in your app. One dark theme, dense, for tools people work in all day.</Lede>
+<Lede>Bob is a design system and component library for productivity tools: React components, the CSS tokens they read, and a Tailwind entry that builds Bob's classes in your app. One dark theme, dense, for tools people work in all day.</Lede>
 
 <Unstyled>
 <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap', padding: '22px 24px', margin: '0 0 32px', background: 'var(--surface-sidebar)', border: '1px solid var(--border)', borderRadius: 'var(--radius-xl)' }}>
@@ -27,72 +27,43 @@ import { Button, Chip, StatusDot, TicketCard } from '../src';
 </div>
 </Unstyled>
 
-## Who uses it
-
-- **pm-board**, the dashboard of the pm boards, through the Tailwind entry.
-- **Time Turtle**, through the JS import. It moves to Tailwind next.
-
-Both apps pin an exact version. A release reaches an app when the app bumps it.
-
 ## Install
 
 ```sh
 npm i @terjeballestad/bob
 ```
 
-`react` and `react-dom` 18.3 or later, and `@types/react`, are peer dependencies.
+Bob needs React 18.3 or later: `react`, `react-dom` and `@types/react` are peer dependencies.
 
-### In a Tailwind v4 app
+## Add Bob to your CSS
 
-Add one line after your Tailwind import:
+Bob works with Tailwind v4. Add one line after your Tailwind import:
 
 ```css
 @import "tailwindcss";
 @import "@terjeballestad/bob/tailwind.css";
 ```
 
-Your Tailwind build then writes Bob's component classes (`btn`, `chip`, `ticket-card`, …) next to
-your utilities, and only the ones in use. They take variants (`md:btn-sm`), and your utilities win
-over them: `<Button className="px-8">` gets 32px of side padding.
+Your Tailwind build now writes Bob's classes (`btn`, `chip`, `ticket-card`), and only the ones in use.
+
+## Use a component
 
 ```tsx
 import { Button } from '@terjeballestad/bob';
 
 <Button variant="primary" onClick={save}>Save</Button>
-
-// The same look, without React:
-<button className="btn btn-md btn-primary">Save</button>
 ```
 
-The import from `@terjeballestad/bob` also loads Bob's precompiled stylesheet, which brings the
-webfonts (Schibsted Grotesk and JetBrains Mono). It sits in the `base` layer, so your build's
-classes win over it.
+The import also loads Bob's webfonts. Your utilities win over Bob's classes:
+`<Button className="px-8">` gets 32px of side padding.
 
-### In an app without Tailwind
+## Two rules for your CSS
 
-Import the components. The import loads `bob.css` with the tokens, the fonts and every class:
-
-```tsx
-import { Button, Chip } from '@terjeballestad/bob';
-```
-
-If your bundler drops CSS that a package imports, add `import '@terjeballestad/bob/styles.css'`
-once at the root of the app.
-
-### Two rules for your own CSS
-
-- **Element rules go in `@layer base`.** Bob's classes sit in a cascade layer. An unlayered rule
-  such as `button { color: inherit }` beats every layered class, Bob's too:
-
-  ```css
-  @layer base {
-    button { font: inherit; color: inherit; }
-  }
-  ```
-
-- **Preflight changes the look.** Bob assumes its own reset, not Tailwind's preflight. With
-  preflight, text sits at line-height 1.5 and Bob's rows grow. An app written without preflight
-  imports Tailwind's theme and utilities only, as pm-board does:
+- **Put element rules in `@layer base`.** An unlayered rule such as `button { color: inherit }`
+  beats every layered class, Bob's too.
+- **Preflight changes the look.** Bob brings its own reset. With Tailwind's preflight, text sits
+  at line-height 1.5 and Bob's rows grow. To keep Bob's look, import Tailwind's theme and
+  utilities only:
 
   ```css
   @layer theme, base, components, utilities;
@@ -101,28 +72,25 @@ once at the root of the app.
   @import "@terjeballestad/bob/tailwind.css";
   ```
 
-## Tokens: scales, then roles
+## Tokens
 
-Every value is a CSS custom property on `:root`. Colour has two layers:
+Every value is a CSS custom property on `:root`.
 
-- A **scale** holds the values: `--gray-1` to `--gray-26`, and indigo, blue, green, orange,
-  purple, yellow, red and gold, numbered on the 12 steps of Radix Colors. Only scale steps hold colour literals; a test fails on
-  any other.
-- A **role** says what a colour is for and points at a step: `--surface-card` is `--gray-8`,
-  `--text-2` is `--gray-24`. Components use roles, never steps.
+- A **scale** holds the colours: `--gray-1` to `--gray-26`, and eight hues on the 12 steps of
+  Radix Colors.
+- A **role** says what a colour is for and points at a step: `--surface-card` is `--gray-8`.
+  Components use roles, never steps.
 
-In Tailwind, the theme maps the tokens: `bg-surface-card`, `rounded-btn`, `font-mono`. A later
-major version renames the roles to read as classes (`bg-card`, `text-secondary`,
-`border-subtle`, DD-033). These pages use today's names.
+In Tailwind, the tokens are classes: `bg-surface-card`, `rounded-btn`, `font-mono`. A later major
+version renames the roles to read better as classes: `bg-card`, `text-secondary` (DD-033).
 
-[Tokens](?path=/docs/tokens--tokens) shows every scale, each role with its step, and the WCAG
-contrast of each text role on each surface.
+[Tokens](?path=/docs/tokens--tokens) shows every scale and role, and the contrast of each text
+role on each surface.
 
 ## Components
 
-Each component has a page: what it is for, when to use it and when not, its props, its states,
-and its keyboard and screen reader behaviour. Where a component falls short today, the page says
-so in a **Gap** note.
+Each component has a page: what it is for, when to use it, its props, its states and its keyboard
+behaviour. A **Gap** note says where it falls short today.
 
 | Group | Components |
 | --- | --- |
@@ -138,9 +106,8 @@ so in a **Gap** note.
 - **No state.** Bob's components keep no state. The app owns `open`, `value` and the list of
   toasts.
 - **No icons.** Bob shows state with dots, mono chips and a few unicode characters.
-- **Tests.** Every story has a screenshot test with no pixel tolerance. Modal, Select, SegToggle
-  and Toast also have interaction tests: the stories marked *(test)*, which CI plays in the built
-  Storybook.
+- **Tests.** Every story has a screenshot test with no pixel tolerance. The stories marked
+  *(test)* are interaction tests, which CI plays in the built Storybook.
 
 <Facts items={[
   ['Package', '@terjeballestad/bob on npm'],

@@ -1,7 +1,7 @@
 {
   "name": "@terjeballestad/bob",
   "version": "0.4.0",
-  "description": "Bob: the design system shared by Time Turtle and pm-board",
+  "description": "Bob: a design system and component library for productivity tools",
   "type": "module",
   "license": "UNLICENSED",
   "repository": {
