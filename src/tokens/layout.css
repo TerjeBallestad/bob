@@ -18,7 +18,7 @@
   --dur-fast: 0.1s; /* @kind other */
   --dur: 0.12s; /* @kind other */
   --dur-slow: 0.18s; /* @kind other */
-  /* Keyboard focus: an --accent ring (src/tokens/base.css) */
+  /* Keyboard focus: an --outline-focus ring (src/tokens/base.css) */
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
 }

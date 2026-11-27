@@ -12,7 +12,7 @@
   background: transparent;
   font-family: var(--sans);
   &:hover {
-    background: var(--panel);
+    background: var(--bg-card);
   }
 }
 @utility list-row-done {
@@ -31,25 +31,25 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--text);
+  color: var(--text-primary);
 }
 @utility list-row-title-done {
   text-decoration: line-through;
-  text-decoration-color: var(--gray-21);
+  text-decoration-color: var(--decoration-strike);
 }
 @utility list-row-meta {
   display: flex;
   align-items: baseline;
   gap: 6px;
   font-size: 10.5px;
-  color: var(--text-3);
+  color: var(--text-muted);
   flex-shrink: 0;
   margin-left: auto;
 }
 @utility list-row-age {
   font-family: var(--mono);
   font-size: 10px;
-  color: var(--text-4);
+  color: var(--text-faint);
   flex-shrink: 0;
   width: 30px;
   text-align: right;
@@ -64,7 +64,7 @@
   border: none;
   border-radius: var(--radius-btn);
   background: transparent;
-  color: var(--text-2);
+  color: var(--text-secondary);
   font-size: 12.5px;
   font-weight: 400;
   width: 100%;
@@ -72,16 +72,16 @@
   font-family: var(--sans);
   cursor: pointer;
   &:hover {
-    background: var(--gray-10);
-    color: var(--text);
+    background: var(--bg-nav-hover);
+    color: var(--text-primary);
   }
 }
 @utility nav-row-active {
-  background: var(--panel-hover);
-  color: var(--text);
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
   font-weight: 600;
   &:hover {
-    background: var(--panel-hover);
+    background: var(--bg-card-hover);
   }
 }
 @utility nav-row-label {
@@ -94,7 +94,7 @@
   margin-left: auto;
   font-family: var(--mono);
   font-size: 10.5px;
-  color: var(--text-3);
+  color: var(--text-muted);
 }
 
 /* SectionLabel */
@@ -106,7 +106,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-3);
+  color: var(--text-muted);
   font-family: var(--sans);
 }
 @utility section-label-action {
@@ -116,8 +116,8 @@
 /* TicketCard. The border colour comes in as --tc-border from the emphasis and kind props;
    the hover border overrides it. --animate-live is a theme key in src/tailwind/theme.css. */
 @utility ticket-card {
-  background: var(--panel);
-  border: 1px solid var(--tc-border, var(--border));
+  background: var(--bg-card);
+  border: 1px solid var(--tc-border, var(--border-subtle));
   border-radius: var(--radius);
   padding: 9px 11px;
   cursor: pointer;
@@ -137,7 +137,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--green);
+  background: var(--bg-green);
   box-shadow: var(--glow-green);
   align-self: center;
   @variant motion-safe {
@@ -165,13 +165,13 @@
   margin-left: auto;
   font-family: var(--mono);
   font-size: 10px;
-  color: var(--text-4);
+  color: var(--text-faint);
 }
 @utility ticket-card-title {
   font-size: 12.5px;
   font-weight: 500;
   line-height: 1.45;
-  color: var(--text);
+  color: var(--text-primary);
 }
 @utility ticket-card-foot {
   display: flex;
@@ -183,8 +183,8 @@
 @utility ticket-card-blocked {
   font-family: var(--mono);
   font-size: 10px;
-  color: var(--orange);
-  background: var(--tint-orange);
+  color: var(--text-orange);
+  background: var(--bg-orange-tint);
   padding: 1px 6px;
   border-radius: var(--radius-kbd);
 }
@@ -192,7 +192,7 @@
   flex: 1;
   min-width: 40px;
   height: 4px;
-  background: var(--input-border);
+  background: var(--bg-fill);
   border-radius: 2px;
   overflow: hidden;
   display: inline-block;
@@ -200,15 +200,15 @@
 @utility ticket-card-fill {
   display: block;
   height: 100%;
-  background: var(--green);
+  background: var(--bg-green);
   border-radius: 2px;
 }
 @utility ticket-card-note {
   font-size: 10.5px;
-  color: var(--text-3);
+  color: var(--text-muted);
 }
 @utility ticket-card-count {
   font-family: var(--mono);
   font-size: 10.5px;
-  color: var(--text-2);
+  color: var(--text-secondary);
 }

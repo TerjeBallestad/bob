@@ -25,7 +25,7 @@ describe('render', () => {
   }
 
   it('the stylesheet holds the tokens, and importing the package loads it', () => {
-    expect(readFileSync('dist/bob.css', 'utf8')).toContain('--accent:');
+    expect(readFileSync('dist/bob.css', 'utf8')).toContain('--bg-accent:');
     expect(readFileSync('dist/index.js', 'utf8').startsWith("import './bob.css';")).toBe(true);
   });
 });

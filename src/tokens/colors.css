@@ -80,57 +80,80 @@
   --gold-9: #d3b078;
   --gold-9-a18: rgba(211, 176, 120, 0.18);
 
-  /* Roles. */
-  /* Backgrounds */
-  --bg: var(--gray-3);
-  --bg-side: var(--gray-5);
+  /* Roles. Each role is one token, named like its Tailwind class (DD-033): --bg-card is
+     bg-card, --text-primary is text-primary, --border-subtle is border-subtle. A role is for
+     one property. src/tailwind/theme.css maps each one into Tailwind's namespace for it.
+     These tokens sit in :root, never in @theme: there --text-* is the font-size namespace. */
+
+  /* Backgrounds: bg-<key> */
+  --bg-sunken: var(--gray-2); /* code blocks */
+  --bg-app: var(--gray-3);
   --bg-rail: var(--gray-4);
-  --panel: var(--gray-8);
-  --panel-dim: var(--gray-7);
-  --panel-hover: var(--gray-12);
-  --input: var(--gray-11);
-  --input-border: var(--gray-15);
-  --border: var(--gray-14);
-  --border-2: var(--gray-16);
-  /* Text ramp */
-  --text: var(--gray-26);
-  --text-2: var(--gray-24);
-  --text-3: var(--gray-23);
-  --text-4: var(--gray-22);
-  /* Accents */
-  --accent: var(--indigo-9);
-  --accent-deep: var(--indigo-8);
-  --blue: var(--blue-9);
-  --green: var(--green-9);
-  --orange: var(--orange-9);
-  --purple: var(--purple-9);
-  --yellow: var(--yellow-9);
-  --danger: var(--red-9);
-  --gold: var(--gold-9);
-  /* Semantic aliases */
-  --surface-app: var(--bg);
-  --surface-sidebar: var(--bg-side);
-  --surface-rail: var(--bg-rail);
-  --surface-card: var(--panel);
-  --surface-card-hover: var(--panel-hover);
-  --surface-input: var(--input);
-  --surface-overlay: var(--gray-6);
-  --surface-modal: var(--gray-9);
-  --surface-code: var(--gray-2);
-  --surface-toast: var(--gray-13);
+  --bg-sidebar: var(--gray-5);
+  --bg-overlay: var(--gray-6); /* slide-over */
+  --bg-card-dim: var(--gray-7);
+  --bg-card: var(--gray-8);
+  --bg-modal: var(--gray-9);
+  --bg-nav-hover: var(--gray-10);
+  --bg-input: var(--gray-11);
+  --bg-card-hover: var(--gray-12);
+  --bg-toast: var(--gray-13);
+  --bg-fill: var(--gray-15); /* Kbd, progress track, neutral Avatar */
+  --bg-accent: var(--indigo-9);
+  --bg-accent-strong: var(--indigo-8);
+  --bg-danger: var(--red-9);
+  --bg-green: var(--green-9);
+  --bg-accent-tint: var(--indigo-9-a10);
+  --bg-accent-tint-strong: var(--indigo-9-a18);
+  --bg-blue-tint: var(--blue-9-a8);
+  --bg-green-tint: var(--green-9-a10);
+  --bg-green-tint-strong: var(--green-9-a18);
+  --bg-orange-tint: var(--orange-9-a9);
+  --bg-danger-tint: var(--red-9-a12);
+  --bg-yellow-tint: var(--yellow-9-a10);
+  --bg-claim-tint: var(--yellow-11-a10);
+  --bg-gold-tint: var(--gold-9-a18);
+  --bg-scrim: var(--gray-1-a55); /* modal backdrop */
+
+  /* Borders: border-<key> */
+  --border-subtle: var(--gray-14);
+  --border-input: var(--gray-15);
+  --border-strong: var(--gray-16);
+  --border-input-focus: var(--gray-17);
   --border-card-hover: var(--gray-18);
-  --text-body: var(--text);
-  --text-secondary: var(--text-2);
-  --text-muted: var(--text-3);
-  --text-faint: var(--text-4);
-  --text-prose: var(--gray-25);
-  --on-accent: var(--gray-3);
-  /* Tinted fills (color at low alpha over dark) */
-  --tint-accent: var(--indigo-9-a10);
-  --tint-blue: var(--blue-9-a8);
-  --tint-green: var(--green-9-a10);
-  --tint-orange: var(--orange-9-a9);
-  --tint-danger: var(--red-9-a12);
-  --tint-yellow: var(--yellow-9-a10);
-  --scrim: var(--gray-1-a55);
+  --border-strong-hover: var(--gray-20);
+  --border-focus: var(--indigo-8);
+  --border-invalid: var(--red-9);
+  --border-accent-subtle: var(--indigo-6);
+  --border-green-subtle: var(--green-6);
+  --border-orange-subtle: var(--orange-9-a30);
+  --border-purple-subtle: var(--purple-9-a28);
+  --border-danger-subtle: var(--red-9-a40);
+  --border-danger: var(--red-9-a50);
+
+  /* Text: text-<key> */
+  --text-primary: var(--gray-26);
+  --text-reading: var(--gray-25); /* long-form document body */
+  --text-secondary: var(--gray-24);
+  --text-muted: var(--gray-23);
+  --text-faint: var(--gray-22);
+  --text-on-accent: var(--gray-3);
+  --text-on-solid: var(--white);
+  --text-accent: var(--indigo-9);
+  --text-blue: var(--blue-9);
+  --text-green: var(--green-9);
+  --text-orange: var(--orange-9);
+  --text-purple: var(--purple-9);
+  --text-yellow: var(--yellow-9);
+  --text-gold: var(--gold-9);
+  --text-danger: var(--red-9);
+  --text-danger-soft: var(--red-11);
+  --text-danger-strong: var(--red-12);
+  --text-claim: var(--yellow-11);
+
+  /* Text decoration: decoration-<key> */
+  --decoration-strike: var(--gray-21);
+
+  /* Outline: outline-<key>. The keyboard focus ring (src/tokens/base.css). */
+  --outline-focus: var(--indigo-9);
 }

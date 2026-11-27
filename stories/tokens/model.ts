@@ -129,37 +129,37 @@ export class Tokens {
 }
 
 /** Text roles and the surfaces they sit on, for the contrast table. */
-export const TEXT_ROLES = ['--text', '--text-prose', '--text-2', '--text-3', '--text-4'];
+export const TEXT_ROLES = ['--text-primary', '--text-reading', '--text-secondary', '--text-muted', '--text-faint'];
 export const SURFACES = [
-  '--surface-code',
-  '--surface-app',
-  '--surface-rail',
-  '--surface-sidebar',
-  '--surface-overlay',
-  '--panel-dim',
-  '--surface-card',
-  '--surface-modal',
-  '--surface-input',
-  '--surface-card-hover',
-  '--surface-toast',
+  '--bg-sunken',
+  '--bg-app',
+  '--bg-rail',
+  '--bg-sidebar',
+  '--bg-overlay',
+  '--bg-card-dim',
+  '--bg-card',
+  '--bg-modal',
+  '--bg-input',
+  '--bg-card-hover',
+  '--bg-toast',
 ];
 
 /** Colour pairs the components use today: text colour, background, and what renders it. */
 export const PAIRS: { fg: string; bg: string; tint?: string; use: string }[] = [
-  { fg: '--on-accent', bg: '--accent', use: 'Button primary' },
-  { fg: '--white', bg: '--accent-deep', use: 'Button accent' },
-  { fg: '--white', bg: '--danger', use: 'Button danger' },
-  { fg: '--red-11', bg: '--surface-app', use: 'Button danger-ghost' },
-  { fg: '--text-2', bg: '--surface-input', use: 'Button secondary' },
-  { fg: '--accent', bg: '--surface-card', tint: '--tint-accent', use: 'Chip accent' },
-  { fg: '--blue', bg: '--surface-card', tint: '--tint-blue', use: 'Chip blue' },
-  { fg: '--green', bg: '--surface-card', tint: '--tint-green', use: 'Chip green' },
-  { fg: '--orange', bg: '--surface-card', tint: '--tint-orange', use: 'Chip orange' },
-  { fg: '--danger', bg: '--surface-card', tint: '--tint-danger', use: 'Chip danger' },
-  { fg: '--yellow', bg: '--surface-card', tint: '--tint-yellow', use: 'Chip yellow' },
-  { fg: '--yellow-11', bg: '--surface-card', tint: '--yellow-11-a10', use: 'Chip claim' },
-  { fg: '--purple', bg: '--surface-card', use: 'TicketCard probe' },
-  { fg: '--red-12', bg: '--surface-toast', use: 'Toast error' },
+  { fg: '--text-on-accent', bg: '--bg-accent', use: 'Button primary' },
+  { fg: '--text-on-solid', bg: '--bg-accent-strong', use: 'Button accent' },
+  { fg: '--text-on-solid', bg: '--bg-danger', use: 'Button danger' },
+  { fg: '--text-danger-soft', bg: '--bg-app', use: 'Button danger-ghost' },
+  { fg: '--text-secondary', bg: '--bg-input', use: 'Button secondary' },
+  { fg: '--text-accent', bg: '--bg-card', tint: '--bg-accent-tint', use: 'Chip accent' },
+  { fg: '--text-blue', bg: '--bg-card', tint: '--bg-blue-tint', use: 'Chip blue' },
+  { fg: '--text-green', bg: '--bg-card', tint: '--bg-green-tint', use: 'Chip green' },
+  { fg: '--text-orange', bg: '--bg-card', tint: '--bg-orange-tint', use: 'Chip orange' },
+  { fg: '--text-danger', bg: '--bg-card', tint: '--bg-danger-tint', use: 'Chip danger' },
+  { fg: '--text-yellow', bg: '--bg-card', tint: '--bg-yellow-tint', use: 'Chip yellow' },
+  { fg: '--text-claim', bg: '--bg-card', tint: '--bg-claim-tint', use: 'Chip claim' },
+  { fg: '--text-purple', bg: '--bg-card', use: 'TicketCard probe' },
+  { fg: '--text-danger-strong', bg: '--bg-toast', use: 'Toast error' },
 ];
 
 /** The colour of a pair's background: the tint painted over the surface, or the surface. */
@@ -170,27 +170,35 @@ export function pairBackground(t: Tokens, p: { bg: string; tint?: string }): Rgb
 /** The roles in the order the colour page shows them. test/tokens.test.ts checks that it names every role. */
 export const ROLE_GROUPS: { title: string; roles: string[] }[] = [
   {
-    title: 'Surfaces',
+    title: 'Backgrounds',
     roles: [
-      '--surface-code', '--bg', '--surface-app', '--bg-rail', '--surface-rail', '--bg-side', '--surface-sidebar',
-      '--surface-overlay', '--panel-dim', '--panel', '--surface-card', '--surface-modal', '--input', '--surface-input',
-      '--panel-hover', '--surface-card-hover', '--surface-toast',
+      '--bg-sunken', '--bg-app', '--bg-rail', '--bg-sidebar', '--bg-overlay', '--bg-card-dim', '--bg-card', '--bg-modal',
+      '--bg-nav-hover', '--bg-input', '--bg-card-hover', '--bg-toast', '--bg-fill', '--bg-accent', '--bg-accent-strong',
+      '--bg-green', '--bg-danger',
     ],
   },
-  { title: 'Borders', roles: ['--border', '--input-border', '--border-2', '--border-card-hover'] },
+  {
+    title: 'Borders',
+    roles: [
+      '--border-subtle', '--border-input', '--border-strong', '--border-input-focus', '--border-card-hover',
+      '--border-strong-hover', '--border-focus', '--border-invalid', '--border-accent-subtle', '--border-green-subtle',
+      '--border-orange-subtle', '--border-purple-subtle', '--border-danger-subtle', '--border-danger',
+    ],
+  },
   {
     title: 'Text',
     roles: [
-      '--text', '--text-body', '--text-prose', '--text-2', '--text-secondary', '--text-3', '--text-muted', '--text-4',
-      '--text-faint', '--on-accent',
+      '--text-primary', '--text-reading', '--text-secondary', '--text-muted', '--text-faint', '--text-on-accent',
+      '--text-on-solid', '--text-accent', '--text-blue', '--text-green', '--text-orange', '--text-purple', '--text-yellow',
+      '--text-gold', '--text-danger', '--text-danger-soft', '--text-danger-strong', '--text-claim',
     ],
   },
-  {
-    title: 'Accent and status',
-    roles: ['--accent', '--accent-deep', '--blue', '--green', '--orange', '--purple', '--yellow', '--danger', '--gold'],
-  },
+  { title: 'Decoration and outline', roles: ['--decoration-strike', '--outline-focus'] },
   {
     title: 'Tints and scrim',
-    roles: ['--tint-accent', '--tint-blue', '--tint-green', '--tint-orange', '--tint-danger', '--tint-yellow', '--scrim'],
+    roles: [
+      '--bg-accent-tint', '--bg-accent-tint-strong', '--bg-blue-tint', '--bg-green-tint', '--bg-green-tint-strong',
+      '--bg-orange-tint', '--bg-danger-tint', '--bg-yellow-tint', '--bg-claim-tint', '--bg-gold-tint', '--bg-scrim',
+    ],
   },
 ];

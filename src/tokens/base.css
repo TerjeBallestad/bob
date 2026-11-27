@@ -7,8 +7,8 @@
 body {
   font-family: var(--sans);
   font-size: 13px;
-  background: var(--bg);
-  color: var(--text);
+  background: var(--bg-app);
+  color: var(--text-primary);
 }
 button {
   font-family: inherit;
@@ -20,7 +20,7 @@ textarea {
   font-family: inherit;
 }
 a {
-  color: var(--blue);
+  color: var(--text-blue);
   text-decoration: none;
 }
 a:hover {
@@ -36,7 +36,7 @@ a:hover {
 ::-webkit-scrollbar-thumb {
   background: var(--gray-16);
   border-radius: 5px;
-  border: 2px solid var(--bg);
+  border: 2px solid var(--bg-app);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--gray-19);
@@ -48,6 +48,6 @@ a:hover {
 /* One focus style for every control: a 2px ring outside the element, shown on keyboard focus.
    A component that clips its children (SegToggle) draws it inside instead. */
 :focus-visible {
-  outline: var(--focus-ring-width) solid var(--accent);
+  outline: var(--focus-ring-width) solid var(--outline-focus);
   outline-offset: var(--focus-ring-offset);
 }

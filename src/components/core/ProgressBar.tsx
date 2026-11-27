@@ -16,7 +16,7 @@ export function ProgressBar({
   max = 1,
   width = 120,
   height = 4,
-  color = 'var(--accent)',
+  color = 'var(--bg-accent)',
   label = 'Progress',
   style,
 }: ProgressBarProps) {

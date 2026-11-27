@@ -13,7 +13,7 @@ export interface StatusDotProps {
 
 export function StatusDot({
   state = 'solid',
-  color = 'var(--green)',
+  color = 'var(--bg-green)',
   size = 10,
   square = false,
   style,
@@ -26,7 +26,7 @@ export function StatusDot({
     borderRadius: square ? 2 : '50%',
     ...style,
   };
-  if (state === 'dashed') return <span className="status-dot" style={{ ...s, border: '1.5px dashed var(--text-3)' }} />;
+  if (state === 'dashed') return <span className="status-dot" style={{ ...s, border: '1.5px dashed var(--text-muted)' }} />;
   if (state === 'outline') return <span className="status-dot" style={{ ...s, border: `1.5px solid ${color}` }} />;
   if (state === 'staged') {
     return (

@@ -22,14 +22,35 @@ const css = Object.fromEntries(files.map((f) => [f, readFileSync(new URL(f, dir)
 const tokens = new Tokens(...Object.values(css));
 const v020: Record<string, string> = JSON.parse(readFileSync(new URL('./fixtures/tokens-0.2.0.json', import.meta.url), 'utf8'));
 const old = new Tokens(Object.entries(v020).map(([n, v]) => `${n}: ${v};`).join('\n'));
+const renames: Record<string, string[]> = JSON.parse(readFileSync(new URL('./fixtures/renames-1.0.json', import.meta.url), 'utf8'));
+delete (renames as Record<string, unknown>)._;
 const strip = (s: string) => s.replace(/\/\*[\s\S]*?\*\//g, '');
 
 describe('colour tokens', () => {
-  it('keep every 0.2.0 token name, with the same value', () => {
+  it('give each 0.x role its 1.0 names, with the same value, and drop the 0.x name (DD-033)', () => {
+    for (const [name, names] of Object.entries(renames)) {
+      if (!names.includes(name)) expect(tokens.decls.has(name), `${name} is gone in 1.0`).toBe(false);
+      for (const n of names) {
+        expect(tokens.decls.has(n), n).toBe(true);
+        expect(normalize(tokens.resolve(`var(${n})`)), `${name} -> ${n}`).toBe(normalize(old.resolve(v020[name])));
+      }
+    }
+    // Every 0.2.0 colour role is in the table.
+    const colourRoles = Object.keys(v020).filter((n) => parseColor(old.resolve(`var(${n})`)));
+    expect(colourRoles.sort()).toEqual(Object.keys(renames).sort());
+  });
+
+  it('keep every 0.2.0 token that is not a colour role, with the same value', () => {
     for (const [name, value] of Object.entries(v020)) {
+      if (name in renames) continue;
       expect(tokens.decls.has(name), name).toBe(true);
       expect(normalize(tokens.resolve(`var(${name})`)), name).toBe(normalize(old.resolve(value)));
     }
+  });
+
+  it('name each role like its class: --bg-*, --border-*, --text-*, --decoration-*, --outline-*', () => {
+    for (const r of tokens.roles().filter((r) => !r.startsWith('--shadow') && !r.startsWith('--glow')))
+      expect(r, r).toMatch(/^--(bg|border|text|decoration|outline)-[a-z0-9-]+$/);
   });
 
   it('hold colour literals only in scale steps', () => {
@@ -82,15 +103,15 @@ describe('contrast', () => {
   // and the doc changes with it.
   const failsAA = (fg: string, bg: string) => contrast(tokens.color(fg), tokens.color(bg)) < 4.5;
 
-  it('text, text-prose and text-2 pass AA on every surface', () => {
-    for (const fg of ['--text', '--text-prose', '--text-2'])
+  it('text-primary, text-reading and text-secondary pass AA on every surface', () => {
+    for (const fg of ['--text-primary', '--text-reading', '--text-secondary'])
       for (const bg of SURFACES) expect(failsAA(fg, bg), `${fg} on ${bg}`).toBe(false);
   });
 
-  it('text-3 and text-4 fail AA on every surface', () => {
-    for (const fg of ['--text-3', '--text-4'])
+  it('text-muted and text-faint fail AA on every surface', () => {
+    for (const fg of ['--text-muted', '--text-faint'])
       for (const bg of SURFACES) expect(failsAA(fg, bg), `${fg} on ${bg}`).toBe(true);
-    expect(TEXT_ROLES).toEqual(['--text', '--text-prose', '--text-2', '--text-3', '--text-4']);
+    expect(TEXT_ROLES).toEqual(['--text-primary', '--text-reading', '--text-secondary', '--text-muted', '--text-faint']);
   });
 
   it('the colour pairs in use: these fail AA', () => {

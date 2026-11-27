@@ -2,8 +2,8 @@
    Each one is a Tailwind @utility, so it sorts with the normal utilities and an app can add
    `px-8` after it to change one property. The values are the same as the CSS modules they
    replace. A change to a value here is a visual change and needs new screenshot baselines.
-   Inside an @utility, a value is a CSS variable (var(--text-2)), never a generated class
-   (text-text-2), so a later rename of the theme keys does not touch these files. */
+   Inside an @utility, a value is a CSS variable (var(--text-secondary)), never a generated
+   class (text-secondary), so a change to the theme keys does not touch these files. */
 
 @import './core.css';
 @import './forms.css';

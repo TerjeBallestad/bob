@@ -4,11 +4,11 @@ import { clickable } from './clickable';
 export type TicketKind = 'research' | 'probe' | 'grill' | 'task' | 'gap';
 
 const KIND_COLORS: Record<TicketKind, string> = {
-  research: 'var(--blue)',
-  probe: 'var(--purple)',
-  grill: 'var(--orange)',
-  task: 'var(--green)',
-  gap: 'var(--yellow)',
+  research: 'var(--text-blue)',
+  probe: 'var(--text-purple)',
+  grill: 'var(--text-orange)',
+  task: 'var(--text-green)',
+  gap: 'var(--text-yellow)',
 };
 
 export interface TicketCardProps {
@@ -49,14 +49,14 @@ export function TicketCard({
 }: TicketCardProps) {
   // Border/shadow are data-driven (emphasis/kind); the hover border comes from CSS (:hover)
   // overriding the --tc-border custom property, so no hover state hook is needed.
-  let border = 'var(--border)';
+  let border = 'var(--border-subtle)';
   let shadow = 'none';
   if (emphasis === 'sdd') {
-    border = 'var(--indigo-6)';
+    border = 'var(--border-accent-subtle)';
     shadow = 'var(--glow-accent)';
-  } else if (emphasis === 'plan') border = 'var(--green-6)';
-  else if (kind === 'grill') border = 'var(--orange-9-a30)';
-  else if (kind === 'probe') border = 'var(--purple-9-a28)';
+  } else if (emphasis === 'plan') border = 'var(--border-green-subtle)';
+  else if (kind === 'grill') border = 'var(--border-orange-subtle)';
+  else if (kind === 'probe') border = 'var(--border-purple-subtle)';
 
   return (
     <div
@@ -66,7 +66,7 @@ export function TicketCard({
     >
       <div className="ticket-card-head">
         {live && <span className="ticket-card-live" />}
-        <span className="ticket-card-id" style={{ color: (kind && KIND_COLORS[kind]) || idColor || 'var(--text-2)' }}>
+        <span className="ticket-card-id" style={{ color: (kind && KIND_COLORS[kind]) || idColor || 'var(--text-secondary)' }}>
           {id}
         </span>
         {kind && (
@@ -75,14 +75,14 @@ export function TicketCard({
           </span>
         )}
         {!kind && label && (
-          <span className="ticket-card-kind" style={{ color: label.color || 'var(--text-2)' }}>
+          <span className="ticket-card-kind" style={{ color: label.color || 'var(--text-secondary)' }}>
             {label.text}
           </span>
         )}
         {priority && (
           <span
             className="ticket-card-priority"
-            style={{ color: priority === 'critical' ? 'var(--danger)' : 'var(--orange)' }}
+            style={{ color: priority === 'critical' ? 'var(--text-danger)' : 'var(--text-orange)' }}
           >
             {priority}
           </span>

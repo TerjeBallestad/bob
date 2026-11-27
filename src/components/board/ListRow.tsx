@@ -14,7 +14,7 @@ export interface ListRowProps {
 
 export function ListRow({
   id,
-  idColor = 'var(--accent)',
+  idColor = 'var(--text-accent)',
   title,
   meta,
   age,

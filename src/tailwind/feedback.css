@@ -4,7 +4,7 @@
 @utility modal {
   position: fixed;
   inset: 0;
-  background: var(--scrim);
+  background: var(--bg-scrim);
   z-index: 200;
   display: flex;
   align-items: flex-start;
@@ -13,8 +13,8 @@
 }
 @utility modal-box {
   width: min(560px, 92vw);
-  background: var(--surface-modal);
-  border: 1px solid var(--border-2);
+  background: var(--bg-modal);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-modal);
   padding: 20px 22px;
@@ -37,13 +37,13 @@
   font-size: 15px;
   font-weight: 700;
   letter-spacing: -0.005em;
-  color: var(--text);
+  color: var(--text-primary);
   margin: 0;
 }
 @utility modal-close {
   border: none;
   background: transparent;
-  color: var(--text-3);
+  color: var(--text-muted);
   font-size: 20px;
   line-height: 1;
   cursor: pointer;
@@ -57,12 +57,12 @@
 
 /* Toast. --animate-toast-in is a theme key in src/tailwind/theme.css. */
 @utility toast {
-  background: var(--surface-toast);
-  border: 1px solid var(--border-2);
+  background: var(--bg-toast);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   padding: 8px 16px;
   font-size: 12.5px;
-  color: var(--text);
+  color: var(--text-primary);
   box-shadow: var(--shadow-toast);
   font-family: var(--sans);
   display: inline-block;
@@ -71,8 +71,8 @@
   }
 }
 @utility toast-error {
-  border-color: var(--red-9-a50);
-  color: var(--red-12);
+  border-color: var(--border-danger);
+  color: var(--text-danger-strong);
 }
 @utility toast-stack {
   position: fixed;

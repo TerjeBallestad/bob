@@ -12,10 +12,10 @@ export const NO_CONTRAST_CHECK = /^tokens--/;
 export type Known = { why: string; fg: string; bg?: string; within?: string };
 export const KNOWN_CONTRAST: Known[] = [
   // Found by Task 2 (TOKENS.md, TASK-031).
-  { why: '--text-3 (gray-23) fails AA on every surface, 2.9 to 3.4', fg: '#62667a' },
-  { why: '--text-4 (gray-22) fails AA on every surface, 2.0 to 2.3', fg: '#4a4e5e' },
-  { why: 'Button danger: white on --danger, 3.9', fg: '#ffffff', bg: '#e5484d' },
-  { why: 'Chip danger: --danger on --tint-danger, 4.1 to 4.4', fg: '#e5484d', within: 'chip-danger' },
+  { why: '--text-muted (gray-23) fails AA on every surface, 2.9 to 3.4', fg: '#62667a' },
+  { why: '--text-faint (gray-22) fails AA on every surface, 2.0 to 2.3', fg: '#4a4e5e' },
+  { why: 'Button danger: --text-on-solid on --bg-danger, 3.9', fg: '#ffffff', bg: '#e5484d' },
+  { why: 'Chip danger: --text-danger on --bg-danger-tint, 4.1 to 4.4', fg: '#e5484d', within: 'chip-danger' },
   // Found by Task 3: a done ListRow is at opacity 0.55, so its text fails (2.5 to 2.8).
   { why: 'ListRow done: the row is at opacity 0.55', fg: '', within: 'list-row-done' },
 ];

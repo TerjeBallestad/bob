@@ -86,6 +86,33 @@ describe('the Tailwind entry', () => {
     expect(outside.match(/(^|})\.[\w-]+[{:]/g)).toBeNull();
   });
 
+  it('makes each colour role one class of its own property, and each scale step a class of every utility (DD-033)', async () => {
+    const yes: [string, string][] = [
+      ['bg-card', 'background-color: var(--bg-card)'],
+      ['text-primary', 'color: var(--text-primary)'],
+      ['text-reading', 'color: var(--text-reading)'],
+      ['border-subtle', 'border-color: var(--border-subtle)'],
+      ['decoration-strike', 'text-decoration-color: var(--decoration-strike)'],
+      ['outline-focus', 'outline-color: var(--outline-focus)'],
+      ['bg-gray-3', 'background-color: var(--gray-3)'],
+      ['text-indigo-9', 'color: var(--indigo-9)'],
+      ['border-red-9-a40', 'border-color: var(--red-9-a40)'],
+      ['text-white', 'color: var(--white)'],
+    ];
+    const no = ['text-card', 'bg-primary', 'border-primary', 'bg-gray-500', 'text-text-2', 'bg-surface-card', 'border-border'];
+    const css = await buildApp([...yes.map(([c]) => c), ...no]);
+    for (const [cls, decl] of yes) {
+      const rule = css.match(new RegExp(`\\.${cls} \\{([^}]*)\\}`))?.[1] ?? '';
+      expect(rule.trim(), cls).toBe(`${decl};`);
+    }
+    for (const cls of no) expect(css, cls).not.toContain(`.${cls} {`);
+    // Clearing the default palette keeps the colour keywords.
+    const keywords = await buildApp(['bg-transparent', 'text-current', 'border-transparent']);
+    for (const cls of ['bg-transparent', 'text-current', 'border-transparent']) expect(keywords, cls).toContain(`.${cls} {`);
+    // Tailwind's font sizes still work next to Bob's text colours.
+    expect(await buildApp(['text-sm'])).toMatch(/\.text-sm \{[^}]*font-size/);
+  });
+
   it("makes Bob's animations theme keys: animate-* classes, with a keyframe only when used", async () => {
     const plain = await buildApp();
     // Bob's components use the live pulse and toast-in, under motion-safe.

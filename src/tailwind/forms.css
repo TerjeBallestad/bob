@@ -10,7 +10,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--text-3);
+  color: var(--text-muted);
   margin-bottom: 6px;
   font-family: var(--sans);
 }
@@ -18,19 +18,19 @@
 /* Input */
 @utility input {
   width: 100%;
-  background: var(--input);
-  border: 1px solid var(--input-border);
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
   border-radius: var(--radius-btn);
-  color: var(--text);
+  color: var(--text-primary);
   font-size: 12.5px;
   padding: 8px 10px;
   font-family: var(--sans);
   &:focus {
-    border-color: var(--accent-deep);
+    border-color: var(--border-focus);
   }
   /* Error: an app sets aria-invalid, which also tells a screen reader. */
   &[aria-invalid='true'] {
-    border-color: var(--danger);
+    border-color: var(--border-invalid);
   }
 }
 
@@ -38,21 +38,21 @@
 @utility search {
   width: 100%;
   padding: 5px 10px;
-  background: var(--input);
-  border: 1px solid var(--input-border);
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
   border-radius: var(--radius-btn);
-  color: var(--text);
+  color: var(--text-primary);
   font-size: 12px;
   transition:
     width 0.15s ease,
     border-color 0.15s ease;
   font-family: var(--sans);
   &:focus {
-    border-color: var(--accent-deep);
+    border-color: var(--border-focus);
   }
   /* Error: an app sets aria-invalid, which also tells a screen reader. */
   &[aria-invalid='true'] {
-    border-color: var(--danger);
+    border-color: var(--border-invalid);
   }
 }
 @utility search-expand {
@@ -66,25 +66,25 @@
   align-items: center;
   gap: 8px;
   padding: 6px 10px;
-  background: var(--input);
-  border: 1px solid var(--input-border);
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
   border-radius: var(--radius-btn);
-  color: var(--text-3);
+  color: var(--text-muted);
   font-size: 12px;
   width: 100%;
   text-align: left;
   font-family: var(--sans);
   cursor: pointer;
   &:hover {
-    border-color: var(--gray-17);
-    color: var(--text-2);
+    border-color: var(--border-input-focus);
+    color: var(--text-secondary);
   }
 }
 @utility search-kbd-hint {
   margin-left: auto;
   font-family: var(--mono);
   font-size: 10px;
-  background: var(--input-border);
+  background: var(--bg-fill);
   padding: 1px 5px;
   border-radius: var(--radius-kbd);
 }
@@ -92,42 +92,42 @@
 /* Select */
 @utility select {
   width: 100%;
-  background: var(--input);
-  border: 1px solid var(--input-border);
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
   border-radius: var(--radius-btn);
-  color: var(--text);
+  color: var(--text-primary);
   font-size: 12.5px;
   padding: 8px 10px;
   font-family: var(--sans);
   &:focus {
-    border-color: var(--accent-deep);
+    border-color: var(--border-focus);
   }
   /* Error: an app sets aria-invalid, which also tells a screen reader. */
   &[aria-invalid='true'] {
-    border-color: var(--danger);
+    border-color: var(--border-invalid);
   }
 }
 @utility select-option {
-  background: var(--panel);
+  background: var(--bg-card);
 }
 
 /* Textarea */
 @utility textarea {
   width: 100%;
-  background: var(--input);
-  border: 1px solid var(--input-border);
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
   border-radius: var(--radius-btn);
-  color: var(--text);
+  color: var(--text-primary);
   font-size: 12.5px;
   padding: 8px 10px;
   resize: vertical;
   line-height: 1.5;
   font-family: var(--sans);
   &:focus {
-    border-color: var(--accent-deep);
+    border-color: var(--border-focus);
   }
   /* Error: an app sets aria-invalid, which also tells a screen reader. */
   &[aria-invalid='true'] {
-    border-color: var(--danger);
+    border-color: var(--border-invalid);
   }
 }
