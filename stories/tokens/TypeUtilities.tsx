@@ -17,8 +17,8 @@ const STYLES = [
   ['text-prose', '', '13.5 · 1.65', 'document body', 'A plan holds tasks, and each task a check.'],
   ['text-heading', '', '13.5 · normal · −.01em · 700', 'brand, column titles', 'Plan the sprint'],
   ['text-title', '', '15 · 1.3 · −.01em · 700', 'modal and panel titles', 'Plan the sprint'],
-  ['text-section', '', '18 · 1.3 · −.01em · 700', 'section heads in a document', 'Plan the sprint'],
-  ['text-doc', '', '21 · 1.3 · −.01em · 700', 'page and document titles', 'Plan the sprint'],
+  ['text-headline', '', '18 · 1.3 · −.01em · 700', 'headings inside a document', 'Plan the sprint'],
+  ['text-display', '', '21 · 1.3 · −.01em · 700', 'page and document titles', 'Plan the sprint'],
 ] as const;
 
 const row: React.CSSProperties = { display: 'grid', gridTemplateColumns: '92px 168px 176px 1fr', alignItems: 'baseline', gap: 12, padding: '4px 0', borderBottom: '1px solid var(--border-subtle)' };

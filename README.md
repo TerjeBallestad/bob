@@ -33,9 +33,9 @@ Type is a class too: one text style sets the size, the line height, the letter s
 weight (DD-038). Write `text-label uppercase text-muted`, not `text-tiny font-semibold
 tracking-label` and not `text-[10.5px]`. The styles are `text-micro`, `text-tiny`, `text-id`,
 `text-label`, `text-caption`, `text-note`, `text-body`, `text-subhead`, `text-base`,
-`text-prose`, `text-heading`, `text-title`, `text-section` and `text-doc`; TOKENS.md says what each sets and is
-for. A style sets no case and no family, so a label adds `uppercase` and an id adds
-`font-mono`. `text-base` is Bob's 13px body size, not Tailwind's 1rem.
+`text-prose`, `text-heading`, `text-title`, `text-headline` and `text-display`; TOKENS.md
+says what each sets and is for. A style sets no case and no family, so a label adds
+`uppercase` and an id adds `font-mono`. `text-doc` is `text-display`'s old name, deprecated. `text-base` is Bob's 13px body size, not Tailwind's 1rem.
 
 - **Preflight.** Bob's components and Storybook assume Bob's own reset, not Tailwind's preflight.
   With preflight, text sits at line-height 1.5. To keep Bob's look, import the theme and the

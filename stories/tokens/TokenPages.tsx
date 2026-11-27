@@ -36,7 +36,7 @@ export function Frame({ eyebrow, title, lede, children }: { eyebrow: string; tit
   return (
     <div style={{ background: 'var(--bg-app)', color: 'var(--text-primary)', fontFamily: 'var(--sans)', padding: '26px 28px 28px', minHeight: 600, boxSizing: 'border-box' }}>
       <div style={{ fontSize: 'var(--fs-tiny)', letterSpacing: 'var(--ls-label)', textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: 600 }}>{eyebrow}</div>
-      <h2 style={{ fontSize: 'var(--fs-doc)', fontWeight: 600, letterSpacing: 'var(--ls-heading)', margin: '6px 0 0' }}>{title}</h2>
+      <h2 style={{ fontSize: 'var(--fs-display)', fontWeight: 600, letterSpacing: 'var(--ls-heading)', margin: '6px 0 0' }}>{title}</h2>
       {lede && <p style={{ fontSize: 'var(--fs-body)', color: 'var(--text-secondary)', margin: '6px 0 0', maxWidth: 640, lineHeight: 1.5 }}>{lede}</p>}
       <div style={{ marginTop: 22 }}>{children}</div>
     </div>
@@ -324,7 +324,7 @@ export function ContrastPairs() {
 
 /* ---------- Type ---------- */
 
-const SIZES = ['--fs-micro', '--fs-tiny', '--fs-caption', '--fs-body', '--fs-base', '--fs-prose', '--fs-title', '--fs-section', '--fs-doc'];
+const SIZES = ['--fs-micro', '--fs-tiny', '--fs-caption', '--fs-body', '--fs-base', '--fs-prose', '--fs-title', '--fs-headline', '--fs-display'];
 const comment = (file: string, name: string) => {
   const src = Object.entries(sources).find(([k]) => k.endsWith(file))?.[1] ?? '';
   return new RegExp(`${name}:[^;]+;\\s*/\\*\\s*([^*]+?)\\s*\\*/`).exec(src)?.[1] ?? '';

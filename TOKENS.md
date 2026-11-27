@@ -175,8 +175,10 @@ Size ramp (exact odd values are intentional; there is no modular scale):
 | `--fs-base`    | `13px`   | Body default                     |
 | `--fs-prose`   | `13.5px` | Document body                    |
 | `--fs-title`   | `15px`   | Modal/featured headings          |
-| `--fs-section` | `18px`   | Section heading in a document    |
-| `--fs-doc`     | `21px`   | Slide-over document title        |
+| `--fs-headline` | `18px`  | Heading inside a document        |
+| `--fs-display` | `21px`   | Page and document titles         |
+
+`--fs-doc` is `--fs-display`'s name before 1.2. It still works through 1.x, deprecated, and goes in 2.0.
 
 Weights `--fw-regular` 400 · `--fw-medium` 500 · `--fw-semibold` 600 · `--fw-bold` 700.
 Tracking `--ls-heading` `-.01em` (headings) · `--ls-label` `.08em` (uppercase section labels) ·
@@ -205,9 +207,11 @@ weight. An app writes `text-label`, not `text-tiny font-semibold tracking-label`
 | `text-prose`   | 13.5px | 1.65        |          |        | Document body                       |
 | `text-heading` | 13.5px | normal      | -.01em   | 700    | Brand, column titles                |
 | `text-title`   | 15px   | 1.3         | -.01em   | 700    | Modal and panel titles              |
-| `text-section` | 18px   | 1.3         | -.01em   | 700    | Section heads in a document (markdown h1) |
-| `text-doc`     | 21px   | 1.3         | -.01em   | 700    | Page and document titles            |
+| `text-headline` | 18px  | 1.3         | -.01em   | 700    | Headings inside a document (markdown h1) |
+| `text-display` | 21px   | 1.3         | -.01em   | 700    | Page and document titles            |
 
+- `text-doc` is `text-display`'s name before 1.2. It still works through 1.x, deprecated, and
+  goes in 2.0.
 - The ramp names are each size's plain style. A size that needs a second style gets a role
   name: `text-id` and `text-label` at 10.5px, `text-note` at 11.5px, `text-subhead` at 12.5px,
   `text-heading` at 13.5px.

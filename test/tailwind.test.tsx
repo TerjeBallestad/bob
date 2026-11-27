@@ -129,8 +129,10 @@ describe('the Tailwind entry', () => {
     ['text-prose', '--fs-prose', '--lh-prose', null, null],
     ['text-heading', '--fs-prose', 'normal', '--ls-heading', '--fw-bold'],
     ['text-title', '--fs-title', '--lh-heading', '--ls-heading', '--fw-bold'],
-    ['text-section', '--fs-section', '--lh-heading', '--ls-heading', '--fw-bold'],
-    ['text-doc', '--fs-doc', '--lh-heading', '--ls-heading', '--fw-bold'],
+    ['text-headline', '--fs-headline', '--lh-heading', '--ls-heading', '--fw-bold'],
+    ['text-display', '--fs-display', '--lh-heading', '--ls-heading', '--fw-bold'],
+    // Deprecated in 1.2, kept through 1.x: text-doc is text-display.
+    ['text-doc', '--fs-display', '--lh-heading', '--ls-heading', '--fw-bold'],
   ];
   const v = (t: string) => (t.startsWith('--') ? `var(${t})` : t);
 

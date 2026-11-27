@@ -151,7 +151,7 @@
      (text-label), not text-tiny font-semibold tracking-label. A style sets no case and no
      family, as Tailwind's text styles cannot: a label adds `uppercase`, an id adds `font-mono`.
 
-     The ramp names (text-micro to text-doc) are the plain style of each size. A size that needs
+     The ramp names (text-micro to text-display) are the plain style of each size. A size that needs
      a second style gets a role name: text-id and text-label at 10.5px, text-note at 11.5px,
      text-subhead at 12.5px, text-heading at 13.5px. A style with no weight takes its parent's,
      so text-tiny inside a bold row stays bold. One-line styles keep the font's own line height
@@ -195,11 +195,16 @@
   --text-title--line-height: var(--lh-heading);
   --text-title--letter-spacing: var(--ls-heading);
   --text-title--font-weight: var(--fw-bold);
-  --text-section: var(--fs-section);
-  --text-section--line-height: var(--lh-heading);
-  --text-section--letter-spacing: var(--ls-heading);
-  --text-section--font-weight: var(--fw-bold);
-  --text-doc: var(--fs-doc);
+  --text-headline: var(--fs-headline);
+  --text-headline--line-height: var(--lh-heading);
+  --text-headline--letter-spacing: var(--ls-heading);
+  --text-headline--font-weight: var(--fw-bold);
+  --text-display: var(--fs-display);
+  --text-display--line-height: var(--lh-heading);
+  --text-display--letter-spacing: var(--ls-heading);
+  --text-display--font-weight: var(--fw-bold);
+  /* Deprecated in 1.2: text-doc is text-display's old name. It stays through 1.x. */
+  --text-doc: var(--fs-display);
   --text-doc--line-height: var(--lh-heading);
   --text-doc--letter-spacing: var(--ls-heading);
   --text-doc--font-weight: var(--fw-bold);
