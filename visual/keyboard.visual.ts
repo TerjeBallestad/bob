@@ -131,6 +131,17 @@ test.describe('Toast', () => {
     await expect(page.getByRole('status')).toHaveText('Saved.');
     await expect(page.getByRole('alert')).toHaveText(/Could not save/);
   });
+
+  // Base UI's toast viewport (DD-034). The play function of feedback-toast--show-toasts checks
+  // that the region is in the page, empty, before the first toast.
+  test('ToastStack is a polite live region named Notifications, and the toasts sit in it', async ({ page }) => {
+    await openStory(page, 'feedback-toast--show-toasts');
+    const region = page.getByRole('region', { name: 'Notifications' });
+    await expect(region).toHaveAttribute('aria-live', 'polite');
+    await expect(region).toHaveAttribute('aria-relevant', 'additions text');
+    await expect(region.getByRole('status')).toHaveText('Title updated');
+    await expect(region.getByRole('alert')).toHaveText('Could not save');
+  });
 });
 
 test.describe('ListRow and TicketCard with onClick', () => {

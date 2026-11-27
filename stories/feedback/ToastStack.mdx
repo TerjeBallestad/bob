@@ -10,7 +10,8 @@ import { Lede, Facts, DoDont, Do, Dont } from '../docs/blocks';
 
 <Facts items={[
   ['Import', "import { ToastStack } from '@terjeballestad/bob'"],
-  ['Renders', '<div>, fixed 18px above the bottom, centred, z-index 400'],
+  ['Renders', '<div role="region">, a live region, fixed 18px above the bottom, centred, z-index 400'],
+  ['Built on', 'Base UI Toast.Provider and Toast.Viewport (@base-ui/react)'],
   ['Classes', 'toast-stack'],
 ]} />
 
@@ -41,5 +42,9 @@ import { Lede, Facts, DoDont, Do, Dont } from '../docs/blocks';
 
 ## Accessibility
 
-ToastStack is a plain `<div>`. Keep it mounted: when it becomes a live region (see Toast's gaps),
-a screen reader will hear only the changes to a region that was already on the page.
+ToastStack is built on Base UI's toast viewport. It is a live region: `role="region"`,
+`aria-live="polite"`, named "Notifications".
+
+- A screen reader reads only the changes to a live region that was already on the page. Keep the
+  stack mounted, also when it is empty, and each toast the app adds is read.
+- The toasts keep their own roles: `status`, or `alert` for an error.

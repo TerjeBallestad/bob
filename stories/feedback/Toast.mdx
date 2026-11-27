@@ -1,6 +1,6 @@
 import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
 import * as Stories from './Toast.stories';
-import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
+import { Lede, Facts, DoDont, Do, Dont } from '../docs/blocks';
 
 <Meta of={Stories} />
 
@@ -69,4 +69,7 @@ Storybook.
 - A toast is a `status`, an error toast an `alert`, so a screen reader reads it when it appears.
 - The fade-in runs only when the system allows motion (`motion-safe`).
 
-<Gap>ToastStack is not a live region of its own: a screen reader may miss a toast that appears with the stack. It moves to Base UI (DD-034).</Gap>
+- [ToastStack](?path=/docs/feedback-toaststack--docs) is a live region, built on Base UI's toast
+  viewport. Keep it mounted, and a screen reader reads each toast the app adds to it.
+- Toast is Bob's own element, not Base UI's Toast.Root. Base UI's toast takes its content from a
+  toast manager and is a `dialog`; Bob's Toast keeps its props and its roles.

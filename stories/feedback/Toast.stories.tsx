@@ -43,7 +43,7 @@ function SaveWithToasts() {
   );
 }
 
-/** An interaction test: each action adds a toast to the stack, and the focus stays where it was. */
+/** An interaction test: the stack is a live region, each action adds a toast to it, and the focus stays where it was. */
 export const ShowToasts: StoryObj = {
   name: 'Show toasts (test)',
   parameters: {
@@ -62,6 +62,11 @@ const push = (text, error) => setToasts((t) => [...t, { id: t.length, text, erro
   },
   render: () => <SaveWithToasts />,
   play: async ({ canvas, canvasElement, userEvent }) => {
+    // The stack is a live region before any toast arrives, so a screen reader reads each new one.
+    const region = canvas.getByRole('region', { name: 'Notifications' });
+    await expect(region).toHaveAttribute('aria-live', 'polite');
+    await expect(region).toBeEmptyDOMElement();
+
     const save = canvas.getByRole('button', { name: 'Save' });
     await userEvent.click(save);
     const saved = canvas.getByText('Title updated');
