@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Input, SearchInput, Select, Textarea } from '../../src';
+import { Input, SearchInput, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from '../../src';
 import { StateGrid, cells } from '../shared/StateGrid';
 
 // Each field in each state, in one screenshot. Focus is forced with
@@ -28,7 +28,18 @@ export const Fields: StoryObj = {
       cell={(f, s) => {
         const p = { 'aria-label': `${f} ${s}`, 'aria-invalid': s === 'error' || undefined, disabled: s === 'disabled' };
         if (f === 'input') return <Input {...p} placeholder="Project name" />;
-        if (f === 'select') return <Select {...p} options={['inbox', 'planned']} />;
+        if (f === 'select')
+          return (
+            <Select defaultValue="inbox" disabled={p.disabled}>
+              <SelectTrigger aria-label={p['aria-label']} aria-invalid={p['aria-invalid']}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="inbox">inbox</SelectItem>
+                <SelectItem value="planned">planned</SelectItem>
+              </SelectContent>
+            </Select>
+          );
         if (f === 'textarea') return <Textarea {...p} rows={2} defaultValue="Notes" />;
         return <SearchInput {...p} placeholder="Search" />;
       }}

@@ -18,7 +18,24 @@ export { StatusDot, type StatusDotProps, type StatusDotState } from './component
 export { FormRow, type FormRowProps } from './components/forms/FormRow';
 export { Input, type InputProps } from './components/forms/Input';
 export { SearchInput, type SearchInputProps } from './components/forms/SearchInput';
-export { Select, type SelectProps } from './components/forms/Select';
+export {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+  type SelectContentProps,
+  type SelectGroupProps,
+  type SelectItemProps,
+  type SelectLabelProps,
+  type SelectProps,
+  type SelectSeparatorProps,
+  type SelectTriggerProps,
+  type SelectValueProps,
+} from './components/forms/Select';
 export { Textarea, type TextareaProps } from './components/forms/Textarea';
 
 // feedback

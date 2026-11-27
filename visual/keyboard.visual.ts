@@ -1,11 +1,13 @@
+import AxeBuilder from '@axe-core/playwright';
 import type { Page } from '@playwright/test';
+import { FOCUS_GUARDS, KNOWN_CONTRAST, TAGS } from './axe';
 import { expect, openStory, test } from './fixtures';
 
 // Keyboard behaviour in a real browser (PLAN-005 TASK-032). A gap would be a test marked
 // test.fail(): it documents what is missing and fails as soon as the gap is closed. None is left.
-// Modal, SegToggle and ToastStack run on Base UI primitives (DD-034, TASK-036), which do the
-// focus trap, the roving tabindex and the live region; Bob writes none of it by hand. Select is
-// the native <select>.
+// Modal, Select, SegToggle and ToastStack run on Base UI primitives (DD-034, DD-036), which do
+// the focus trap, the roving tabindex, the listbox keys and the live region; Bob writes none of
+// it by hand. These tests check that Bob's wiring keeps that behaviour.
 
 test.describe('Modal', () => {
   // Base UI's Dialog (DD-034) does the focus handling. The dialog renders in a portal at the end
@@ -70,16 +72,135 @@ test.describe('Modal', () => {
 });
 
 test.describe('Select', () => {
-  test('Tab focuses it, arrow keys and typeahead change the value (the native select)', async ({ page }) => {
+  // Base UI's Select (DD-036): the trigger is a combobox button, the list a listbox in a portal
+  // at the end of <body>. The story's value is "inbox" (Inbox, Exploring, Planned, Done).
+  const trigger = (page: Page) => page.getByRole('combobox', { name: 'Stage' });
+  const listbox = (page: Page) => page.getByRole('listbox');
+
+  test.beforeEach(async ({ page }) => {
     await openStory(page, 'forms-select--default');
-    const select = page.getByRole('combobox', { name: 'Stage' });
-    await page.keyboard.press('Tab');
-    await expect(select).toBeFocused();
-    await page.keyboard.press('ArrowDown');
-    await expect(select).toHaveValue('exploring');
-    await page.keyboard.type('d');
-    await expect(select).toHaveValue('done');
   });
+
+  test('Tab focuses the trigger, a combobox that shows the label of its value', async ({ page }) => {
+    await page.keyboard.press('Tab');
+    await expect(trigger(page)).toBeFocused();
+    await expect(trigger(page)).toHaveText('Inbox');
+    await expect(trigger(page)).toHaveAttribute('aria-haspopup', 'listbox');
+    await expect(trigger(page)).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  for (const key of ['Enter', ' ', 'ArrowDown']) {
+    test(`${key === ' ' ? 'Space' : key} opens the list, with focus on the chosen item`, async ({ page }) => {
+      await page.keyboard.press('Tab');
+      await page.keyboard.press(key);
+      await expect(listbox(page)).toBeVisible();
+      await expect(trigger(page)).toHaveAttribute('aria-expanded', 'true');
+      await expect(page.getByRole('option', { name: 'Inbox' })).toBeFocused();
+      await expect(page.getByRole('option', { name: 'Inbox' })).toHaveAttribute('aria-selected', 'true');
+    });
+  }
+
+  test('the arrow keys move through the items, and Enter chooses one and closes the list', async ({ page }) => {
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Enter');
+    await expect(page.getByRole('option', { name: 'Inbox' })).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await expect(page.getByRole('option', { name: 'Exploring' })).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await expect(page.getByRole('option', { name: 'Planned' })).toBeFocused();
+    await page.keyboard.press('ArrowUp');
+    await expect(page.getByRole('option', { name: 'Exploring' })).toBeFocused();
+    await page.keyboard.press('End');
+    await expect(page.getByRole('option', { name: 'Done' })).toBeFocused();
+    await page.keyboard.press('Home');
+    await expect(page.getByRole('option', { name: 'Inbox' })).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    await expect(listbox(page)).toHaveCount(0);
+    await expect(trigger(page)).toHaveText('Exploring');
+    await expect(trigger(page)).toBeFocused();
+  });
+
+  test('typeahead: a letter moves to the next item that starts with it', async ({ page }) => {
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Enter');
+    await expect(page.getByRole('option', { name: 'Inbox' })).toBeFocused();
+    await page.keyboard.type('p');
+    await expect(page.getByRole('option', { name: 'Planned' })).toBeFocused();
+    // Letters typed within a moment make one search ("pd"); a pause starts a new one.
+    await page.waitForTimeout(1000);
+    await page.keyboard.type('d');
+    await expect(page.getByRole('option', { name: 'Done' })).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(trigger(page)).toHaveText('Done');
+  });
+
+  test('Escape closes the list with no change, and focus returns to the trigger', async ({ page }) => {
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Enter');
+    await expect(page.getByRole('option', { name: 'Inbox' })).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await expect(page.getByRole('option', { name: 'Exploring' })).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(listbox(page)).toHaveCount(0);
+    await expect(trigger(page)).toBeFocused();
+    await expect(trigger(page)).toHaveText('Inbox');
+  });
+
+  test('Tab leaves: the trigger is one Tab stop; Tab in the open list closes it, with no change', async ({ page }) => {
+    // Closed: the next Tab leaves the select (the hidden input takes no focus).
+    await page.keyboard.press('Tab');
+    await expect(trigger(page)).toBeFocused();
+    await page.keyboard.press('Tab');
+    await expect(trigger(page)).not.toBeFocused();
+    await expect(page.locator('#storybook-root :focus')).toHaveCount(0);
+    // Open: Tab closes the list and keeps the value. Base UI gives focus back to the trigger
+    // (the APG pattern moves it on), and the next Tab leaves.
+    await page.keyboard.press('Shift+Tab');
+    await expect(trigger(page)).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(page.getByRole('option', { name: 'Inbox' })).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Tab');
+    await expect(listbox(page)).toHaveCount(0);
+    await expect(trigger(page)).toHaveText('Inbox');
+    await expect(trigger(page)).toBeFocused();
+    await page.keyboard.press('Tab');
+    await expect(trigger(page)).not.toBeFocused();
+  });
+
+  test('a FormRow label names the trigger', async ({ page }) => {
+    await openStory(page, 'forms-select--choose-an-option');
+    const named = page.getByRole('combobox', { name: 'Stage' });
+    await expect(named).toBeVisible();
+    const id = await named.getAttribute('id');
+    await expect(page.locator(`label[for="${id}"]`)).toHaveText('Stage');
+  });
+
+  test('aria-invalid on the trigger shows the error border', async ({ page }) => {
+    await openStory(page, 'forms-states--fields');
+    const invalid = page.getByRole('combobox', { name: 'select error' });
+    await expect(invalid).toHaveAttribute('aria-invalid', 'true');
+    await expect(invalid).toHaveCSS('border-top-color', 'rgb(229, 72, 77)');
+  });
+
+  // a11y.visual.ts runs axe inside #storybook-root. The open list is in a portal outside it, so
+  // these run axe on the whole page, with the exclusions of a11y.visual.ts: Base UI's focus
+  // guards (visual/axe.ts) and the known contrast failures of --text-muted (TASK-035).
+  for (const story of ['forms-select--open', 'forms-select--groups']) {
+    test(`axe finds nothing on the open list (${story})`, async ({ page }) => {
+      await openStory(page, story);
+      await expect(listbox(page)).toBeVisible();
+      const { violations } = await new AxeBuilder({ page }).withTags(TAGS).exclude(FOCUS_GUARDS).analyze();
+      const knownFg = KNOWN_CONTRAST.filter((k) => !k.bg && !k.within).map((k) => k.fg);
+      const found = violations.flatMap((v) =>
+        v.nodes
+          .filter((n) => v.id !== 'color-contrast' || !knownFg.includes((n.any[0]?.data as { fgColor?: string })?.fgColor ?? ''))
+          .map((n) => `${v.id}: ${n.html}`),
+      );
+      expect(found).toEqual([]);
+    });
+  }
 });
 
 test.describe('SegToggle', () => {

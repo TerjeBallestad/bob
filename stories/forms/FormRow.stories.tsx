@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { FormRow, Input, Select, Textarea } from '../../src';
+import { FormRow, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from '../../src';
 
 export default {
   title: 'Forms/FormRow',
@@ -25,7 +25,15 @@ export const Form: StoryObj = {
   render: () => (
     <div className="grid w-80 gap-3">
       <FormRow label="Name"><Input defaultValue="Weekly review" /></FormRow>
-      <FormRow label="Stage"><Select options={['inbox', 'planned']} /></FormRow>
+      <FormRow label="Stage">
+        <Select defaultValue="inbox">
+          <SelectTrigger><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="inbox">inbox</SelectItem>
+            <SelectItem value="planned">planned</SelectItem>
+          </SelectContent>
+        </Select>
+      </FormRow>
       <FormRow label="Body"><Textarea rows={3} /></FormRow>
     </div>
   ),

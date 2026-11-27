@@ -15,7 +15,14 @@ export const samples: Record<string, () => JSX.Element> = {
   FormRow: () => <Bob.FormRow label="Name"><Bob.Input /></Bob.FormRow>,
   Input: () => <Bob.Input placeholder="name" />,
   SearchInput: () => <Bob.SearchInput kbd="/" />,
-  Select: () => <Bob.Select options={['a', { value: 'b', label: 'B' }]} />,
+  Select: () => <OpenSelect />,
+  SelectContent: () => <OpenSelect />,
+  SelectGroup: () => <OpenSelect />,
+  SelectItem: () => <OpenSelect />,
+  SelectLabel: () => <OpenSelect />,
+  SelectSeparator: () => <OpenSelect />,
+  SelectTrigger: () => <OpenSelect />,
+  SelectValue: () => <OpenSelect />,
   Textarea: () => <Bob.Textarea />,
   Modal: () => <Bob.Modal open title="Title">Body</Bob.Modal>,
   Toast: () => <Bob.Toast error>Failed</Bob.Toast>,
@@ -25,6 +32,25 @@ export const samples: Record<string, () => JSX.Element> = {
   SectionLabel: () => <Bob.SectionLabel>Planned</Bob.SectionLabel>,
   TicketCard: () => <Bob.TicketCard id="SB-042" title="A ticket" progress={{ done: 1, total: 3 }} />,
 };
+
+// Select's parts work only together. Open, the list renders in a portal (in the browser only),
+// so every part's class is in the page.
+function OpenSelect() {
+  const items = [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }];
+  return (
+    <Bob.Select items={items} defaultValue="a" defaultOpen>
+      <Bob.SelectTrigger aria-label="Letter"><Bob.SelectValue /></Bob.SelectTrigger>
+      <Bob.SelectContent>
+        <Bob.SelectGroup>
+          <Bob.SelectLabel>Letters</Bob.SelectLabel>
+          <Bob.SelectItem value="a">A</Bob.SelectItem>
+          <Bob.SelectSeparator />
+          <Bob.SelectItem value="b">B</Bob.SelectItem>
+        </Bob.SelectGroup>
+      </Bob.SelectContent>
+    </Bob.Select>
+  );
+}
 
 // Renders a sample in the DOM (the test files run in happy-dom) and returns the page's HTML.
 // Server rendering is not enough: Modal draws its dialog in a portal at the end of <body>

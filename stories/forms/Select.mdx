@@ -6,12 +6,14 @@ import { Lede, Facts, DoDont, Do, Dont, Keys } from '../docs/blocks';
 
 # Select
 
-<Lede>A choice of one option from a list, in the browser's own dropdown.</Lede>
+<Lede>A choice of one option from a list. The list is Bob's, with typeahead, and looks the same on every platform.</Lede>
 
 <Facts items={[
-  ['Import', "import { Select } from '@terjeballestad/bob'"],
-  ['Renders', '<select> with one <option> per option, and every native attribute passed on'],
-  ['Classes', 'select  select-option'],
+  ['Import', "import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@terjeballestad/bob'"],
+  ['Renders', '<button role="combobox">; the open list is <div role="listbox"> in a portal at the end of <body>, and a hidden <input> holds the value for a form'],
+  ['Built on', 'Base UI Select (@base-ui/react), from shadcn/ui\'s Base UI select'],
+  ['Parts', 'Select  SelectTrigger  SelectValue  SelectContent  SelectItem  SelectGroup  SelectLabel  SelectSeparator'],
+  ['Classes', 'select-trigger  select-value  select-icon  select-popup  select-list  select-item  select-item-indicator  select-group  select-label  select-separator'],
 ]} />
 
 <Canvas of={Stories.Default} />
@@ -31,44 +33,84 @@ import { Lede, Facts, DoDont, Do, Dont, Keys } from '../docs/blocks';
 <Do>
 
 - Order the options in a way the user can predict: by flow (inbox, planned, done) or A to Z.
-- Pass `{ value, label }` when the stored value is not the word to show.
+- Pass `items` to Select, so the trigger shows the label and not the stored value.
 
 </Do>
 <Dont>
 
-- Use an empty first option as the label. Put the label in a [FormRow](?path=/docs/forms-formrow--docs).
+- Use an empty first item as the label. Put the label in a [FormRow](?path=/docs/forms-formrow--docs), and use `placeholder` on SelectValue for "no choice yet".
 
 </Dont>
 </DoDont>
 
 ## Usage
 
+Select holds the state. The parts lay it out: the trigger with its value, and the list with its
+items. The API is Base UI's.
+
 ```tsx
-<Select
-  value={stage}
-  onChange={(e) => setStage(e.target.value)}
-  options={['inbox', 'planned', { value: 'done', label: 'Done' }]}
-/>
+const stages = [
+  { value: 'inbox', label: 'Inbox' },
+  { value: 'planned', label: 'Planned' },
+  { value: 'done', label: 'Done' },
+];
+
+<FormRow label="Stage">
+  <Select items={stages} value={stage} onValueChange={setStage}>
+    <SelectTrigger>
+      <SelectValue />
+    </SelectTrigger>
+    <SelectContent>
+      {stages.map((s) => (
+        <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+      ))}
+    </SelectContent>
+  </Select>
+</FormRow>
 ```
+
+- `value` and `onValueChange(value)` when the parent keeps the state; `defaultValue` when Select keeps it.
+- `onValueChange` gets the item's value, not an event. Its type includes `null`, for a select with no value.
+- `name` puts the value in a hidden input, so a `<form>` submits it. `required` and `disabled` work as on a native field.
+- `className` on SelectTrigger sets its width: `<SelectTrigger className="w-40">`. Bob's class comes first, so a utility wins.
+
+## The open list
+
+The list opens over the trigger, with the chosen item on the trigger's value, as a native list
+does on macOS.
+
+<Canvas of={Stories.Open} story={{ inline: false, height: '280px' }} />
+
+## Groups and placeholder
+
+SelectGroup and SelectLabel put a heading over some items, and SelectSeparator draws a line. A
+disabled item shows, but takes no focus. `alignItemWithTrigger={false}` on SelectContent opens the
+list below the trigger.
+
+<Canvas of={Stories.Groups} story={{ inline: false, height: '280px' }} />
 
 ## Interaction test
 
-**Choose an option (test)** checks that Tab reaches the select and that a choice, by value or by
-an option's label, reaches `onChange`. CI runs it in the built Storybook.
+**Choose an option (test)** checks that a FormRow label names the trigger, and that a choice by
+pointer, and by keyboard with typeahead, reaches `onValueChange` and shows in the trigger. CI runs
+it in the built Storybook.
 
-<Canvas of={Stories.ChooseAnOption} />
+<Canvas of={Stories.ChooseAnOption} story={{ inline: false, height: '240px' }} />
 
 ## Accessibility
 
-Select is the native `<select>`, so the browser gives it its keys and its list.
+Base UI gives Select the keys of a listbox. visual/keyboard.visual.ts tests each of them.
 
 <Keys rows={[
-  ['Tab', 'Moves focus to the select.'],
-  ['↑ ↓', 'Changes the option (Windows, Linux), or opens the list (macOS).'],
-  ['Space Alt+↓', 'Opens the list.'],
-  ['A–Z', 'Jumps to the next option that starts with the letter.'],
+  ['Tab', 'Moves focus to the trigger. Select is one Tab stop.'],
+  ['Enter Space ↓', 'Opens the list, with focus on the chosen item.'],
+  ['↑ ↓ Home End', 'Move through the items, in the open list.'],
+  ['A–Z', 'Moves to the next item that starts with the letters typed.'],
+  ['Enter', 'Chooses the item and closes the list.'],
+  ['Escape Tab', 'Close the list with no change. Focus goes back to the trigger.'],
 ]} />
 
-- Name it with a linked `<label>` or an `aria-label`.
-
-- Focus and error as Input: the focus ring, and a `danger` border with `aria-invalid="true"`.
+- The trigger is a `combobox`. Name it with a [FormRow](?path=/docs/forms-formrow--docs) label, or an `aria-label` on SelectTrigger.
+- An error is `aria-invalid="true"` on SelectTrigger, as on Input: a `danger` border, and a screen reader hears it. Point `aria-describedby` at the error text.
+- The focus ring shows on the trigger, and a highlight on the item in the list.
+- The list is in a portal at the end of `<body>`. A test that looks for an item must search the whole page.

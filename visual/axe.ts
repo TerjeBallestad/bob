@@ -19,3 +19,8 @@ export const KNOWN_CONTRAST: Known[] = [
   // Found by Task 3: a done ListRow is at opacity 0.55, so its text fails (2.5 to 2.8).
   { why: 'ListRow done: the row is at opacity 0.55', fg: '', within: 'list-row-done' },
 ];
+
+// Base UI's focus guards: aria-hidden spans with tabindex 0 at the ends of an open popup (Select's
+// list, Modal's dialog). Tab lands on one and Base UI moves focus on at once, so no focus stays
+// on hidden content. axe's aria-hidden-focus cannot see that, so the checks leave them out.
+export const FOCUS_GUARDS = '[data-base-ui-focus-guard]';

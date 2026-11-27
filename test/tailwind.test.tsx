@@ -23,8 +23,9 @@ async function buildApp(extra: string[] = []) {
   return compiler.build([...scanner.scan(), ...extra]);
 }
 
+// Base UI's own classes (base-ui-disable-scrollbar) come with Base UI's own <style>.
 const classesOf = (html: string) =>
-  [...html.matchAll(/class="([^"]*)"/g)].flatMap((m) => m[1].split(/\s+/)).filter(Boolean);
+  [...html.matchAll(/class="([^"]*)"/g)].flatMap((m) => m[1].split(/\s+/)).filter((c) => c && !c.startsWith('base-ui-'));
 
 describe('the Tailwind entry', () => {
   it("builds every class Bob's components render, from Bob's built JS", async () => {

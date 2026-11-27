@@ -15,10 +15,11 @@ describe('render', () => {
 
   for (const name of Object.keys(samples)) {
     // Every class a component renders is one of Bob's component classes, defined in the
-    // built bob.css.
+    // built bob.css. Base UI adds a class of its own, with its own <style>, to Select's list
+    // (base-ui-disable-scrollbar).
     it(`${name} renders from the built package with Bob's class names`, () => {
       const html = renderHtml(samples[name]());
-      const classes = [...html.matchAll(/class="([^"]*)"/g)].flatMap((m) => m[1].split(/\s+/)).filter(Boolean);
+      const classes = [...html.matchAll(/class="([^"]*)"/g)].flatMap((m) => m[1].split(/\s+/)).filter((c) => c && !c.startsWith('base-ui-'));
       expect(classes.length).toBeGreaterThan(0);
       for (const cls of classes) expect(css, cls).toMatch(new RegExp(`\\.${cls}[{:]`));
     });

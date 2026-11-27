@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { KNOWN_CONTRAST, NO_CONTRAST_CHECK, TAGS } from './axe';
+import { FOCUS_GUARDS, KNOWN_CONTRAST, NO_CONTRAST_CHECK, TAGS } from './axe';
 import { expect, openStory, stories, test } from './fixtures';
 
 // axe on every story in the built Storybook, in its rest state and in the forced hover and focus
@@ -9,7 +9,7 @@ import { expect, openStory, stories, test } from './fixtures';
 for (const { id } of stories) {
   test(`axe ${id}`, async ({ page }) => {
     await openStory(page, id);
-    let axe = new AxeBuilder({ page }).include('#storybook-root').withTags(TAGS);
+    let axe = new AxeBuilder({ page }).include('#storybook-root').exclude(FOCUS_GUARDS).withTags(TAGS);
     if (NO_CONTRAST_CHECK.test(id)) axe = axe.disableRules(['color-contrast']);
     const { violations } = await axe.analyze();
 

@@ -1,4 +1,4 @@
-/** Option shape shared by Select and SegToggle. A bare string is shorthand for `{value: s, label: s}`. */
+/** SegToggle's option shape. A bare string is shorthand for `{value: s, label: s}`. */
 export interface DSOption {
   value: string;
   label: string;
