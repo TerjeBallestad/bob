@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased: Bob 1.0.0
+## 1.0.0
 
 Bob 1.0.0 is a major version with three breaking changes, so an app migrates once:
 docs/migration-1.0.md covers all three, with before-and-after code.
