@@ -103,8 +103,9 @@
   border-radius: var(--radius-btn);
   color: var(--text-primary);
   font-size: 12.5px;
-  line-height: 1.25;
-  padding: 7px 8px 7px 10px;
+  /* Input's metrics (line-height normal, 8px top and bottom), so the two are the same height. */
+  line-height: normal;
+  padding: 8px 8px 8px 10px;
   font-family: var(--sans);
   text-align: left;
   white-space: nowrap;
