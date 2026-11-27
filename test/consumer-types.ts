@@ -34,8 +34,11 @@ import type {
   TextareaProps,
   TicketCardProps,
   TicketKind,
-  ToastProps,
+  ToastManager,
+  ToastObject,
+  ToastOptions,
   ToastStackProps,
+  ToastType,
 } from "@terjeballestad/bob";
 
 export type All = [
@@ -71,6 +74,9 @@ export type All = [
   TextareaProps,
   TicketCardProps,
   TicketKind,
-  ToastProps,
+  ToastManager,
+  ToastObject,
+  ToastOptions,
   ToastStackProps,
+  ToastType,
 ];

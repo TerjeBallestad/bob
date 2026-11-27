@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, screen, waitFor } from 'storybook/test';
-import { Button, Modal } from '../../src';
+import { Button, Modal, ToastStack, useToastManager } from '../../src';
 
-// The modal with keyboard focus on its close button, and a modal behind a trigger for the
-// keyboard checks in visual/keyboard.visual.ts.
+// The modal with keyboard focus on its close button, and a modal and a toast stack behind
+// triggers for the keyboard checks in visual/keyboard.visual.ts.
 export default { title: 'Feedback/States', tags: ['!autodocs'] } satisfies Meta;
 
 const noop = () => {};
@@ -76,4 +76,37 @@ export const ModalKeyboard: StoryObj = {
       </div>
     );
   },
+};
+
+// Buttons that add toasts, for the keyboard and timer checks in visual/keyboard.visual.ts. The
+// toasts close themselves after 1.5 seconds, so a test can watch the timer and its pause.
+function ToastButtons() {
+  const toast = useToastManager();
+  return (
+    <div className="flex h-screen items-center justify-center gap-2">
+      <Button onClick={() => toast.add({ title: 'Title updated' })}>Save</Button>
+      <Button variant="secondary" onClick={() => toast.add({ title: 'Could not save', description: 'The server did not answer.', type: 'error' })}>
+        Fail
+      </Button>
+    </div>
+  );
+}
+
+export const ToastKeyboard: StoryObj = {
+  name: 'Toast keyboard',
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      source: {
+        code: `<ToastStack timeout={1500}>
+  <SaveButtons />
+</ToastStack>`,
+      },
+    },
+  },
+  render: () => (
+    <ToastStack timeout={1500}>
+      <ToastButtons />
+    </ToastStack>
+  ),
 };

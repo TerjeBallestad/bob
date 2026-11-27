@@ -55,25 +55,71 @@
   margin-top: 18px;
 }
 
-/* Toast. --animate-toast-in is a theme key in src/tailwind/theme.css. */
+/* Toast: one toast from Base UI's toast manager (DD-036). --animate-toast-in is a theme key in
+   src/tailwind/theme.css. Base UI sets --toast-swipe-movement-x/y while a finger or the mouse
+   drags the toast, and data-ending-style while it leaves. */
 @utility toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(420px, calc(100vw - 32px));
   background: var(--bg-toast);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
-  padding: 8px 16px;
+  padding: 8px 8px 8px 16px;
   font-size: 12.5px;
   color: var(--text-primary);
   box-shadow: var(--shadow-toast);
   font-family: var(--sans);
-  display: inline-block;
+  user-select: none;
+  transform: translateX(var(--toast-swipe-movement-x, 0)) translateY(var(--toast-swipe-movement-y, 0));
   @variant motion-safe {
     animation: var(--animate-toast-in);
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease;
+  }
+  &[data-ending-style] {
+    opacity: 0;
+  }
+  /* Over the limit: Base UI keeps the toast, inert, until a newer one closes. */
+  &[data-limited] {
+    display: none;
   }
 }
 @utility toast-error {
   border-color: var(--border-danger);
   color: var(--text-danger-strong);
 }
+@utility toast-text {
+  flex: 1;
+  min-width: 0;
+}
+@utility toast-title {
+  font-weight: 400;
+}
+@utility toast-description {
+  margin-top: 2px;
+  color: var(--text-secondary);
+}
+@utility toast-close {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-chip);
+  cursor: pointer;
+  &:hover {
+    color: var(--text-primary);
+    background: var(--bg-card-hover);
+  }
+}
+/* The viewport: fixed at the bottom centre, newest toast at the bottom. Base UI lists the newest
+   toast first, so the column runs in reverse. */
 @utility toast-stack {
   position: fixed;
   bottom: 18px;
@@ -81,7 +127,7 @@
   transform: translateX(-50%);
   z-index: 400;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 8px;
   align-items: center;
 }

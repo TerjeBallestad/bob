@@ -1,4 +1,4 @@
-import { act } from 'react';
+import React, { act } from 'react';
 import { createRoot } from 'react-dom/client';
 import * as Bob from '@terjeballestad/bob';
 
@@ -25,8 +25,7 @@ export const samples: Record<string, () => JSX.Element> = {
   SelectValue: () => <OpenSelect />,
   Textarea: () => <Bob.Textarea />,
   Modal: () => <Bob.Modal open title="Title">Body</Bob.Modal>,
-  Toast: () => <Bob.Toast error>Failed</Bob.Toast>,
-  ToastStack: () => <Bob.ToastStack><Bob.Toast>Saved</Bob.Toast></Bob.ToastStack>,
+  ToastStack: () => <Bob.ToastStack><AddToasts /></Bob.ToastStack>,
   ListRow: () => <Bob.ListRow id="SB-042" title="A ticket" />,
   NavRow: () => <Bob.NavRow label="Inbox" count={3} active />,
   SectionLabel: () => <Bob.SectionLabel>Planned</Bob.SectionLabel>,
@@ -50,6 +49,17 @@ function OpenSelect() {
       </Bob.SelectContent>
     </Bob.Select>
   );
+}
+
+// A toast comes from a call. The effect runs in the browser only, so on the server the stack
+// renders empty.
+function AddToasts() {
+  const toast = Bob.useToastManager();
+  React.useEffect(() => {
+    toast.add({ title: 'Saved', description: 'SB-042' });
+    toast.add({ title: 'Could not save', type: 'error' });
+  }, []);
+  return null;
 }
 
 // Renders a sample in the DOM (the test files run in happy-dom) and returns the page's HTML.

@@ -31,20 +31,50 @@ cat > "$work/ws/app/tsconfig.json" <<'JSON'
   "include": ["src"] }
 JSON
 cat > "$work/ws/app/src/use.tsx" <<'TSX'
-import { Button, Chip, Input, Modal, SegToggle, Toast, ToastStack } from '@terjeballestad/bob';
+import {
+  Button, Chip, FormRow, Input, Modal, SegToggle, Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  ToastStack, createToastManager, useToastManager, type ToastOptions,
+} from '@terjeballestad/bob';
+import { useState } from 'react';
+
+export const toast = createToastManager();
+const failed: ToastOptions = { title: 'Could not save', description: 'Try again', type: 'error', timeout: 0 };
+export const id: string = toast.add(failed);
+
+const stages = [{ value: 'inbox', label: 'Inbox' }, { value: 'done', label: 'Done' }];
+function Stage() {
+  const [stage, setStage] = useState('inbox');
+  return (
+    <FormRow label="Stage">
+      <Select items={stages} value={stage} onValueChange={(v) => v && setStage(v)} name="stage">
+        <SelectTrigger className="w-40" aria-invalid={stage === 'done'} aria-describedby="stage-error">
+          <SelectValue placeholder="None" />
+        </SelectTrigger>
+        <SelectContent>
+          {stages.map((s) => <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>)}
+        </SelectContent>
+      </Select>
+    </FormRow>
+  );
+}
+function SaveButton() {
+  const local = useToastManager();
+  return <Button onClick={() => local.add({ title: 'Saved' })}>Save</Button>;
+}
 export const ok = (
   <>
+    <Stage />
     <Button variant="ghost" onClick={() => {}} type="submit">Save</Button>
     <Chip mono tone="green" title="role">admin</Chip>
     <Input value="x" onChange={(e) => e.target.value} />
     <Modal open title="Archive?" onClose={() => {}} footer={<Button>Archive</Button>}>Body</Modal>
     <SegToggle options={['day', { value: 'week', label: 'Week' }]} value="day" onChange={(v: string) => v} />
-    <ToastStack><Toast error>Could not save</Toast></ToastStack>
+    <ToastStack toastManager={toast} timeout={3000} limit={3}><SaveButton /></ToastStack>
   </>
 );
 TSX
 (cd "$work/ws" && npm install --silent --no-audit --no-fund >/dev/null && cd app && npx tsc -p .)
-# Modal, SegToggle and ToastStack run on Base UI, Bob's runtime dependency. The type check above
+# Modal, Select, SegToggle and ToastStack run on Base UI, Bob's runtime dependency. The type check above
 # resolves its types; this resolves its code from the app, so a missing dependency fails here.
-(cd "$work/ws/app" && node --input-type=module -e "await import('@base-ui/react/dialog'); await import('@base-ui/react/toggle-group'); await import('@base-ui/react/toast')")
+(cd "$work/ws/app" && node --input-type=module -e "await import('@base-ui/react/dialog'); await import('@base-ui/react/toggle-group'); await import('@base-ui/react/toast'); await import('@base-ui/react/select')")
 echo "consumer check passed"

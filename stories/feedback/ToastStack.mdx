@@ -6,11 +6,11 @@ import { Lede, Facts, DoDont, Do, Dont } from '../docs/blocks';
 
 # ToastStack
 
-<Lede>The place on screen where toasts appear: bottom centre, over everything, oldest on top.</Lede>
+<Lede>The toast provider, and the place on screen where toasts appear: bottom centre, over everything, newest at the bottom.</Lede>
 
 <Facts items={[
   ['Import', "import { ToastStack } from '@terjeballestad/bob'"],
-  ['Renders', '<div role="region">, a live region, fixed 18px above the bottom, centred, z-index 400'],
+  ['Renders', 'its children, then <div role="region" aria-label="Notifications">, fixed 18px above the bottom, centred, z-index 400, and two hidden live regions'],
   ['Built on', 'Base UI Toast.Provider and Toast.Viewport (@base-ui/react)'],
   ['Classes', 'toast-stack'],
 ]} />
@@ -21,7 +21,7 @@ import { Lede, Facts, DoDont, Do, Dont } from '../docs/blocks';
 
 ## When to use
 
-- Once, at the root of the app, holding every [Toast](?path=/docs/feedback-toast--docs).
+- Once, at the root of the app. Every [Toast](?path=/docs/feedback-toast--docs) shows in it.
 
 ## When not to use
 
@@ -30,7 +30,8 @@ import { Lede, Facts, DoDont, Do, Dont } from '../docs/blocks';
 <DoDont>
 <Do>
 
-- Render one ToastStack and keep it mounted, also when it is empty.
+- Render one ToastStack around the app and keep it mounted, also when it is empty.
+- Pass a manager from `createToastManager()` to add toasts from outside React.
 
 </Do>
 <Dont>
@@ -40,11 +41,21 @@ import { Lede, Facts, DoDont, Do, Dont } from '../docs/blocks';
 </Dont>
 </DoDont>
 
+## Usage
+
+```tsx
+export const toast = createToastManager();
+
+<ToastStack toastManager={toast} timeout={4000} limit={3}>
+  <App />
+</ToastStack>
+```
+
+- `children` is the app. A component inside it can call `useToastManager()`.
+- `timeout` (4000 ms) is how long a toast stays. 0 keeps it until the user closes it.
+- `limit` (3) is the most toasts on screen. An older one waits, hidden, until a newer one closes.
+
 ## Accessibility
 
-ToastStack is built on Base UI's toast viewport. It is a live region: `role="region"`,
-`aria-live="polite"`, named "Notifications".
-
-- A screen reader reads only the changes to a live region that was already on the page. Keep the
-  stack mounted, also when it is empty, and each toast the app adds is read.
-- The toasts keep their own roles: `status`, or `alert` for an error.
+- The stack is a region named "Notifications". F6 moves focus to it from anywhere on the page.
+- The stack is not a live region. Two hidden live regions beside it read each toast once: polite for a success, assertive for an error. They are in the page before the first toast, so keep the stack mounted.

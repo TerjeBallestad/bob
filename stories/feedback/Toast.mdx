@@ -1,6 +1,6 @@
 import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
 import * as Stories from './Toast.stories';
-import { Lede, Facts, DoDont, Do, Dont } from '../docs/blocks';
+import { Lede, Facts, DoDont, Do, Dont, Keys } from '../docs/blocks';
 
 <Meta of={Stories} />
 
@@ -9,19 +9,21 @@ import { Lede, Facts, DoDont, Do, Dont } from '../docs/blocks';
 <Lede>A short message that confirms an action, at the bottom of the screen, and goes away.</Lede>
 
 <Facts items={[
-  ['Import', "import { Toast, ToastStack } from '@terjeballestad/bob'"],
-  ['Renders', '<div>, which fades in (toast-in, 0.18s)'],
-  ['Classes', 'toast  toast-error'],
+  ['Import', "import { ToastStack, createToastManager, useToastManager } from '@terjeballestad/bob'"],
+  ['Add one', "toast.add({ title, description, type: 'success' | 'error', timeout })"],
+  ['Renders', '<div role="dialog"> in the ToastStack, named by its title, with a Close button; it fades in (toast-in, 0.18s)'],
+  ['Built on', 'Base UI Toast (@base-ui/react), from shadcn/ui\'s Base UI toast'],
+  ['Classes', 'toast  toast-error  toast-text  toast-title  toast-description  toast-close'],
 ]} />
 
-<Canvas of={Stories.Default} />
+<Canvas of={Stories.Default} story={{ inline: false, height: '192px' }} />
 
 <Controls of={Stories.Default} />
 
 ## When to use
 
 - To confirm that an action worked when its result is not in view: **SB-341 archived**.
-- To say that an action failed, with `error`, when the user can try again.
+- To say that an action failed, with `type: 'error'`, when the user can try again.
 
 ## When not to use
 
@@ -33,43 +35,75 @@ import { Lede, Facts, DoDont, Do, Dont } from '../docs/blocks';
 <Do>
 
 - Write two to five words, past tense, no subject: **Title updated**, **SB-341 archived**.
-- Remove it after about four seconds, and keep an error until the user acts.
+- Keep an error until the user acts: `toast.add({ title: 'Could not save', type: 'error', timeout: 0 })`.
 
 </Do>
 <Dont>
 
 - Toast an action whose result the user can already see.
-- Show more than three at once.
+- Pass `priority`. Bob reads `type`: an error is read at once, a success when the screen reader is idle.
 
 </Dont>
 </DoDont>
 
 ## Success and error
 
-<Canvas of={Stories.SuccessAndError} />
+<Canvas of={Stories.SuccessAndError} story={{ inline: false, height: '192px' }} />
 
 ## Usage
 
-Toast shows a message; it does not time itself out or stack itself. The app keeps the list, puts
-the toasts in one [ToastStack](?path=/docs/feedback-toaststack--docs), and removes each after a
-timer.
+A toast is a call, not an element. Render one [ToastStack](?path=/docs/feedback-toaststack--docs)
+at the root of the app, then add toasts in one of two ways. The API is Base UI's.
+
+A manager, to add a toast from anywhere, also outside React:
+
+```tsx
+// toast.ts
+export const toast = createToastManager();
+
+// App.tsx
+<ToastStack toastManager={toast}>
+  <App />
+</ToastStack>
+
+// anywhere
+toast.add({ title: 'Title updated' });
+toast.add({ title: 'Could not save', description: err.message, type: 'error' });
+```
+
+The hook, in a component inside the stack:
+
+```tsx
+function SaveButton() {
+  const toast = useToastManager();
+  return <Button onClick={() => toast.add({ title: 'Saved' })}>Save</Button>;
+}
+```
+
+- `toast.add` returns the toast's id. `toast.close(id)` closes it, and `toast.update(id, { title })` changes it.
+- A toast closes itself after the stack's `timeout` (4 seconds), or its own. `timeout: 0` keeps it until the user closes it.
+- `toast.promise(promise, { loading, success, error })` shows one toast through the three states.
 
 ## Interaction test
 
-**Show toasts (test)** checks that each action adds a toast to the one stack, that the error toast
-has its style, and that the focus stays on the button that was pressed. CI runs it in the built
-Storybook.
+**Show toasts (test)** checks that each action adds a toast to the one stack, that a screen reader
+gets each toast once (polite for a success, assertive for an error), that the focus stays on the
+button that was pressed, and that Close removes a toast. CI runs it in the built Storybook.
 
 <Canvas of={Stories.ShowToasts} story={{ inline: false, height: '360px' }} />
 
 ## Accessibility
 
+<Keys rows={[
+  ['F6', 'Moves focus to the stack and pauses the timers.'],
+  ['Tab', 'In the stack: moves to the next toast, then to its Close button.'],
+  ['Shift+Tab', 'From the stack: gives focus back to where it was before F6.'],
+  ['Escape', 'Closes the focused toast.'],
+  ['Enter Space', 'On Close: closes the toast.'],
+]} />
+
 - A toast never takes focus, so the user's place is kept.
-
-- A toast is a `status`, an error toast an `alert`, so a screen reader reads it when it appears.
+- A screen reader reads each toast once. ToastStack keeps two live regions beside the stack, never inside it: polite for a success, assertive for an error. The stack itself is not a live region.
+- The pointer over the stack, or focus in it, pauses the timers. A swipe down or to the right closes a toast.
 - The fade-in runs only when the system allows motion (`motion-safe`).
-
-- [ToastStack](?path=/docs/feedback-toaststack--docs) is a live region, built on Base UI's toast
-  viewport. Keep it mounted, and a screen reader reads each toast the app adds to it.
-- Toast is Bob's own element, not Base UI's Toast.Root. Base UI's toast takes its content from a
-  toast manager and is a `dialog`; Bob's Toast keeps its props and its roles.
+- A screen reader test (VoiceOver, NVDA) is still to do before 1.0.0. The tests check the DOM: one live region per toast, and no live role inside a live region.

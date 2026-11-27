@@ -6,7 +6,7 @@ import { expect, openStory, test } from './fixtures';
 // Keyboard behaviour in a real browser (PLAN-005 TASK-032). A gap would be a test marked
 // test.fail(): it documents what is missing and fails as soon as the gap is closed. None is left.
 // Modal, Select, SegToggle and ToastStack run on Base UI primitives (DD-034, DD-036), which do
-// the focus trap, the roving tabindex, the listbox keys and the live region; Bob writes none of
+// the focus trap, the roving tabindex, the listbox keys and the toast timers; Bob writes none of
 // it by hand. These tests check that Bob's wiring keeps that behaviour.
 
 test.describe('Modal', () => {
@@ -252,21 +252,107 @@ test.describe('SegToggle', () => {
 });
 
 test.describe('Toast', () => {
-  test('a toast is a status, an error toast an alert', async ({ page }) => {
+  // Base UI's toast manager and viewport (DD-036). Bob's viewport is not a live region; two live
+  // regions beside it read each toast once: polite for a success, assertive for an error.
+  test('one live region reads each toast: no live region or status role inside another', async ({ page }) => {
     await openStory(page, 'feedback-toast--success-and-error');
-    await expect(page.getByRole('status')).toHaveText('Saved.');
-    await expect(page.getByRole('alert')).toHaveText(/Could not save/);
+    await expect(page.getByRole('dialog', { name: 'Could not save' })).toBeVisible();
+    const shape = await page.evaluate(() => {
+      const live = [...document.querySelectorAll('[aria-live]')].filter((el) => el.getAttribute('aria-live') !== 'off');
+      const liveRoles = '[role="status"], [role="alert"], [role="log"], [aria-live]';
+      return {
+        live: live.map((el) => el.getAttribute('aria-live')),
+        // A live region or a live role inside a live region is read twice by some screen readers.
+        nested: live.flatMap((el) => [...el.querySelectorAll(liveRoles)].filter((n) => n.getAttribute('aria-live') !== 'off').map((n) => n.outerHTML)),
+        insideLive: live.filter((el) => el.parentElement?.closest(liveRoles)).length,
+        // Each toast's title, and the live regions whose text holds it.
+        readBy: Object.fromEntries(
+          [...document.querySelectorAll('.toast-title')].map((t) => [t.textContent, live.filter((el) => el.textContent!.includes(t.textContent!)).map((el) => el.getAttribute('aria-live'))]),
+        ),
+        stack: document.querySelector('.toast-stack')!.getAttribute('aria-live'),
+      };
+    });
+    expect(shape.stack).toBe('off');
+    expect(shape.nested).toEqual([]);
+    expect(shape.insideLive).toBe(0);
+    expect(shape.readBy).toEqual({ Saved: ['polite'], 'Could not save': ['assertive'] });
   });
 
-  // Base UI's toast viewport (DD-034). The play function of feedback-toast--show-toasts checks
-  // that the region is in the page, empty, before the first toast.
-  test('ToastStack is a polite live region named Notifications, and the toasts sit in it', async ({ page }) => {
-    await openStory(page, 'feedback-toast--show-toasts');
-    const region = page.getByRole('region', { name: 'Notifications' });
-    await expect(region).toHaveAttribute('aria-live', 'polite');
-    await expect(region).toHaveAttribute('aria-relevant', 'additions text');
-    await expect(region.getByRole('status')).toHaveText('Title updated');
-    await expect(region.getByRole('alert')).toHaveText('Could not save');
+  test('a toast is a dialog named by its title, with a Close button that a screen reader can see', async ({ page }) => {
+    await openStory(page, 'feedback-toast--success-and-error');
+    const error = page.getByRole('dialog', { name: 'Could not save' });
+    await expect(error).toHaveClass(/toast-error/);
+    await expect(error.getByRole('button', { name: 'Close' })).toBeVisible();
+    // Nothing a screen reader cannot see takes focus (WCAG 4.1.2).
+    await expect(page.locator('.toast-stack [aria-hidden="true"]')).toHaveCount(0);
+  });
+
+  test.describe('keys, timers and swipe', () => {
+    // The story's toasts close themselves after 1.5 s.
+    test.beforeEach(async ({ page }) => {
+      await openStory(page, 'feedback-states--toast-keyboard');
+    });
+    const add = async (page: Page, button = 'Save') => {
+      await page.getByRole('button', { name: button }).focus();
+      await page.keyboard.press('Enter');
+    };
+
+    test('a toast closes itself after its timeout', async ({ page }) => {
+      await add(page);
+      await expect(page.getByRole('dialog', { name: 'Title updated' })).toBeVisible();
+      await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 4000 });
+    });
+
+    test('the pointer over the stack pauses the timer, and leaving it starts it again', async ({ page }) => {
+      await add(page);
+      await page.getByRole('dialog', { name: 'Title updated' }).hover();
+      await page.waitForTimeout(2500);
+      await expect(page.getByRole('dialog', { name: 'Title updated' })).toBeVisible();
+      await page.mouse.move(5, 5);
+      await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 4000 });
+    });
+
+    test('F6 moves focus to the stack and pauses the timer; Tab reaches the toast and its Close button', async ({ page }) => {
+      await add(page);
+      await page.keyboard.press('F6');
+      await expect(page.getByRole('region', { name: 'Notifications' })).toBeFocused();
+      await page.waitForTimeout(2500);
+      await expect(page.getByRole('dialog', { name: 'Title updated' })).toBeVisible();
+      await page.keyboard.press('Tab');
+      await expect(page.getByRole('dialog', { name: 'Title updated' })).toBeFocused();
+      await page.keyboard.press('Tab');
+      await expect(page.getByRole('button', { name: 'Close' })).toBeFocused();
+      await page.keyboard.press('Enter');
+      await expect(page.getByRole('dialog')).toHaveCount(0);
+    });
+
+    test('Shift+Tab from the stack gives focus back to where it was before F6', async ({ page }) => {
+      await add(page, 'Fail');
+      await page.keyboard.press('F6');
+      await expect(page.getByRole('region', { name: 'Notifications' })).toBeFocused();
+      await page.keyboard.press('Shift+Tab');
+      await expect(page.getByRole('button', { name: 'Fail' })).toBeFocused();
+    });
+
+    test('Escape closes the focused toast', async ({ page }) => {
+      await add(page);
+      await page.keyboard.press('F6');
+      await page.keyboard.press('Tab');
+      await expect(page.getByRole('dialog', { name: 'Title updated' })).toBeFocused();
+      await page.keyboard.press('Escape');
+      await expect(page.getByRole('dialog')).toHaveCount(0);
+    });
+
+    test('a swipe to the right closes a toast', async ({ page }) => {
+      await add(page);
+      const box = (await page.getByRole('dialog', { name: 'Title updated' }).boundingBox())!;
+      await page.mouse.move(box.x + 20, box.y + box.height / 2);
+      await page.mouse.down();
+      await page.mouse.move(box.x + 120, box.y + box.height / 2, { steps: 10 });
+      await page.mouse.up();
+      await page.mouse.move(5, 5);
+      await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 700 });
+    });
   });
 });
 

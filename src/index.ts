@@ -40,7 +40,16 @@ export { Textarea, type TextareaProps } from './components/forms/Textarea';
 
 // feedback
 export { Modal, type ModalProps } from './components/feedback/Modal';
-export { Toast, ToastStack, type ToastProps, type ToastStackProps } from './components/feedback/Toast';
+export {
+  ToastStack,
+  createToastManager,
+  useToastManager,
+  type ToastManager,
+  type ToastObject,
+  type ToastOptions,
+  type ToastStackProps,
+  type ToastType,
+} from './components/feedback/Toast';
 
 // board
 export { ListRow, type ListRowProps } from './components/board/ListRow';
