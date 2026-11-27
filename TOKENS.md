@@ -52,7 +52,7 @@ merges them.
 | red | 9 `#e5484d` · 11 `#d47f82` · 12 `#f4a6a8` | 9-a12 · 9-a40 · 9-a50 |
 | gold | 9 `#d3b078` | 9-a18 |
 
-Also `--white` `#ffffff`, `--black-a40` / `-a50` / `-a55` (shadows) and `--gray-1-a55` (the scrim).
+Also `--white` `#ffffff`, `--black-a40` / `-a45` / `-a50` / `-a55` / `-a75` (shadows) and `--gray-1-a55` (the scrim).
 In Tailwind, a step is a class with every colour utility: `bg-gray-3`, `text-indigo-9`,
 `border-red-9-a40`. Bob's theme clears Tailwind's default palette, so `gray-500` does not exist.
 
@@ -220,8 +220,17 @@ Radii: `--radius-kbd` 4px (chips/kbd) · `--radius-chip` 5px · `--radius-btn` 7
 (buttons, inputs, nav rows) · `--radius` 8px (cards) · `--radius-lg` 10px (featured) ·
 `--radius-xl` 12px (modals). Dots are circles; swatches are 2px squares.
 
-Shadows only on floating layers: `--shadow-modal` `0 24px 60px` black-a50 ·
-`--shadow-overlay` `-24px 0 60px` black-a55 · `--shadow-toast` `0 8px 24px` black-a40.
+Shadows only on floating layers. Each is a Tailwind class of the same name (`shadow-modal`):
+
+| Token | Value | Use |
+| --- | --- | --- |
+| `--shadow-toast` | `0 8px 24px` black-a40 | Toast, Select list |
+| `--shadow-popup` | `0 12px 32px` black-a45 | A list that drops from a field (Makron's task picker) |
+| `--shadow-modal` | `0 24px 60px` black-a50 | Modal |
+| `--shadow-overlay` | `-24px 0 60px` black-a55 | Slide-over |
+| `--shadow-panel` | `0 28px 64px -22px` black-a75 | A panel alone over a picture (Makron's login card) |
+
+Tailwind's `shadow-sm` to `shadow-2xl` stay; Bob's components do not use them.
 Emphasis rings: `--glow-accent` `0 0 0 1px` indigo-9-a12 · `--glow-green` `0 0 6px` green-9-a70.
 
 Space: Bob has no spacing tokens yet. The Tokens page shows the padding, margin and gap values the

@@ -168,6 +168,16 @@ describe('the Tailwind entry', () => {
     expect(tw).toMatch(/--leading-loose: 2;/);
   });
 
+  it("makes each of Bob's shadows a shadow-* class that reads its token", async () => {
+    const names = ['toast', 'popup', 'modal', 'overlay', 'panel'];
+    const css = await buildApp(names.map((n) => `shadow-${n}`));
+    const layout = readFileSync('src/tokens/layout.css', 'utf8');
+    for (const n of names) {
+      expect(layout, `--shadow-${n}`).toMatch(new RegExp(`--shadow-${n}:`));
+      expect(css, `shadow-${n}`).toMatch(new RegExp(`\\.shadow-${n} \\{\\s*--tw-shadow: var\\(--shadow-${n}\\);`));
+    }
+  });
+
   it("lets an app's font, size, colour and tracking utilities win over btn-text", async () => {
     const css = await buildApp(['text-tiny', 'text-muted', 'font-mono', 'tracking-label', 'uppercase']);
     for (const cls of ['text-tiny', 'text-muted', 'font-mono', 'tracking-label', 'uppercase'])

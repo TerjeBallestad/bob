@@ -30,6 +30,8 @@ const newClasses = new Set([
   ...keysIn('text-color').map((k) => `text-${k}`),
   ...keysIn('text-decoration-color').map((k) => `decoration-${k}`),
   ...keysIn('outline-color').map((k) => `outline-${k}`),
+  // 1.2's shadow classes: shadow-panel is a shadow now, not 0.x's --panel as a shadow colour.
+  ...keysIn('shadow').map((k) => `shadow-${k}`),
 ]);
 const oldClasses = PREFIXES.flatMap((p) => oldKeys.map((k) => `${p}-${k}`)).filter((c) => !newClasses.has(c));
 

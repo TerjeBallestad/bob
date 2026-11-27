@@ -176,7 +176,7 @@ export function HueScales() {
       <div style={{ display: 'flex', gap: 24, marginTop: 22, fontSize: 'var(--fs-caption)', color: 'var(--text-secondary)' }}>
         {[
           ['white', 'text on a solid fill (Button accent, danger)'],
-          ['black-a40 · a50 · a55', 'shadows'],
+          ['black-a40 · a45 · a50 · a55 · a75', 'shadows'],
           ['gray-1-a55', 'the modal scrim'],
         ].map(([n, use]) => (
           <div key={n}>
@@ -398,7 +398,7 @@ export function ShapeAndSpace() {
       </div>
       <Label style={{ margin: '22px 0 10px' }}>Shadow — floating layers only</Label>
       <div style={{ display: 'flex', gap: 24, background: 'var(--bg-card)', padding: '20px 22px 26px', borderRadius: 'var(--radius)', border: '1px solid var(--border-subtle)' }}>
-        {['--shadow-toast', '--shadow-modal', '--shadow-overlay', '--glow-accent'].map((s) => (
+        {['--shadow-toast', '--shadow-popup', '--shadow-modal', '--shadow-overlay', '--shadow-panel', '--glow-accent'].map((s) => (
           <div key={s} style={{ flex: 1 }}>
             <div style={{ height: 40, background: 'var(--bg-modal)', borderRadius: 'var(--radius)', boxShadow: `var(${s})`, border: '1px solid var(--border-strong)' }} />
             <div style={{ ...mono, fontSize: 'var(--fs-tiny)', marginTop: 8, color: 'var(--text-secondary)' }}>{short(s)}</div>

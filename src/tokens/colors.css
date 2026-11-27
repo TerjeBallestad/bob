@@ -36,8 +36,10 @@
   --gray-1-a55: rgba(5, 6, 9, 0.55);
   --white: #ffffff;
   --black-a40: rgba(0, 0, 0, 0.4);
+  --black-a45: rgba(0, 0, 0, 0.45);
   --black-a50: rgba(0, 0, 0, 0.5);
   --black-a55: rgba(0, 0, 0, 0.55);
+  --black-a75: rgba(0, 0, 0, 0.75);
 
   /* Hue scales use the 12 steps of Radix Colors: 1–2 backgrounds, 3–5 component fills,
      6–8 borders, 9 the solid colour, 10 its hover, 11 low-contrast text, 12 high-contrast

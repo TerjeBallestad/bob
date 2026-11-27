@@ -9,6 +9,8 @@
   --shadow-modal: 0 24px 60px var(--black-a50);
   --shadow-overlay: -24px 0 60px var(--black-a55);
   --shadow-toast: 0 8px 24px var(--black-a40);
+  --shadow-popup: 0 12px 32px var(--black-a45); /* a list that drops from a field */
+  --shadow-panel: 0 28px 64px -22px var(--black-a75); /* a panel alone over a picture */
   --glow-accent: 0 0 0 1px var(--indigo-9-a12);
   --glow-green: 0 0 6px var(--green-9-a70);
   --sidebar-w: 226px;

@@ -44,8 +44,10 @@
   --color-gray-1-a55: var(--gray-1-a55);
   --color-white: var(--white);
   --color-black-a40: var(--black-a40);
+  --color-black-a45: var(--black-a45);
   --color-black-a50: var(--black-a50);
   --color-black-a55: var(--black-a55);
+  --color-black-a75: var(--black-a75);
   --color-indigo-6: var(--indigo-6);
   --color-indigo-8: var(--indigo-8);
   --color-indigo-9: var(--indigo-9);
@@ -202,10 +204,13 @@
   --tracking-label: var(--ls-label);
 }
 
-/* Radii and fonts. Bob's tokens already have Tailwind's names (--radius-btn, --font-sans), so
-   `--radius-btn: var(--radius-btn)` would refer to itself if Tailwind wrote it out. `reference`
-   tells Tailwind not to write these variables: it only learns the keys, and `rounded-btn` or
-   `font-mono` read Bob's own tokens. The fonts point at --sans and --mono, the source tokens. */
+/* Radii, shadows and fonts. Bob's tokens already have Tailwind's names (--radius-btn,
+   --shadow-modal, --font-sans), so `--radius-btn: var(--radius-btn)` would refer to itself if
+   Tailwind wrote it out. `reference` tells Tailwind not to write these variables: it only learns
+   the keys, and `rounded-btn`, `shadow-modal` or `font-mono` read Bob's own tokens. The fonts
+   point at --sans and --mono, the source tokens.
+
+   Shadows are for floating layers only. Tailwind's shadow-sm to shadow-2xl stay. */
 @theme inline reference {
   --font-sans: var(--sans);
   --font-mono: var(--mono);
@@ -214,6 +219,11 @@
   --radius-kbd: var(--radius-kbd);
   --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
+  --shadow-toast: var(--shadow-toast);
+  --shadow-popup: var(--shadow-popup);
+  --shadow-modal: var(--shadow-modal);
+  --shadow-overlay: var(--shadow-overlay);
+  --shadow-panel: var(--shadow-panel);
 }
 
 /* Bob's animations, as Tailwind theme keys: an app writes animate-live, animate-card-in,
