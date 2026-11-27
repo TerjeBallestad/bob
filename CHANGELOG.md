@@ -2,9 +2,35 @@
 
 ## 1.2.0
 
-A minor version (DD-038, SB-023): Bob's type becomes a set of text styles, Bob owns the radius
-scale, and an app gets classes for what Makron's review found it lacked. docs/migration-1.2.md
-lists what an app changes, with each class rename and each value that moves.
+A minor version by Terje's choice (DD-038, SB-023), as an exception to the semver rule in
+README.md: some classes change their output and some are gone, which the rule would make a major
+version. Bob's type becomes a set of text styles, Bob owns the radius and type scales, and an app
+gets classes for what Makron's review found it lacked. docs/migration-1.2.md lists what an app
+changes, with each class rename and each value that moves.
+
+### Changes with no code edit
+
+An app sees these as soon as it bumps the version:
+
+- **Gone:** `rounded-2xl`, `rounded-3xl` and `rounded-4xl`, with their side and corner forms
+  (`rounded-t-2xl`, ...), and the theme variables `--radius-md` and `--radius-2xl` to
+  `--radius-4xl`.
+- **Gone:** Tailwind's text sizes `text-xs` to `text-9xl` and their `--text-*` variables. Bob
+  clears them (`--text-*: initial`), as it clears Tailwind's colours and radii.
+- **Changed:** `rounded` and `rounded-md` are Bob's 8px (`--radius`), not Tailwind's 4px and 6px.
+- **Changed:** `text-micro`, `text-prose`, `text-title` and `text-doc` now set a line height, and
+  `text-micro`, `text-title` and `text-doc` a weight and letter spacing (the table below). A
+  weight or tracking class on the same element still wins; a line height moves. In Makron the
+  sidebar brand (`text-prose`, now 1.65) pushes the nav down about 2px, and the first-run and
+  login cards grow.
+- **Changed:** `text-tiny`, `text-caption`, `text-body` and `text-base` set line height `normal`.
+  Without Tailwind's preflight (pm-board, Makron) text had `normal` already. With preflight
+  (README's `@import "tailwindcss"`), each such line goes from 1.5 to `normal`.
+- **Changed:** every Button is `type="button"` unless the app sets `type`. In 1.1 only
+  `variant="text"` was; the others submitted a form they sat in. A Button that submits says
+  `type="submit"`.
+- **Renamed, still works:** `text-doc` and `--fs-doc` are deprecated names of `text-display` and
+  `--fs-display`. They work through 1.x and go in 2.0.
 
 ### Text styles
 
@@ -12,16 +38,17 @@ lists what an app changes, with each class rename and each value that moves.
   the style needs them the letter spacing and the weight, through Tailwind's
   `--text-*--line-height`, `--text-*--letter-spacing` and `--text-*--font-weight`. An app writes
   one class: `text-label`, not `text-tiny font-semibold tracking-label`.
-- 13 styles. The ramp names (`text-micro` to `text-doc`) are each size's plain style. Five new
-  role names are second styles at a size: `text-id` and `text-label` (10.5px), `text-note`
-  (11.5px), `text-subhead` (12.5px) and `text-heading` (13.5px). The set comes from the
-  combinations Bob's components, pm-board and Makron use.
-- One-line styles set `line-height: normal`, the line height text in both apps has today.
-  `text-note` (1.5), `text-prose` (1.65), `text-title` and `text-doc` (1.3) set a number.
-- `text-micro`, `text-title` and `text-doc` now set weight 700 and their letter spacing, and
-  `text-prose`, `text-title` and `text-doc` a line height. Bob's rule makes a changed token a
-  major version; this one is minor because DD-038 asks for it, and a weight or tracking class
-  next to a style still wins, so 1.1 code renders as before except for the line heights.
+- 14 styles and a deprecated alias. The ramp names (`text-micro` to `text-display`) are each
+  size's plain style. Five role names are second styles at a size: `text-id` and `text-label`
+  (10.5px), `text-note` (11.5px), `text-subhead` (12.5px) and `text-heading` (13.5px). The set
+  comes from the combinations Bob's components, pm-board and Makron use.
+- New 18px step: `--fs-headline` and `text-headline` (1.3, -.01em, 700), for a heading inside a
+  document (pm-board's markdown h1). The top of the ramp reads title (15px), headline (18px),
+  display (21px).
+- `text-doc` is renamed `text-display`, and `--fs-doc` `--fs-display`. The old names stay as
+  deprecated aliases through 1.x.
+- One-line styles set `line-height: normal`. `text-note` (1.5), `text-prose` (1.65),
+  `text-title`, `text-headline` and `text-display` (1.3) set a number.
 - A style sets no case and no family (Tailwind's text styles cannot): a label adds `uppercase`,
   an id adds `font-mono`.
 - New tokens: `--ls-tag` (.05em, TicketCard's kind and priority now read it), `--lh-heading`
@@ -35,6 +62,8 @@ lists what an app changes, with each class rename and each value that moves.
   10px, `rounded-xl` 12px. `rounded-btn` (7px), `rounded-chip` (5px) and `rounded-kbd` (4px) stay.
 - Changed for an app: `rounded-md` 6px to 8px, `rounded` 4px to 8px. `rounded-2xl` to
   `rounded-4xl` are gone. `rounded-none` and `rounded-full` stay.
+- A radius off the size steps moves to the nearest one, and a tie rounds up (DD-037): 3px to
+  `rounded-sm`, 6px to `rounded-md`.
 - New tokens `--radius-xs` (2px) and `--radius-sm` (4px). `--radius-kbd` reads `--radius-sm`, the
   same 4px. ProgressBar and TicketCard's progress read `--radius-xs`, the same 2px.
 
@@ -50,10 +79,12 @@ lists what an app changes, with each class rename and each value that moves.
 - `--indigo-10` `#9aa1f0`, indigo 9's hover step (Radix step 10), for a link under the pointer.
   `text-indigo-10` and every other colour utility work.
 
-### Button: size `xs` and variant `danger-tint`
+### Button: `type="button"`, size `xs` and variant `danger-tint`
 
-- `size="xs"` (`btn-xs`): 10.5px, 1px by 6px around the label with the border, the Kbd radius.
-  For a button inside a dense row. It works with every variant.
+- A change: every variant is `type="button"` unless the app sets `type` (above).
+- `size="xs"` (`btn-xs`): 10.5px, 1px by 6px around the label with the border (a mono chip's
+  padding), the Kbd radius. For a button inside a dense row. It works with every variant. It is
+  about 16px high, under WCAG 2.2's 24px target; the design pass decides.
 - `variant="danger-tint"` (`btn-danger-tint`): the danger tint, `--text-danger-soft` text (5.5:1
   on a card, AA), weight 500, hover to `--text-danger-strong`. Makron's row stop button is
   `<Button variant="danger-tint" size="xs" className="font-mono">`.
@@ -65,8 +96,8 @@ lists what an app changes, with each class rename and each value that moves.
 
 ### Screenshots
 
-New baselines for the stories that show the additions: `tokens--type-classes` (now "Text
-styles"), `tokens--radius-shadow-space`, `tokens--hues` (indigo 10, the new black steps),
+New baselines for the stories that show the additions: `tokens--type` (the 18px step, the
+`display` name), `tokens--type-classes` (now "Text styles"), `tokens--radius-shadow-space`, `tokens--hues` (indigo 10, the new black steps),
 `tokens--contrast-pairs-in-use` (Button danger-tint), `core-button--variants` (an `xs` row and
 `danger-tint`), `core-button--text` (a running row's stop; the `×` is `text-base`, as in
 Makron) and `core-states--buttons` (a `danger-tint` row). No existing component looks different.
