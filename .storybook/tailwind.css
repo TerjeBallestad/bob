@@ -1,9 +1,12 @@
 /* Tailwind utilities for the stories' layout wrappers: `<div className="flex gap-2.5">`, so the
-   "Show code" blocks read like app code. Only the story files are scanned. No theme is loaded
-   except the spacing unit, so Bob's tokens stay as they are; Bob's own classes come from
-   src/styles.css, as in the package. */
+   "Show code" blocks read like app code. Only the story files are scanned. No Bob theme is loaded
+   here, only the spacing unit, so only layout utilities work in stories (flex, grid, gap, w-*,
+   h-screen), not Bob's colours or radii. Bob's own classes come from src/styles.css, as in the
+   package. The utilities sit in the layer `utilities`, after Bob's `base`, as in an app. */
 @theme {
   --spacing: 0.25rem;
 }
 @source '../stories/**/*.stories.tsx';
-@tailwind utilities source(none);
+@layer utilities {
+  @tailwind utilities source(none);
+}

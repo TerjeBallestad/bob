@@ -120,8 +120,8 @@ test.describe('focus ring', () => {
 });
 
 test.describe('roles and states', () => {
-  test('the active NavRow is the current page', async ({ page }) => {
-    await openStory(page, 'board-navrow--default');
+  test('the active NavRow is the current page, and only it', async ({ page }) => {
+    await openStory(page, 'board-navrow--sidebar');
     await expect(page.locator('[aria-current="page"]')).toHaveCount(1);
     await expect(page.locator('[aria-current="page"]')).toHaveClass(/nav-row-active/);
   });

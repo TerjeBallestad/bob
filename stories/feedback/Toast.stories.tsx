@@ -15,7 +15,7 @@ export default {
 
 export const Default: StoryObj<typeof Toast> = {
   render: (args) => <Toast {...args} />,
-  args: { children: 'Saved.', error: false },
+  args: { children: 'Saved.' },
 };
 
 export const SuccessAndError: StoryObj = {

@@ -22,7 +22,7 @@ export const Default: StoryObj<typeof ListRow> = {
       <ListRow {...args} />
     </div>
   ),
-  args: { id: 'SB-042', title: 'The id counter refuses a second SB-042', meta: <Chip mono>task</Chip>, age: '2d', done: false },
+  args: { id: 'SB-042', title: 'The id counter refuses a second SB-042', meta: <Chip mono>task</Chip>, age: '2d' },
 };
 
 export const Rows: StoryObj = {

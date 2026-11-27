@@ -9,6 +9,11 @@ import { bobTheme } from './theme';
 
 const tokenCss = import.meta.glob('../src/tokens/*.css', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 
+// <Tag a="b">\n  text\n</Tag> becomes <Tag a="b">text</Tag>, when the opening tag is on one line
+// and the text holds no tag or expression.
+const inlineTextChildren = (code: string) =>
+  code.replace(/(<([A-Za-z][\w.]*)\b[^<>\n]*>)\n[ \t]*([^<>{}\n]+?)\n[ \t]*<\/\2>/g, '$1$3</$2>');
+
 const preview: Preview = {
   parameters: {
     layout: 'centered',
@@ -18,7 +23,9 @@ const preview: Preview = {
     // with state sets parameters.docs.source.code to its usage instead.
     // Props print in the order the story writes them, on one line while they fit.
     jsx: { sortProps: false, maxInlineAttributesLineLength: 100 },
-    docs: { source: { type: 'dynamic' }, theme: bobTheme(new Tokens(...Object.values(tokenCss)), pkg.version), toc: { headingSelector: 'h2, h3' } },
+    // The printer puts every child on its own lines; `transform` joins a short text child back
+    // onto its tag's line: <Button variant="ghost">Cancel</Button>.
+    docs: { source: { type: 'dynamic', transform: inlineTextChildren }, theme: bobTheme(new Tokens(...Object.values(tokenCss)), pkg.version), toc: { headingSelector: 'h2, h3' } },
     options: {
       storySort: {
         order: ['Foundations', ['Introduction', 'Tokens'], 'Core', 'Forms', 'Feedback', 'Board'],

@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '../../src';
 
-
 export default {
   title: 'Core/Button',
   component: Button,
@@ -20,7 +19,7 @@ export default {
 
 export const Default: StoryObj<typeof Button> = {
   render: (args) => <Button {...args} />,
-  args: { variant: 'primary', size: 'md', children: 'Save', disabled: false },
+  args: { variant: 'primary', children: 'Save' },
 };
 
 export const Variants: StoryObj = {
