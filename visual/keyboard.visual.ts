@@ -1,3 +1,4 @@
+import type { Page } from '@playwright/test';
 import { expect, openStory, test } from './fixtures';
 
 // Keyboard behaviour in a real browser (PLAN-005 TASK-032). What Bob does today passes. A gap is
@@ -7,6 +8,15 @@ import { expect, openStory, test } from './fixtures';
 // tabindex.
 
 test.describe('Modal', () => {
+  // Base UI's Dialog (DD-034) does the focus handling. The dialog renders in a portal at the end
+  // of <body>. At each end of the dialog sits a hidden focus guard: Tab lands on it, and Base UI
+  // moves focus on to the other end a frame later. So the test waits for focus to settle.
+  const focusedButtonInDialog = (page: Page) =>
+    page.evaluate(() => {
+      const el = document.activeElement;
+      return el?.tagName === 'BUTTON' && el.closest('[role="dialog"]') ? el.textContent : null;
+    });
+
   test.beforeEach(async ({ page }) => {
     await openStory(page, 'feedback-states--modal-keyboard');
     await page.getByRole('button', { name: 'Open' }).click();
@@ -19,28 +29,43 @@ test.describe('Modal', () => {
     await expect(dialog.getByRole('button', { name: 'Close' })).toBeVisible();
   });
 
-  test('gap: Escape does not close it', async ({ page }) => {
-    test.fail();
+  test('Escape closes it', async ({ page }) => {
     await page.keyboard.press('Escape');
     await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 1000 });
   });
 
-  test('gap: focus does not move into it when it opens', async ({ page }) => {
-    test.fail();
-    await expect(page.getByRole('dialog').locator(':focus')).toHaveCount(1, { timeout: 1000 });
+  test('focus moves to the dialog when it opens, and the first Tab reaches the close button', async ({ page }) => {
+    await expect(page.getByRole('dialog')).toBeFocused({ timeout: 1000 });
+    await page.keyboard.press('Tab');
+    await expect(page.getByRole('button', { name: 'Close' })).toBeFocused({ timeout: 1000 });
   });
 
-  test('gap: Tab leaves it (no focus trap)', async ({ page }) => {
-    test.fail();
+  test('Tab and Shift+Tab stay inside it (a focus trap)', async ({ page }) => {
     await page.getByRole('dialog').getByRole('button', { name: 'Archive' }).focus();
     await page.keyboard.press('Tab');
-    await expect(page.getByRole('dialog').locator(':focus')).toHaveCount(1, { timeout: 1000 });
+    await expect(page.getByRole('button', { name: 'Close' })).toBeFocused({ timeout: 1000 });
+    await page.keyboard.press('Shift+Tab');
+    await expect(page.getByRole('dialog').getByRole('button', { name: 'Archive' })).toBeFocused({ timeout: 1000 });
+    // Two full rounds: Close, Cancel, Archive, and back to Close.
+    for (const name of ['×', 'Cancel', 'Archive', '×', 'Cancel', 'Archive']) {
+      await page.keyboard.press('Tab');
+      await expect.poll(() => focusedButtonInDialog(page), { timeout: 1000 }).toBe(name);
+    }
   });
 
-  test('gap: focus does not return to the trigger when it closes', async ({ page }) => {
-    test.fail();
+  test('focus returns to the trigger when it closes, by a button or by Escape', async ({ page }) => {
     await page.getByRole('button', { name: 'Cancel' }).click();
     await expect(page.getByRole('button', { name: 'Open' })).toBeFocused({ timeout: 1000 });
+    await page.keyboard.press('Enter');
+    await expect(page.getByRole('dialog')).toBeFocused({ timeout: 1000 });
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('button', { name: 'Open' })).toBeFocused({ timeout: 1000 });
+  });
+
+  test('the page behind it is hidden from assistive technology while it is open', async ({ page }) => {
+    await expect(page.getByRole('button', { name: 'Open' })).toHaveCount(0);
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('button', { name: 'Open' })).toHaveCount(1);
   });
 });
 

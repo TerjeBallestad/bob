@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
+import { expect, screen, waitFor } from 'storybook/test';
 import { Button, Modal } from '../../src';
 
 // The modal with keyboard focus on its close button, and a modal behind a trigger for the
@@ -8,9 +9,17 @@ export default { title: 'Feedback/States', tags: ['!autodocs'] } satisfies Meta;
 
 const noop = () => {};
 
+// The dialog renders in a portal outside the story's root, where the pseudo-states addon does
+// not reach. So the play function focuses the close button the way a keyboard user does: the
+// dialog takes focus when it opens, and Tab moves it to the × button.
 export const ModalFocus: StoryObj = {
   name: 'Modal focus',
-  parameters: { layout: 'fullscreen', pseudo: { focusVisible: ['.modal-close'] } },
+  parameters: { layout: 'fullscreen' },
+  play: async ({ userEvent }) => {
+    await waitFor(() => expect(screen.getByRole('dialog')).toHaveFocus());
+    await userEvent.tab();
+    await expect(screen.getByRole('button', { name: 'Close' })).toHaveFocus();
+  },
   render: () => (
     <div className="h-screen">
       <Modal

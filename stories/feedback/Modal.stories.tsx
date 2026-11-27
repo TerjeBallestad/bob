@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { expect, fn } from 'storybook/test';
+import { expect, fn, screen, waitFor } from 'storybook/test';
 import { Button, Modal } from '../../src';
 
 export default {
@@ -11,7 +11,7 @@ export default {
     title: { control: 'text', description: 'The heading (an `h2`). Phrase it as the decision: "Archive SB-042?".' },
     children: { control: 'text', description: 'The body: what happens, and what can be undone.' },
     footer: { control: false, description: 'The actions, right-aligned. Cancel first, the main action last.' },
-    onClose: { description: 'Called by the × button and by a click on the backdrop. Set `open` to false in it.' },
+    onClose: { description: 'Called by the × button, by Escape and by a click on the backdrop. Set `open` to false in it.' },
     style: { control: false, description: 'Inline styles on the box, for example a `width`.' },
   },
 } satisfies Meta<typeof Modal>;
@@ -53,7 +53,7 @@ function ArchiveDialog({ onClose }: { onClose?: () => void }) {
   );
 }
 
-/** An interaction test: it opens and closes the dialog by keyboard and by pointer. */
+/** An interaction test: it opens and closes the dialog by keyboard and by pointer, and checks where focus goes. */
 export const OpenAndClose: StoryObj<typeof ArchiveDialog> = {
   name: 'Open and close (test)',
   parameters: {
@@ -82,33 +82,48 @@ export const OpenAndClose: StoryObj<typeof ArchiveDialog> = {
   },
   args: { onClose: fn() },
   render: (args) => <ArchiveDialog {...args} />,
+  // The dialog renders in a portal at the end of <body>, outside the story's canvas, so the
+  // test finds it with `screen`.
   play: async ({ args, canvas, userEvent, step }) => {
     const opener = canvas.getByRole('button', { name: 'Archive SB-042' });
 
-    await step('Enter on the opener opens the dialog', async () => {
+    await step('Enter on the opener opens the dialog, and focus moves to the dialog', async () => {
       await userEvent.tab();
       await expect(opener).toHaveFocus();
       await userEvent.keyboard('{Enter}');
-      await expect(canvas.getByRole('heading', { name: 'Archive SB-042?' })).toBeVisible();
+      await expect(screen.getByRole('heading', { name: 'Archive SB-042?' })).toBeVisible();
+      // Base UI moves focus a frame after the dialog opens, and removes it a frame after it
+      // closes, so the checks wait.
+      await waitFor(() => expect(screen.getByRole('dialog')).toHaveFocus());
     });
 
     await step('Tab reaches the close button first, and Enter on it closes the dialog', async () => {
       await userEvent.tab();
       await expect(document.activeElement).toHaveClass('modal-close');
       await userEvent.keyboard('{Enter}');
-      await expect(canvas.queryByRole('heading', { name: 'Archive SB-042?' })).toBeNull();
+      await waitFor(() => expect(screen.queryByRole('heading', { name: 'Archive SB-042?' })).toBeNull());
       await expect(args.onClose).toHaveBeenCalledTimes(1);
+      await waitFor(() => expect(opener).toHaveFocus());
+    });
+
+    await step('Escape closes it, and focus goes back to the opener', async () => {
+      await userEvent.keyboard('{Enter}');
+      await waitFor(() => expect(screen.getByRole('dialog')).toHaveFocus());
+      await userEvent.keyboard('{Escape}');
+      await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+      await expect(args.onClose).toHaveBeenCalledTimes(2);
+      await waitFor(() => expect(opener).toHaveFocus());
     });
 
     await step('A click inside the box keeps it open; a click on the backdrop closes it', async () => {
       await userEvent.click(opener);
-      const heading = canvas.getByRole('heading', { name: 'Archive SB-042?' });
+      const heading = screen.getByRole('heading', { name: 'Archive SB-042?' });
       await userEvent.click(heading);
       await expect(heading).toBeVisible();
-      await expect(args.onClose).toHaveBeenCalledTimes(1);
-      await userEvent.click(heading.closest('.modal')!);
-      await expect(canvas.queryByRole('heading', { name: 'Archive SB-042?' })).toBeNull();
       await expect(args.onClose).toHaveBeenCalledTimes(2);
+      await userEvent.click(heading.closest('.modal')!);
+      await waitFor(() => expect(screen.queryByRole('heading', { name: 'Archive SB-042?' })).toBeNull());
+      await expect(args.onClose).toHaveBeenCalledTimes(3);
     });
   },
 };

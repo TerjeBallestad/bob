@@ -1,6 +1,6 @@
 import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
 import * as Stories from './Modal.stories';
-import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
+import { Lede, Facts, DoDont, Do, Dont, Keys } from '../docs/blocks';
 
 <Meta of={Stories} />
 
@@ -10,7 +10,8 @@ import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 
 <Facts items={[
   ['Import', "import { Modal } from '@terjeballestad/bob'"],
-  ['Renders', '<div> backdrop with a box: <h2> title, × button, body, footer'],
+  ['Renders', 'In a portal at the end of <body>: a <div> backdrop with a box: <h2> title, × button, body, footer'],
+  ['Built on', 'Base UI Dialog (@base-ui/react), from shadcn/ui\'s Base UI dialog'],
   ['Classes', 'modal  modal-box  modal-header  modal-title  modal-close  modal-footer'],
 ]} />
 
@@ -47,8 +48,8 @@ import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 
 ## Usage
 
-Modal keeps no state. The parent opens it and closes it in `onClose`, which the × button and a
-click on the backdrop call:
+Modal keeps no state. The parent opens it and closes it in `onClose`. The × button, Escape and a
+click on the backdrop call it:
 
 ```tsx
 const [open, setOpen] = useState(false);
@@ -68,27 +69,33 @@ const [open, setOpen] = useState(false);
 
 The box is 560px wide (92% of a narrow screen) and scrolls past 80% of the screen height.
 
+Modal is built on Base UI's Dialog. It renders in a portal at the end of `<body>`, so a parent's
+`overflow` or `transform` does not clip it. A test that looks for the dialog must search the whole
+page, not only the parent's element.
+
 ## Interaction test
 
-**Open and close (test)** runs the wiring above in a play function: Enter on the opener opens the
-dialog, Tab reaches the close button and Enter closes it, a click inside the box keeps it open, and
-a click on the backdrop closes it. CI runs it in the built Storybook.
+**Open and close (test)** runs the wiring above in a play function. Enter on the opener opens the
+dialog, and focus moves to it. Tab reaches the close button, and Enter closes it. Escape closes it.
+Each time, focus goes back to the opener. A click inside the box keeps it open, and a click on the
+backdrop closes it. CI runs it in the built Storybook.
 
 <Canvas of={Stories.OpenAndClose} story={{ inline: false, height: '360px' }} />
 
 ## Accessibility
 
-What works today:
+Base UI's Dialog does the keyboard and focus work.
 
 <Keys rows={[
-  ['Tab', 'Moves through the × button, the body and the footer buttons, after the elements before the modal in the page.'],
+  ['Tab', 'Moves through the × button, the body and the footer buttons. After the last one it goes back to the first: focus stays in the dialog.'],
+  ['Shift Tab', 'Moves back, and wraps from the first to the last.'],
   ['Enter Space', 'On × or a footer button: runs it.'],
+  ['Escape', 'Closes the dialog: calls onClose.'],
 ]} />
 
-The title is an `<h2>`, so a screen reader user can find it in the heading list.
-
-- The box is a `dialog` with `aria-modal="true"`, named by its title (`aria-labelledby`). The ×
-  button's name is "Close".
-
-<Gap>Focus does not move into the dialog when it opens, is not kept inside it, and does not go back to the opener when it closes.</Gap>
-<Gap>Escape does not close it.</Gap>
+- When it opens, focus moves to the box, and a screen reader reads its title. The first Tab
+  reaches the × button.
+- When it closes, focus goes back to the element that had it, usually the opener.
+- While it is open, the page behind it is hidden from screen readers.
+- The box is a `dialog` with `aria-modal="true"`, named by its title (`aria-labelledby`). The
+  title is an `<h2>`. The × button's name is "Close".
