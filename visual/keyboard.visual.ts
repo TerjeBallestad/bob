@@ -1,11 +1,11 @@
 import type { Page } from '@playwright/test';
 import { expect, openStory, test } from './fixtures';
 
-// Keyboard behaviour in a real browser (PLAN-005 TASK-032). What Bob does today passes. A gap is
-// a test marked test.fail(): it documents what is missing and fails as soon as the gap is closed,
-// so whoever closes it turns it into a normal test. The gaps wait for the decision on headless
-// primitives (Radix, Base UI or React Aria); Bob does not hand-write a focus trap or a roving
-// tabindex.
+// Keyboard behaviour in a real browser (PLAN-005 TASK-032). A gap would be a test marked
+// test.fail(): it documents what is missing and fails as soon as the gap is closed. None is left.
+// Modal, SegToggle and ToastStack run on Base UI primitives (DD-034, TASK-036), which do the
+// focus trap, the roving tabindex and the live region; Bob writes none of it by hand. Select is
+// the native <select>.
 
 test.describe('Modal', () => {
   // Base UI's Dialog (DD-034) does the focus handling. The dialog renders in a portal at the end

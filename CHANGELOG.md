@@ -4,6 +4,27 @@
 
 PLAN-005 Task 4 (TASK-033), review nits.
 
+PLAN-005 Task 5 (TASK-036): Modal, SegToggle and ToastStack run on Base UI (DD-034). A minor
+version: a new runtime dependency and new keyboard behaviour, with no change to any prop.
+
+- **New dependency: `@base-ui/react` 1.9.0**, pinned exactly. It is Bob's first runtime
+  dependency besides React, and it needs React 17, 18 or 19. Bob does not bundle it: the app
+  installs it with Bob.
+- **Modal** is built on Base UI's Dialog. Escape closes it and calls `onClose`. Focus moves to
+  the dialog when it opens, Tab and Shift+Tab stay inside it, and focus goes back to the opener
+  when it closes. The page behind it is hidden from screen readers. It now renders in a portal
+  at the end of `<body>`: a test that looks for it must search the whole page.
+- **SegToggle** is built on Base UI's ToggleGroup. The group is one Tab stop. The arrow keys move
+  focus between the segments and wrap; Home and End go to the ends. Enter or Space presses the
+  focused segment. The group has `role="group"`.
+- **ToastStack** is built on Base UI's toast viewport: a polite live region named
+  "Notifications". Keep it mounted, and a screen reader reads each toast added to it. Toast
+  itself does not change.
+- **Select** stays the native `<select>`. Its props are the native select's (`onChange` gets the
+  change event), which Base UI's Select cannot keep without an API change.
+
+Storybook, earlier in this release:
+
 - **Storybook** (no change to the package's code): the docs describe Bob as a design system and
   component library for productivity tools, with no app names. The Introduction is shorter and
   teaches one way in, the Tailwind entry. Each component page shows its controls right under the
