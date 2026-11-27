@@ -1,8 +1,8 @@
+// @vitest-environment happy-dom
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { renderToString } from 'react-dom/server';
 import * as Bob from '@terjeballestad/bob';
-import { samples } from './samples';
+import { renderHtml, samples } from './samples';
 const css = readFileSync('dist/bob.css', 'utf8');
 
 
@@ -17,7 +17,7 @@ describe('render', () => {
     // Every class a component renders is one of Bob's component classes, defined in the
     // built bob.css.
     it(`${name} renders from the built package with Bob's class names`, () => {
-      const html = renderToString(samples[name]());
+      const html = renderHtml(samples[name]());
       const classes = [...html.matchAll(/class="([^"]*)"/g)].flatMap((m) => m[1].split(/\s+/)).filter(Boolean);
       expect(classes.length).toBeGreaterThan(0);
       for (const cls of classes) expect(css, cls).toMatch(new RegExp(`\\.${cls}[{:]`));

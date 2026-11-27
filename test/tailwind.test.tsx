@@ -1,9 +1,9 @@
+// @vitest-environment happy-dom
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { renderToString } from 'react-dom/server';
 import { compile } from '@tailwindcss/node';
 import { Scanner } from '@tailwindcss/oxide';
-import { samples } from './samples';
+import { renderHtml, samples } from './samples';
 
 // A Tailwind app that adds Bob with one import (DD-031), built the way @tailwindcss/vite builds
 // it: compile the app's CSS, scan the sources it names, build the candidates. The app's own
@@ -31,7 +31,7 @@ describe('the Tailwind entry', () => {
     const css = await buildApp();
     const missing: string[] = [];
     for (const [name, sample] of Object.entries(samples)) {
-      for (const cls of classesOf(renderToString(sample()))) {
+      for (const cls of classesOf(renderHtml(sample()))) {
         if (!css.includes(`.${cls} {`) && !css.includes(`.${cls}:`)) missing.push(`${name}: ${cls}`);
       }
     }

@@ -11,7 +11,8 @@ export default defineConfig({
   build: {
     target: 'es2022',
     lib: { entry: 'src/index.ts', formats: ['es'], fileName: () => 'index.js', cssFileName: 'bob' },
-    rollupOptions: { external: ['react', 'react-dom', 'react/jsx-runtime'] },
+    // React is a peer and Base UI a dependency: the app installs both, so neither is bundled.
+    rollupOptions: { external: ['react', 'react-dom', 'react/jsx-runtime', /^@base-ui\/react(\/|$)/] },
     sourcemap: true,
   },
 });
