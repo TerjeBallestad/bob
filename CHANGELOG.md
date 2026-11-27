@@ -1,5 +1,76 @@
 # Changelog
 
+## 1.2.0
+
+A minor version (DD-038, SB-023): Bob's type becomes a set of text styles, Bob owns the radius
+scale, and an app gets classes for what Makron's review found it lacked. docs/migration-1.2.md
+lists what an app changes, with each class rename and each value that moves.
+
+### Text styles
+
+- Each `--text-*` key in `tailwind/theme.css` now sets the font size, the line height, and where
+  the style needs them the letter spacing and the weight, through Tailwind's
+  `--text-*--line-height`, `--text-*--letter-spacing` and `--text-*--font-weight`. An app writes
+  one class: `text-label`, not `text-tiny font-semibold tracking-label`.
+- 13 styles. The ramp names (`text-micro` to `text-doc`) are each size's plain style. Five new
+  role names are second styles at a size: `text-id` and `text-label` (10.5px), `text-note`
+  (11.5px), `text-subhead` (12.5px) and `text-heading` (13.5px). The set comes from the
+  combinations Bob's components, pm-board and Makron use.
+- One-line styles set `line-height: normal`, the line height text in both apps has today.
+  `text-note` (1.5), `text-prose` (1.65), `text-title` and `text-doc` (1.3) set a number.
+- `text-micro`, `text-title` and `text-doc` now set weight 700 and their letter spacing, and
+  `text-prose`, `text-title` and `text-doc` a line height. Bob's rule makes a changed token a
+  major version; this one is minor because DD-038 asks for it, and a weight or tracking class
+  next to a style still wins, so 1.1 code renders as before except for the line heights.
+- A style sets no case and no family (Tailwind's text styles cannot): a label adds `uppercase`,
+  an id adds `font-mono`.
+- New tokens: `--ls-tag` (.05em, TicketCard's kind and priority now read it), `--lh-heading`
+  (1.3), `--lh-note` (1.5), `--lh-prose` (1.65).
+- `tracking-heading` and `tracking-label` stay.
+
+### Radius
+
+- Bob's theme clears Tailwind's radii (`--radius-*: initial`) and sets its own steps:
+  `rounded-xs` 2px, `rounded-sm` 4px, `rounded-md` and `rounded` 8px (`--radius`), `rounded-lg`
+  10px, `rounded-xl` 12px. `rounded-btn` (7px), `rounded-chip` (5px) and `rounded-kbd` (4px) stay.
+- Changed for an app: `rounded-md` 6px to 8px, `rounded` 4px to 8px. `rounded-2xl` to
+  `rounded-4xl` are gone. `rounded-none` and `rounded-full` stay.
+- New tokens `--radius-xs` (2px) and `--radius-sm` (4px). `--radius-kbd` reads `--radius-sm`, the
+  same 4px. ProgressBar and TicketCard's progress read `--radius-xs`, the same 2px.
+
+### Shadows
+
+- `shadow-toast`, `shadow-modal` and `shadow-overlay` are classes over Bob's tokens.
+- New: `--shadow-popup` (`0 12px 32px`, black at 45%) for a list that drops from a field, and
+  `--shadow-panel` (`0 28px 64px -22px`, black at 75%) for a panel alone over a picture. Both
+  replace raw values in Makron. New scale steps `--black-a45` and `--black-a75`.
+
+### Colour
+
+- `--indigo-10` `#9aa1f0`, indigo 9's hover step (Radix step 10), for a link under the pointer.
+  `text-indigo-10` and every other colour utility work.
+
+### Button: size `xs` and variant `danger-tint`
+
+- `size="xs"` (`btn-xs`): 10.5px, 1px by 6px around the label with the border, the Kbd radius.
+  For a button inside a dense row. It works with every variant.
+- `variant="danger-tint"` (`btn-danger-tint`): the danger tint, `--text-danger-soft` text (5.5:1
+  on a card, AA), weight 500, hover to `--text-danger-strong`. Makron's row stop button is
+  `<Button variant="danger-tint" size="xs" className="font-mono">`.
+- `ButtonSize` gains `'xs'`, `ButtonVariant` gains `'danger-tint'`.
+
+### Modal and SectionLabel take `className`
+
+- It goes on the modal box and on the label, after Bob's class, so an app's utility wins.
+
+### Screenshots
+
+New baselines for the stories that show the additions: `tokens--type-classes` (now "Text
+styles"), `tokens--radius-shadow-space`, `tokens--hues` (indigo 10, the new black steps),
+`tokens--contrast-pairs-in-use` (Button danger-tint), `core-button--variants` (an `xs` row and
+`danger-tint`), `core-button--text` (a running row's stop; the `×` is `text-base`, as in
+Makron) and `core-states--buttons` (a `danger-tint` row). No existing component looks different.
+
 ## 1.1.0
 
 A minor version: two new sets of Tailwind classes and a new Button variant. Nothing is removed,
