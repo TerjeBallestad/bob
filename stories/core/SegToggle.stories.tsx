@@ -9,7 +9,7 @@ export default {
   argTypes: {
     options: { control: 'object', description: 'The segments. A string is shorthand for `{ value, label }` with both the same.' },
     value: { control: 'text', description: 'The value of the active segment. SegToggle keeps no state: the parent owns it.' },
-    onChange: { description: 'Called with the clicked segment\'s value, also when it is already active.' },
+    onChange: { description: 'Called with the pressed segment\'s value (click, Enter or Space), also when it is already active.' },
     style: { control: false, description: 'Inline styles on the group, merged last.' },
   },
 } satisfies Meta<typeof SegToggle>;
@@ -34,7 +34,7 @@ function RangeToggle({ onChange }: { onChange?: (value: string) => void }) {
   );
 }
 
-/** An interaction test: a click or Enter on a segment makes it the active one. */
+/** An interaction test: a click, or the arrow keys and Enter, make a segment the active one. */
 export const SwitchSegments: StoryObj<typeof RangeToggle> = {
   name: 'Switch segments (test)',
   parameters: {
@@ -60,13 +60,20 @@ export const SwitchSegments: StoryObj<typeof RangeToggle> = {
     await expect(month).toHaveClass('seg-active');
     await expect(week).not.toHaveClass('seg-active');
 
-    // Each segment is a button in the tab order: Tab reaches it, Enter picks it.
-    await userEvent.tab({ shift: true });
-    await userEvent.tab({ shift: true });
+    // The arrow keys move focus between the segments (Base UI); Enter picks one.
+    await expect(month).toHaveFocus();
+    await userEvent.keyboard('{ArrowLeft}{ArrowLeft}');
     await expect(day).toHaveFocus();
+    await expect(month).toHaveClass('seg-active');
     await userEvent.keyboard('{Enter}');
     await expect(args.onChange).toHaveBeenLastCalledWith('day');
     await expect(day).toHaveClass('seg-active');
     await expect(month).not.toHaveClass('seg-active');
+
+    // Space on the active segment calls onChange again, and the segment stays active.
+    await userEvent.keyboard(' ');
+    await expect(args.onChange).toHaveBeenCalledTimes(3);
+    await expect(args.onChange).toHaveBeenLastCalledWith('day');
+    await expect(day).toHaveClass('seg-active');
   },
 };

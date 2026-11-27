@@ -1,6 +1,6 @@
 import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
 import * as Stories from './SegToggle.stories';
-import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
+import { Lede, Facts, DoDont, Do, Dont, Keys } from '../docs/blocks';
 
 <Meta of={Stories} />
 
@@ -10,7 +10,8 @@ import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 
 <Facts items={[
   ['Import', "import { SegToggle } from '@terjeballestad/bob'"],
-  ['Renders', '<div> with one <button> per option'],
+  ['Renders', '<div role="group"> with one <button> per option'],
+  ['Built on', 'Base UI ToggleGroup and Toggle (@base-ui/react), from shadcn/ui\'s Base UI toggle group'],
   ['Classes', 'seg  seg-opt  seg-active'],
 ]} />
 
@@ -55,22 +56,24 @@ An option is a string, or `{ value, label }` when the label differs from the val
 
 ## Interaction test
 
-The story **Switch segments (test)** runs this wiring in a play function: a click and Enter each
-make a segment active and call `onChange`. CI runs it in the built Storybook. Open the story and
+The story **Switch segments (test)** runs this wiring in a play function. A click makes a segment
+active and calls `onChange`. The arrow keys move focus, and Enter makes the focused segment active. CI runs it in the built Storybook. Open the story and
 the Interactions panel to step through it.
 
 <Canvas of={Stories.SwitchSegments} />
 
 ## Accessibility
 
-Each segment is a native `<button>`.
+SegToggle is built on Base UI's ToggleGroup. Each segment is a native `<button>`, and the group has
+one Tab stop.
 
 <Keys rows={[
-  ['Tab', 'Moves to the next segment. Each segment is its own tab stop.'],
-  ['Enter Space', 'Makes the focused segment active.'],
+  ['Tab', 'Moves into the group, to the segment that last had focus (the first one at the start), and then out of the group.'],
+  ['Arrow Right Arrow Left', 'Moves focus to the next or the previous segment, and wraps at the ends. Focus moves, the value does not.'],
+  ['Home End', 'Moves focus to the first or the last segment.'],
+  ['Enter Space', 'Makes the focused segment active: calls onChange.'],
 ]} />
 
-- Each segment has `aria-pressed`: a screen reader tells which one is on.
+- The group has `role="group"`. Each segment has `aria-pressed`: a screen reader tells which one
+  is on.
 - The focus ring is drawn inside the segment, because the group clips.
-
-<Gap>Arrow keys do not move between segments: the group is not a radio group with one tab stop. It moves to Base UI (DD-034).</Gap>

@@ -83,23 +83,45 @@ test.describe('Select', () => {
 });
 
 test.describe('SegToggle', () => {
-  test('each option is a button in the Tab order; Enter and Space press it; aria-pressed marks the active one', async ({ page }) => {
+  // Base UI's ToggleGroup (DD-034): the group is one Tab stop, and the arrow keys move between
+  // the segments.
+  test('the group is one Tab stop; aria-pressed marks the active segment; Enter and Space press the focused one', async ({ page }) => {
     await openStory(page, 'core-segtoggle--default');
+    await expect(page.getByRole('group')).toBeVisible();
     await page.keyboard.press('Tab');
     const day = page.getByRole('button', { name: 'day' });
     await expect(day).toBeFocused();
     await expect(day).toHaveAttribute('aria-pressed', 'false');
     await expect(page.getByRole('button', { name: 'week' })).toHaveAttribute('aria-pressed', 'true');
     await page.keyboard.press('Tab');
-    await expect(page.getByRole('button', { name: 'week' })).toBeFocused();
+    await expect(page.getByRole('button', { name: /^(day|week|month)$/ }).and(page.locator(':focus'))).toHaveCount(0);
   });
 
-  test('gap: arrow keys do not move between the options (no radio group, no roving tabindex)', async ({ page }) => {
-    test.fail();
+  test('arrow keys move between the segments, and wrap; Home and End go to the ends', async ({ page }) => {
     await openStory(page, 'core-segtoggle--default');
     await page.keyboard.press('Tab');
     await page.keyboard.press('ArrowRight');
     await expect(page.getByRole('button', { name: 'week' })).toBeFocused({ timeout: 1000 });
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowRight');
+    await expect(page.getByRole('button', { name: 'day' })).toBeFocused();
+    await page.keyboard.press('ArrowLeft');
+    await expect(page.getByRole('button', { name: 'month' })).toBeFocused();
+    await page.keyboard.press('Home');
+    await expect(page.getByRole('button', { name: 'day' })).toBeFocused();
+    await page.keyboard.press('End');
+    await expect(page.getByRole('button', { name: 'month' })).toBeFocused();
+  });
+
+  test('an arrow key moves focus only; the active segment changes on Enter or Space', async ({ page }) => {
+    await openStory(page, 'core-segtoggle--switch-segments');
+    // The play function ends with "day" active and focused.
+    await expect(page.getByRole('button', { name: 'day' })).toBeFocused();
+    await page.keyboard.press('ArrowRight');
+    await expect(page.getByRole('button', { name: 'week' })).toHaveAttribute('aria-pressed', 'false');
+    await page.keyboard.press(' ');
+    await expect(page.getByRole('button', { name: 'week' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('button', { name: 'day' })).toHaveAttribute('aria-pressed', 'false');
   });
 });
 
