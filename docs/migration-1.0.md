@@ -15,8 +15,9 @@ Bob 1.0 is a major version. An app moves to it once. This guide covers three cha
 - **A role is for one property.** `--bg-*` is a background, `--border-*` a border colour, `--text-*`
   a text colour. Tailwind makes `bg-card` but no `text-card` or `border-card`.
 - **The 0.x names are gone.** Bob 1.0 keeps no alias. `--bg`, `--panel`, `--surface-*`, `--text-2`,
-  `--tint-*` and the others no longer exist. A `var()` of an old name resolves to nothing, and the
-  property falls back to its initial value: no error, but the colour is lost.
+  `--tint-*` and the others no longer exist. A `var()` of an old name with no fallback makes the
+  property behave as unset: `color` inherits, a background becomes transparent. There is no error,
+  but the colour is lost.
 - **Two names became one.** 0.x had two names for many roles (`--bg` and `--surface-app`). Both map
   to the one new token.
 - **One name became several.** A 0.x role that served two properties has one token per property.
@@ -33,6 +34,8 @@ Bob 1.0 is a major version. An app moves to it once. This guide covers three cha
 ### Tokens
 
 Find the old name in the left column. Where it lists several new names, choose by the CSS property.
+If no 1.0 role exists for that property, use the scale step with the same value: `--accent` as a
+border is `--indigo-9`.
 
 | 0.x token | 1.0 token | Use it for |
 | --- | --- | --- |
@@ -142,13 +145,22 @@ class of its own property only.
 | `border-accent-deep` | `border-focus` |
 | `text-blue`, `text-green`, `text-orange`, `text-purple`, `text-yellow`, `text-gold`, `text-danger` | same names |
 | `bg-green`, `bg-danger` | same names |
+| `border-danger` | `border-invalid` for a field error (see the traps below) |
 | `bg-tint-accent`, `bg-tint-blue`, ... | `bg-accent-tint`, `bg-blue-tint`, ... |
 | `bg-scrim` | `bg-scrim` (same name) |
-| any other role on another property (`border-card`, `text-panel`, `bg-blue`) | none: use a scale step (`bg-blue-9`) |
+| any other role on another property (`border-accent`, `text-panel`, `bg-blue`) | none: use the scale step with the same value (`border-indigo-9`, `bg-blue-9`) |
 
-One trap: **`border-input` changed colour.** In 0.x it was the input fill colour (`--input`,
-gray-11) as a border. In 1.0 it is the input border (gray-15). Bob's components never used the 0.x
-class. Check an app that did.
+These classes keep their name and their value: `bg-input`, `bg-accent`, `bg-danger`, `bg-green`,
+`bg-scrim`, `text-on-accent`, and the hue text classes `text-accent`, `text-blue`, `text-green`,
+`text-orange`, `text-purple`, `text-yellow`, `text-gold` and `text-danger`.
+
+Two traps: two classes keep their name and change their colour. Bob's components never used the 0.x
+classes. Check an app that did.
+
+- **`border-input`.** In 0.x it was the input fill colour (`--input`, gray-11) as a border. In 1.0
+  it is the input border (gray-15).
+- **`border-danger`.** In 0.x it was solid red-9 (`--danger`). In 1.0 it is red-9-a50, the error
+  Toast's border. A field error is `border-invalid` (red-9).
 
 ### Component props that take a colour
 
@@ -156,7 +168,9 @@ class. Check an app that did.
 `TicketCard label.color` take any CSS colour. Pass the 1.0 role for the property:
 
 - StatusDot and ProgressBar paint a fill: `color="var(--bg-green)"`, `color="var(--bg-accent)"`.
-  Their defaults are now `var(--bg-green)` and `var(--bg-accent)`.
+  Their defaults are now `var(--bg-green)` and `var(--bg-accent)`. StatusDot also draws its border
+  in that colour in the `outline` and `staged` states. For a colour with no `bg-*` role, pass the
+  scale step: `var(--blue-9)`.
 - ListRow and TicketCard colour text: `idColor="var(--text-accent)"`. ListRow's default is now
   `var(--text-accent)`.
 
@@ -164,6 +178,8 @@ class. Check an app that did.
 
 1. Replace each `var(--old)` by the 1.0 token for the property that reads it. A plain search and
    replace is wrong for `--accent`, `--accent-deep`, `--green`, `--danger` and `--input-border`.
+   If no 1.0 role exists for that property, use the scale step with the same value: `--accent` as a
+   border is `--indigo-9`.
 2. Replace each old class (Tailwind apps only).
 3. Search for every old name once more. Bob's own gate, test/old-names.test.ts, shows how: it fails
    on any 0.x token or class in Bob's source.
@@ -171,8 +187,8 @@ class. Check an app that did.
 
 ### Apps today
 
-**pm-board** (client/src, on Bob 0.3.0): 148 uses of old tokens in 5 files, no Tailwind colour class. Its
-branch `bob-1` holds the renames.
+**pm-board** (client/src, on Bob 0.3.0): 148 uses of old tokens in 5 files, no Tailwind colour
+class. Its branch `bob-1` holds the renames.
 
 **Makron** (client/src, read only; Terje's PRs, PLAN-005 Task 7): 150 uses of old tokens in CSS
 Modules and TSX, no Tailwind colour class.

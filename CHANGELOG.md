@@ -7,7 +7,8 @@ PLAN-005 Task 4 (TASK-033), review nits.
 ### Bob 1.0.0, breaking: the colour roles get their DD-033 names
 
 PLAN-005 Task 6 (TASK-037). A major version: every colour role has a new name, and the old names
-are gone. docs/migration-1.0.md is the full guide; this entry holds its tables.
+are gone. The migration guide has the tables from each old token and class to its new one:
+https://github.com/TerjeBallestad/bob/blob/main/docs/migration-1.0.md
 
 - **Each role is one token, named like its Tailwind class**: `--bg-card` is `bg-card`,
   `--text-primary` is `text-primary`, `--border-subtle` is `border-subtle`. 0.x had two names for
@@ -32,92 +33,11 @@ are gone. docs/migration-1.0.md is the full guide; this entry holds its tables.
 - **No value changed.** Each 1.0 token holds the exact value of the 0.x role it replaces
   (test/tokens.test.ts). Every component screenshot is unchanged. The Tokens pages print the
   new names, so their six screenshots differ.
-- **A grep gate**: test/old-names.test.ts fails on any 0.x colour token or class in src/, stories/,
-  .storybook/, README.md or TOKENS.md.
-
-Tokens:
-
-| 0.x token | 1.0 token | Use it for |
-| --- | --- | --- |
-| `--bg`, `--surface-app` | `--bg-app` | background |
-| `--bg-side`, `--surface-sidebar` | `--bg-sidebar` | background |
-| `--bg-rail`, `--surface-rail` | `--bg-rail` | background |
-| `--surface-code` | `--bg-sunken` | background |
-| `--surface-overlay` | `--bg-overlay` | background |
-| `--panel-dim` | `--bg-card-dim` | background |
-| `--panel`, `--surface-card` | `--bg-card` | background |
-| `--surface-modal` | `--bg-modal` | background |
-| `--input`, `--surface-input` | `--bg-input` | background |
-| `--panel-hover`, `--surface-card-hover` | `--bg-card-hover` | background |
-| `--surface-toast` | `--bg-toast` | background |
-| `--input-border` | `--border-input` | border |
-| | `--bg-fill` | background (Kbd, progress track, neutral Avatar) |
-| `--border` | `--border-subtle` | border |
-| `--border-2` | `--border-strong` | border |
-| `--border-card-hover` | `--border-card-hover` (same name) | border |
-| `--text`, `--text-body` | `--text-primary` | text |
-| `--text-prose` | `--text-reading` | text |
-| `--text-2`, `--text-secondary` | `--text-secondary` | text |
-| `--text-3`, `--text-muted` | `--text-muted` | text |
-| `--text-4`, `--text-faint` | `--text-faint` | text |
-| `--on-accent` | `--text-on-accent` | text |
-| `--accent` | `--text-accent` | text |
-| | `--bg-accent` | background |
-| | `--outline-focus` | outline (the focus ring) |
-| `--accent-deep` | `--bg-accent-strong` | background |
-| | `--border-focus` | border (a focused field) |
-| `--blue` | `--text-blue` | text |
-| `--green` | `--text-green` | text |
-| | `--bg-green` | background (live dot, progress fill) |
-| `--orange` | `--text-orange` | text |
-| `--purple` | `--text-purple` | text |
-| `--yellow` | `--text-yellow` | text |
-| `--gold` | `--text-gold` | text |
-| `--danger` | `--text-danger` | text |
-| | `--bg-danger` | background |
-| | `--border-invalid` | border (a field with `aria-invalid`) |
-| `--tint-accent` | `--bg-accent-tint` | background |
-| `--tint-blue` | `--bg-blue-tint` | background |
-| `--tint-green` | `--bg-green-tint` | background |
-| `--tint-orange` | `--bg-orange-tint` | background |
-| `--tint-danger` | `--bg-danger-tint` | background |
-| `--tint-yellow` | `--bg-yellow-tint` | background |
-| `--scrim` | `--bg-scrim` | background |
-
-Classes:
-
-| 0.x class | 1.0 class |
-| --- | --- |
-| `bg-bg`, `bg-surface-app` | `bg-app` |
-| `bg-bg-side`, `bg-surface-sidebar` | `bg-sidebar` |
-| `bg-bg-rail`, `bg-surface-rail` | `bg-rail` |
-| `bg-surface-code` | `bg-sunken` |
-| `bg-surface-overlay` | `bg-overlay` |
-| `bg-panel-dim` | `bg-card-dim` |
-| `bg-panel`, `bg-surface-card` | `bg-card` |
-| `bg-surface-modal` | `bg-modal` |
-| `bg-input`, `bg-surface-input` | `bg-input` (same name) |
-| `bg-panel-hover`, `bg-surface-card-hover` | `bg-card-hover` |
-| `bg-surface-toast` | `bg-toast` |
-| `bg-input-border` | `bg-fill` |
-| `border-input-border` | `border-input` |
-| `border-border` | `border-subtle` |
-| `border-border-2` | `border-strong` |
-| `border-border-card-hover` | `border-card-hover` |
-| `text-text`, `text-text-body` | `text-primary` |
-| `text-text-prose` | `text-reading` |
-| `text-text-2`, `text-text-secondary` | `text-secondary` |
-| `text-text-3`, `text-text-muted` | `text-muted` |
-| `text-text-4`, `text-text-faint` | `text-faint` |
-| `text-on-accent` | `text-on-accent` (same name) |
-| `text-accent`, `bg-accent` | same names |
-| `bg-accent-deep` | `bg-accent-strong` |
-| `border-accent-deep` | `border-focus` |
-| `text-blue`, `text-green`, `text-orange`, `text-purple`, `text-yellow`, `text-gold`, `text-danger` | same names |
-| `bg-green`, `bg-danger` | same names |
-| `bg-tint-accent`, `bg-tint-blue`, ... | `bg-accent-tint`, `bg-blue-tint`, ... |
-| `bg-scrim` | `bg-scrim` (same name) |
-| any other role on another property (`border-card`, `text-panel`, `bg-blue`) | none: use a scale step (`bg-blue-9`) |
+- **Two classes keep their name and change colour**: `border-input` and `border-danger`. The
+  guide says what to use instead.
+- **A grep gate**: test/old-names.test.ts fails on any 0.x colour token or class in src/,
+  stories/, .storybook/, visual/, scripts/, docs/ (except the guide), the built dist/, README.md
+  and TOKENS.md.
 
 ### Earlier in this release
 
