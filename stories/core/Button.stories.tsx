@@ -7,10 +7,10 @@ export default {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'ghost', 'accent', 'danger', 'danger-ghost', 'text'],
+      options: ['primary', 'secondary', 'ghost', 'accent', 'danger', 'danger-ghost', 'danger-tint', 'text'],
       description: 'How much the button stands out. One `primary` per view; `danger` only for an action that destroys data; `text` for an action that reads as text.',
     },
-    size: { control: 'inline-radio', options: ['md', 'sm'], description: '`sm` for toolbars, rows and dense forms; `md` everywhere else. `text` ignores it.' },
+    size: { control: 'inline-radio', options: ['md', 'sm', 'xs'], description: '`sm` for toolbars, rows and dense forms; `xs` for a button inside a dense row; `md` everywhere else. `text` ignores it.' },
     disabled: { control: 'boolean', description: 'The native attribute. The button leaves the tab order.' },
     children: { control: 'text', description: 'The label: a verb, or a verb and a noun.' },
     className: { control: 'text', description: 'Tailwind utilities that win over Bob\'s classes, for example `px-8`.' },
@@ -32,6 +32,7 @@ export const Variants: StoryObj = {
         <Button variant="accent">accent</Button>
         <Button variant="danger">danger</Button>
         <Button variant="danger-ghost">danger-ghost</Button>
+        <Button variant="danger-tint">danger-tint</Button>
         <Button disabled>disabled</Button>
       </div>
       <div className="flex flex-wrap items-center gap-2.5">
@@ -41,7 +42,18 @@ export const Variants: StoryObj = {
         <Button variant="accent" size="sm">accent</Button>
         <Button variant="danger" size="sm">danger</Button>
         <Button variant="danger-ghost" size="sm">danger-ghost</Button>
+        <Button variant="danger-tint" size="sm">danger-tint</Button>
         <Button size="sm" disabled>disabled</Button>
+      </div>
+      <div className="flex flex-wrap items-center gap-2.5">
+        <Button variant="primary" size="xs">primary</Button>
+        <Button variant="secondary" size="xs">secondary</Button>
+        <Button variant="ghost" size="xs">ghost</Button>
+        <Button variant="accent" size="xs">accent</Button>
+        <Button variant="danger" size="xs">danger</Button>
+        <Button variant="danger-ghost" size="xs">danger-ghost</Button>
+        <Button variant="danger-tint" size="xs">danger-tint</Button>
+        <Button size="xs" disabled>disabled</Button>
       </div>
     </div>
   ),
@@ -59,6 +71,10 @@ export const Text: StoryObj = {
       <div className="grid gap-0.5 rounded-btn border border-subtle bg-sidebar px-3 py-2">
         <span className="text-body text-primary">Ada Park</span>
         <Button variant="text" className="justify-self-start text-caption text-muted hover:text-primary">sign out</Button>
+      </div>
+      <div className="flex items-center justify-between rounded-btn border border-subtle bg-card px-3 py-2">
+        <span className="font-mono text-tiny text-secondary">12:30→ · running</span>
+        <Button variant="danger-tint" size="xs" className="font-mono">stop</Button>
       </div>
       <div className="flex items-center justify-between rounded-btn border border-subtle bg-card px-3 py-2">
         <span className="font-mono text-tiny text-secondary">09:00–10:30 · design review</span>

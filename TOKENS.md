@@ -150,7 +150,7 @@ text is under 18px, so the 3:1 large-text limit does not apply. The token test c
   (2.0 to 2.3). The design pass decides each use: lift the colour, or accept the text as decorative.
 - Pairs in use that fail AA: `--text-on-solid` on `--bg-danger` (Button danger, 3.9) and
   `--text-danger` on `--bg-danger-tint` (Chip danger, 4.1). All other pairs pass: Button primary
-  5.7, Chip accent 4.8, Button accent 6.2, the rest above 6.
+  5.7, Button danger-tint 5.5, Chip accent 4.8, Button accent 6.2, the rest above 6.
 
 ## Typography — `tokens/typography.css`
 

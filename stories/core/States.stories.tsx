@@ -6,7 +6,7 @@ import { StateGrid, cells } from '../shared/StateGrid';
 // storybook-addon-pseudo-states (the `pseudo` parameter), so the screenshot test needs no mouse.
 export default { title: 'Core/States', tags: ['!autodocs'] } satisfies Meta;
 
-const BUTTONS = ['primary', 'secondary', 'ghost', 'accent', 'danger', 'danger-ghost'] as const;
+const BUTTONS = ['primary', 'secondary', 'ghost', 'accent', 'danger', 'danger-ghost', 'danger-tint'] as const;
 
 // The grid is a test fixture, so the code block shows the states as an app writes them.
 export const Buttons: StoryObj = {

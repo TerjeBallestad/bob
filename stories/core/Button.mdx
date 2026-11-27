@@ -11,7 +11,7 @@ import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 <Facts items={[
   ['Import', "import { Button } from '@terjeballestad/bob'"],
   ['Renders', '<button>, with every native attribute passed on'],
-  ['Classes', 'btn  btn-md | btn-sm  btn-primary | btn-secondary | btn-ghost | btn-accent | btn-danger | btn-danger-ghost | btn-text (no size class)'],
+  ['Classes', 'btn  btn-md | btn-sm | btn-xs  btn-primary | btn-secondary | btn-ghost | btn-accent | btn-danger | btn-danger-ghost | btn-danger-tint | btn-text (no size class)'],
 ]} />
 
 <Canvas of={Stories.Default} />
@@ -62,9 +62,15 @@ form, set `type="button"` on every button that does not submit it. The `text` va
 | `accent` | An action that starts something new, in the indigo accent. |
 | `danger` | An action that destroys data: Delete, Archive for good. |
 | `danger-ghost` | The first step to a destructive action, which then asks in a modal. |
+| `danger-tint` | A quiet destructive action inside a row, such as a running timer's stop. |
 | `text` | An action that reads as text: "stop" in a top bar, "sign out", a row's delete `×`. |
 
-`sm` is for toolbars, rows and dense forms. `md` is the default.
+`sm` is for toolbars, rows and dense forms. `md` is the default. `xs` is as small as a mono chip
+(10.5px, 1px by 6px around the label, the Kbd radius), for a button inside a dense row:
+
+```tsx
+<Button variant="danger-tint" size="xs" className="font-mono">stop</Button>
+```
 
 ## Text
 

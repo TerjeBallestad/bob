@@ -16,6 +16,12 @@
   }
 }
 
+/* xs: as small as a mono chip (1px 6px with the border), for a button inside a row. */
+@utility btn-xs {
+  font-size: var(--fs-tiny);
+  padding: 0 5px;
+  border-radius: var(--radius-kbd);
+}
 @utility btn-sm {
   font-size: 11.5px;
   padding: 4px 10px;
@@ -76,6 +82,17 @@
   &:hover:not(:disabled) {
     color: var(--text-danger);
     border-color: var(--border-danger-subtle);
+  }
+}
+
+/* A quiet destructive action inside a row: the danger tint, with text that passes AA on it
+   (--text-danger-soft, 5.5:1 on a card; --text-danger would be 4.1:1). */
+@utility btn-danger-tint {
+  background: var(--bg-danger-tint);
+  color: var(--text-danger-soft);
+  font-weight: 500;
+  &:hover:not(:disabled) {
+    color: var(--text-danger-strong);
   }
 }
 

@@ -49,7 +49,8 @@ describe('the Tailwind entry', () => {
   // A modifier class sets some of the same properties as its base class, so it must come
   // later in the stylesheet. Tailwind sorts utilities by its own rules, not by file order.
   const ORDER: [string, string][] = [
-    ['btn', 'btn-primary'], ['btn', 'btn-secondary'], ['btn', 'btn-ghost'], ['btn', 'btn-danger-ghost'], ['btn', 'btn-text'],
+    ['btn', 'btn-primary'], ['btn', 'btn-secondary'], ['btn', 'btn-ghost'], ['btn', 'btn-danger-ghost'], ['btn', 'btn-danger-tint'], ['btn', 'btn-text'],
+    ['btn', 'btn-xs'], ['btn', 'btn-sm'], ['btn', 'btn-md'],
     ['chip', 'chip-mono'], ['seg-opt', 'seg-active'], ['search', 'search-expand'], ['toast', 'toast-error'], ['nav-row', 'nav-row-active'],
   ];
   const ruleAt = (css: string, cls: string) => css.search(new RegExp(`\\.${cls}\\s*\\{`));

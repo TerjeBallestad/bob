@@ -151,6 +151,7 @@ export const PAIRS: { fg: string; bg: string; tint?: string; use: string }[] = [
   { fg: '--text-on-solid', bg: '--bg-danger', use: 'Button danger' },
   { fg: '--text-danger-soft', bg: '--bg-app', use: 'Button danger-ghost' },
   { fg: '--text-secondary', bg: '--bg-input', use: 'Button secondary' },
+  { fg: '--text-danger-soft', bg: '--bg-card', tint: '--bg-danger-tint', use: 'Button danger-tint' },
   { fg: '--text-accent', bg: '--bg-card', tint: '--bg-accent-tint', use: 'Chip accent' },
   { fg: '--text-blue', bg: '--bg-card', tint: '--bg-blue-tint', use: 'Chip blue' },
   { fg: '--text-green', bg: '--bg-card', tint: '--bg-green-tint', use: 'Chip green' },

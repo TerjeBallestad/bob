@@ -1,7 +1,7 @@
 import React from 'react';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'accent' | 'danger' | 'danger-ghost' | 'text';
-export type ButtonSize = 'sm' | 'md';
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'accent' | 'danger' | 'danger-ghost' | 'danger-tint' | 'text';
+export type ButtonSize = 'xs' | 'sm' | 'md';
 
 // Whole class names, so Tailwind finds them when it scans this file.
 const VARIANT_CLASS: Record<ButtonVariant, string> = {
@@ -11,14 +11,15 @@ const VARIANT_CLASS: Record<ButtonVariant, string> = {
   accent: 'btn-accent',
   danger: 'btn-danger',
   'danger-ghost': 'btn-danger-ghost',
+  'danger-tint': 'btn-danger-tint',
   text: 'btn-text',
 };
-const SIZE_CLASS: Record<ButtonSize, string> = { sm: 'btn-sm', md: 'btn-md' };
+const SIZE_CLASS: Record<ButtonSize, string> = { xs: 'btn-xs', sm: 'btn-sm', md: 'btn-md' };
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** `text` reads as text: no border, fill or padding; it takes its font and colour from its parent or `className`. */
   variant?: ButtonVariant;
-  /** Font size and padding. `text` has neither, so it ignores `size`. */
+  /** Font size and padding. `xs` is for a button inside a row, as small as a mono chip. `text` has neither, so it ignores `size`. */
   size?: ButtonSize;
 }
 

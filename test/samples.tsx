@@ -10,6 +10,7 @@ export const samples: Record<string, () => JSX.Element> = {
     <>
       <Bob.Button variant="secondary" size="sm">Save</Bob.Button>
       <Bob.Button variant="text">stop</Bob.Button>
+      <Bob.Button variant="danger-tint" size="xs">stop</Bob.Button>
     </>
   ),
   Chip: () => <Bob.Chip mono tone="green">admin</Bob.Chip>,

@@ -45,6 +45,11 @@ describe('Button', () => {
     expect(button(<Bob.Button variant="text" type="submit">send</Bob.Button>).getAttribute('type')).toBe('submit');
   });
 
+  it('danger-tint at size xs renders btn-xs and btn-danger-tint, for a stop button in a row', () => {
+    const stop = button(<Bob.Button variant="danger-tint" size="xs" className="font-mono">stop</Bob.Button>);
+    expect(stop.className).toBe('btn btn-xs btn-danger-tint font-mono');
+  });
+
   it('the other variants keep the native default type', () => {
     const save = button(<Bob.Button variant="ghost">Save</Bob.Button>);
     expect(save.className).toBe('btn btn-md btn-ghost');
