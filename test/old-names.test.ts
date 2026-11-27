@@ -51,15 +51,17 @@ function files(path: string): string[] {
 
 // Bob 1.1 puts the type ramp in Tailwind's font-size namespace, so the theme declares
 // --text-body and --text-prose again, as font-size keys that read --fs-*. Those lines are not 0.x
-// colour tokens. The theme is `inline`, so a build writes no --text-body variable, and a stray
-// var(--text-body) anywhere else is still an old name.
-const FONT_SIZE_KEY = /^\s*--text-[a-z]+:\s*var\(--fs-[a-z]+\);/;
+// colour tokens. Only the theme file may declare them, only as a key that reads the --fs-* token
+// of the same name, and only alone on its line. Anything else, such as --text-body in
+// tokens/colors.css or a var(--text-body), is still an old name.
+const THEME_FILES = new Set(['src/tailwind/theme.css', 'dist/tailwind/theme.css']);
+const FONT_SIZE_KEY = /^\s*--text-([a-z]+):\s*var\(--fs-\1\);\s*$/;
 
 /** Every old name in a text, as `file:line name`. */
 export function oldNames(file: string, text: string): string[] {
   const out: string[] = [];
   text.split('\n').forEach((line, i) => {
-    if (FONT_SIZE_KEY.test(line)) return;
+    if (THEME_FILES.has(file) && FONT_SIZE_KEY.test(line)) return;
     for (const re of [tokenRe, classRe]) for (const m of line.matchAll(re)) out.push(`${file}:${i + 1} ${m[1]}`);
   });
   return out;
@@ -75,7 +77,16 @@ describe('no 0.x colour name is left (DD-033)', () => {
     expect(oldClasses).not.toContain('bg-card-hover');
     expect(oldNames('x', 'a { color: var(--text-2); } <b className="bg-panel">')).toEqual(['x:1 --text-2', 'x:1 bg-panel']);
     expect(oldNames('x', 'var(--text-primary) var(--bg-card) bg-card text-muted border-subtle')).toEqual([]);
-    expect(oldNames('x', '  --text-body: var(--fs-body);')).toEqual([]);
+    const theme = 'src/tailwind/theme.css';
+    expect(oldNames(theme, '  --text-body: var(--fs-body);')).toEqual([]);
+    expect(oldNames('src/tokens/colors.css', '  --text-body: var(--fs-body);')).toEqual([
+      'src/tokens/colors.css:1 --text-body',
+    ]);
+    expect(oldNames(theme, '  --text-body: var(--fs-tiny);')).toEqual([`${theme}:1 --text-body`]);
+    expect(oldNames(theme, '  --text-body: var(--fs-body); color: var(--text-2);')).toEqual([
+      `${theme}:1 --text-body`,
+      `${theme}:1 --text-2`,
+    ]);
     expect(oldNames('x', 'a { color: var(--text-body); }')).toEqual(['x:1 --text-body']);
   });
 

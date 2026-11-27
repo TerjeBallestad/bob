@@ -18,11 +18,15 @@ custom values (`text-(length:--fs-tiny)`, `text-[10px]`) and no local TextButton
 - **`text-base` is Bob's 13px**, the body default, and no longer Tailwind's 1rem with line-height
   1.5. Bob, pm-board and Makron did not use `text-base`, or any of Tailwind's `text-xs` to
   `text-9xl`, before this release. Tailwind's other sizes keep their values and line heights.
+  Bob's rule makes a changed token a major version. This one is minor because no consumer used
+  the class, and DD-037 puts every app's type on Bob's ramp.
 - **No name collides.** The size keys are not colour keys (DD-033), so `text-primary` and
   `text-muted` stay colours, and `text-tiny text-muted` sets both.
 - `--text-body` and `--text-prose` were 0.x colour tokens. In 1.1 they are font-size keys in
-  the theme only: the theme is `inline`, so a build writes no `--text-body` variable, and a 0.x
-  `var(--text-body)` still resolves to nothing. test/old-names.test.ts still finds one.
+  the theme. The theme is `inline`, so a build writes `--text-body` only when a source file
+  names it. A 0.x `var(--text-body)` then reads 12.5px, an invalid colour, so its fallback no
+  longer applies. test/old-names.test.ts still finds every old use, and lets only the theme's
+  own keys through.
 - **Letter spacing**: `tracking-heading` (`--ls-heading`, -0.01em) and `tracking-label`
   (`--ls-label`, 0.08em). Tailwind's `tracking-tight` to `tracking-widest` stay.
 - **Line heights**: Bob has no line-height tokens. An app uses Tailwind's `leading-normal` (1.5),
@@ -37,7 +41,10 @@ custom values (`text-(length:--fs-tiny)`, `text-[10px]`) and no local TextButton
 - It renders `btn btn-text` and no size class, so `size` has no effect. `btn-text` sets no
   border, no fill and no padding, and inherits the font, colour, letter spacing and text
   transform. An app sets them with classes: `className="text-caption text-muted hover:text-primary"`.
-  The app's classes win over `btn-text` in the app's build (tested).
+  The app's font, size, colour, letter-spacing and case classes win over `btn-text` in the
+  app's build (tested). Fill and border classes such as `bg-card` and `border` sort before it
+  and lose, as they do against `btn-primary`. A button that needs a fill or border uses another
+  variant.
 - It is `type="button"` unless the app sets `type`. The other variants keep the native default.
 - It keeps Bob's focus ring and Button's disabled style (half opacity, default cursor). It has
   no hover style of its own.
