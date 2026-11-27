@@ -172,7 +172,7 @@ export const ChooseAnOption: StoryObj<typeof Select> = {
         code: `const [stage, setStage] = useState('inbox');
 
 <FormRow label="Stage">
-  <Select items={stages} value={stage} onValueChange={setStage}>
+  <Select items={stages} value={stage} onValueChange={(v) => v !== null && setStage(v)}>
     <SelectTrigger>
       <SelectValue />
     </SelectTrigger>

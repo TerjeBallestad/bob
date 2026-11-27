@@ -47,7 +47,12 @@ classes (DD-031).
   - A toast is a `dialog` named by its title. New classes: `toast-text`, `toast-title`,
     `toast-description`, `toast-close`. `toast`, `toast-error` and `toast-stack` keep their names.
   - New exports: `createToastManager`, `useToastManager`, and the types `ToastOptions`,
-    `ToastManager`, `ToastObject`, `ToastType`.
+    `ToastUpdateOptions`, `ToastManager`, `UseToastManager`, `ToastObject`, `ToastType`.
+  - Bob's `add` and `update` take Bob's options: `title` is required (it names the toast),
+    `type` is `'success'` or `'error'`, and `priority` is dropped, in the types and at run time.
+    A toast with only a description (from `toast.promise` with a string) is named by it.
+  - Every toast closes after `timeout`, an error too. Pass `timeout: 0` to keep one.
+  - Toast text stays selectable, so a user can copy an error; a swipe selects nothing.
 - **Bundle cost** (an app that imports one component; minified, gzip, React external, Base UI
   included): ToastStack 31.4 kB, about 0.4 kB more than the viewport alone in Task 5; Select
   48.8 kB; an app with Select, ToastStack and Modal shares Base UI's core, 62 kB for the three.

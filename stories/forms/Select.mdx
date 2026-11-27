@@ -1,6 +1,6 @@
 import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
 import * as Stories from './Select.stories';
-import { Lede, Facts, DoDont, Do, Dont, Keys } from '../docs/blocks';
+import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 
 <Meta of={Stories} />
 
@@ -13,7 +13,7 @@ import { Lede, Facts, DoDont, Do, Dont, Keys } from '../docs/blocks';
   ['Renders', '<button role="combobox">; the open list is <div role="listbox"> in a portal at the end of <body>, and a hidden <input> holds the value for a form'],
   ['Built on', 'Base UI Select (@base-ui/react), from shadcn/ui\'s Base UI select'],
   ['Parts', 'Select  SelectTrigger  SelectValue  SelectContent  SelectItem  SelectGroup  SelectLabel  SelectSeparator'],
-  ['Classes', 'select-trigger  select-value  select-icon  select-popup  select-list  select-item  select-item-indicator  select-group  select-label  select-separator'],
+  ['Classes', 'select-trigger  select-value  select-icon  select-positioner  select-popup  select-list  select-item  select-item-text  select-item-indicator  select-group  select-label  select-separator  select-scroll-arrow  select-scroll-up  select-scroll-down'],
 ]} />
 
 <Canvas of={Stories.Default} />
@@ -56,7 +56,7 @@ const stages = [
 ];
 
 <FormRow label="Stage">
-  <Select items={stages} value={stage} onValueChange={setStage}>
+  <Select items={stages} value={stage} onValueChange={(v) => v !== null && setStage(v)}>
     <SelectTrigger>
       <SelectValue />
     </SelectTrigger>
@@ -110,7 +110,9 @@ Base UI gives Select the keys of a listbox. visual/keyboard.visual.ts tests each
   ['Escape Tab', 'Close the list with no change. Focus goes back to the trigger.'],
 ]} />
 
-- The trigger is a `combobox`. Name it with a [FormRow](?path=/docs/forms-formrow--docs) label, or an `aria-label` on SelectTrigger.
+- The trigger is a `combobox`. Name it with a [FormRow](?path=/docs/forms-formrow--docs) label, or an `aria-label` on SelectTrigger. A click on the FormRow label opens the list, since the label clicks its button (a native select only took focus).
 - An error is `aria-invalid="true"` on SelectTrigger, as on Input: a `danger` border, and a screen reader hears it. Point `aria-describedby` at the error text.
 - The focus ring shows on the trigger, and a highlight on the item in the list.
 - The list is in a portal at the end of `<body>`. A test that looks for an item must search the whole page.
+
+<Gap>A disabled Select is at opacity 0.5; a disabled Input is not dimmed. The design pass (PLAN-005 Task 9) picks one treatment for both.</Gap>

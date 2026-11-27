@@ -46,7 +46,7 @@ function Stage() {
   const [stage, setStage] = useState('inbox');
   return (
     <FormRow label="Stage">
-      <Select items={stages} value={stage} onValueChange={(v) => v && setStage(v)} name="stage">
+      <Select items={stages} value={stage} onValueChange={(v) => v !== null && setStage(v)} name="stage">
         <SelectTrigger className="w-40" aria-invalid={stage === 'done'} aria-describedby="stage-error">
           <SelectValue placeholder="None" />
         </SelectTrigger>

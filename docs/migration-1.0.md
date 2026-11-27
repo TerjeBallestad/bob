@@ -228,7 +228,8 @@ these tokens, in 0.x or in 1.0.
   SelectSeparator are new.
 - **`onValueChange(value)` replaces `onChange(event)`.** It gets the value itself, not an event.
   Its type includes `null` (a select with no value), so a setter for a `string` needs a guard:
-  `onValueChange={(v) => v && setStage(v)}`.
+  `onValueChange={(v) => v !== null && setStage(v)}`. Test for `null`, not for a falsy value:
+  an empty string is a value an item can have.
 - **`items` shows the label.** Pass the `{ value, label }` list to Select as `items`, and the
   trigger shows the chosen item's label. Without it the trigger shows the raw value.
 - **The attributes move to SelectTrigger**: `className`, `aria-label`, `aria-invalid`,
@@ -269,7 +270,7 @@ const stages = [
 ];
 
 <FormRow label="Stage">
-  <Select items={stages} value={stage} onValueChange={(v) => v && setStage(v)}>
+  <Select items={stages} value={stage} onValueChange={(v) => v !== null && setStage(v)}>
     <SelectTrigger className="w-40" aria-invalid={error ? 'true' : undefined}>
       <SelectValue />
     </SelectTrigger>
@@ -309,6 +310,10 @@ function OptionSelect({ options, value, onChange, className }: {
 - **A test that read `e.target.value`, or used `selectOptions`, must change.** Click the trigger,
   then click the option by its role (`getByRole('option', { name })`) in the whole page, since the
   list is in a portal.
+- **A click on the FormRow label opens the list.** A native select only took focus. The label
+  points at the trigger, a button, and a click on a label clicks its button.
+- **`form.reset()` does not reset an uncontrolled Select.** It keeps its last value. Use `value`
+  and `onValueChange`, and reset the state.
 - **CSS that targeted `select` or `.select`** (an app's own size overrides) must target
   `.select-trigger`.
 
@@ -332,7 +337,9 @@ function OptionSelect({ options, value, onChange, className }: {
   region. Two hidden live regions beside it read each toast once. 0.x put `role="status"` and
   `role="alert"` toasts inside a polite region, which some screen readers read twice.
 - **New exports**: `createToastManager`, `useToastManager`, and the types `ToastOptions`,
-  `ToastManager`, `ToastObject`, `ToastType`.
+  `ToastUpdateOptions`, `ToastManager`, `UseToastManager`, `ToastObject`, `ToastType`. Bob's
+  `add` and `update` take Bob's options: `title` is required, `type` is `'success'` or
+  `'error'`, and Base UI's `priority` is not an option.
 - **Classes.** `toast`, `toast-error` and `toast-stack` keep their names. New: `toast-text`,
   `toast-title`, `toast-description`, `toast-close`.
 
@@ -385,7 +392,11 @@ const notify = (text: string, error?: boolean) => toast.add({ title: text, type:
   `createToastManager()` and pass it to ToastStack.
 - **A toast is a `dialog`, named by its title**, with a Close button. A test that looked for
   `role="status"` or `role="alert"` must look for `getByRole('dialog', { name })`, or for the text.
-- **An error no longer stays by itself.** Pass `timeout: 0` to keep it until the user closes it.
+- **Every toast closes after `timeout`.** In 0.x the app owned the timers; now ToastStack's
+  `timeout` (4000 ms) or the toast's own closes it, a success or an error alike. Pass
+  `timeout: 0` to keep a toast until the user closes it.
+- **`title` is required, and `priority` and other `type` strings are not options.** Bob reads
+  `type` to choose the live region, and drops `priority` at run time too.
 
 ## Apps today: Select and Toast
 

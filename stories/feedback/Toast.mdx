@@ -36,6 +36,7 @@ import { Lede, Facts, DoDont, Do, Dont, Keys } from '../docs/blocks';
 
 - Write two to five words, past tense, no subject: **Title updated**, **SB-341 archived**.
 - Keep an error until the user acts: `toast.add({ title: 'Could not save', type: 'error', timeout: 0 })`.
+- Give every toast a `title`. It names the toast for a screen reader; TypeScript requires it.
 
 </Do>
 <Dont>
@@ -96,7 +97,7 @@ button that was pressed, and that Close removes a toast. CI runs it in the built
 
 <Keys rows={[
   ['F6', 'Moves focus to the stack and pauses the timers.'],
-  ['Tab', 'In the stack: moves to the next toast, then to its Close button.'],
+  ['Tab', 'In the stack: moves from the newest toast (at the bottom) upward, each toast then its Close button.'],
   ['Shift+Tab', 'From the stack: gives focus back to where it was before F6.'],
   ['Escape', 'Closes the focused toast.'],
   ['Enter Space', 'On Close: closes the toast.'],

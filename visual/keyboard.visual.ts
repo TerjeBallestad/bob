@@ -175,6 +175,10 @@ test.describe('Select', () => {
     await expect(named).toBeVisible();
     const id = await named.getAttribute('id');
     await expect(page.locator(`label[for="${id}"]`)).toHaveText('Stage');
+    // The label clicks its button, so a click on it opens the list (a native select only took
+    // focus). The docs and the migration guide say so.
+    await page.locator(`label[for="${id}"]`).click();
+    await expect(page.getByRole('listbox')).toBeVisible();
   });
 
   test('aria-invalid on the trigger shows the error border', async ({ page }) => {
