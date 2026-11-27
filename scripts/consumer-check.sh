@@ -31,14 +31,20 @@ cat > "$work/ws/app/tsconfig.json" <<'JSON'
   "include": ["src"] }
 JSON
 cat > "$work/ws/app/src/use.tsx" <<'TSX'
-import { Button, Chip, Input } from '@terjeballestad/bob';
+import { Button, Chip, Input, Modal, SegToggle, Toast, ToastStack } from '@terjeballestad/bob';
 export const ok = (
   <>
     <Button variant="ghost" onClick={() => {}} type="submit">Save</Button>
     <Chip mono tone="green" title="role">admin</Chip>
     <Input value="x" onChange={(e) => e.target.value} />
+    <Modal open title="Archive?" onClose={() => {}} footer={<Button>Archive</Button>}>Body</Modal>
+    <SegToggle options={['day', { value: 'week', label: 'Week' }]} value="day" onChange={(v: string) => v} />
+    <ToastStack><Toast error>Could not save</Toast></ToastStack>
   </>
 );
 TSX
 (cd "$work/ws" && npm install --silent --no-audit --no-fund >/dev/null && cd app && npx tsc -p .)
+# Modal, SegToggle and ToastStack run on Base UI, Bob's runtime dependency. The type check above
+# resolves its types; this resolves its code from the app, so a missing dependency fails here.
+(cd "$work/ws/app" && node --input-type=module -e "await import('@base-ui/react/dialog'); await import('@base-ui/react/toggle-group'); await import('@base-ui/react/toast')")
 echo "consumer check passed"
