@@ -56,3 +56,22 @@ describe('Button', () => {
     expect(save.hasAttribute('type')).toBe(false);
   });
 });
+
+describe('className on Modal and SectionLabel', () => {
+  const host = (el: JSX.Element) => {
+    const div = document.createElement('div');
+    div.innerHTML = renderHtml(el);
+    return div;
+  };
+
+  it("Modal puts it on the box, after Bob's class", () => {
+    const box = host(<Bob.Modal open title="Title" className="w-[720px]">Body</Bob.Modal>).querySelector('[role="dialog"]')!;
+    expect(box.className).toBe('modal-box w-[720px]');
+    expect(host(<Bob.Modal open title="Title">Body</Bob.Modal>).querySelector('[role="dialog"]')!.className).toBe('modal-box');
+  });
+
+  it("SectionLabel puts it on the label, after Bob's class", () => {
+    expect(host(<Bob.SectionLabel className="mt-5">Planned</Bob.SectionLabel>).querySelector('[class^="section-label"]')!.className).toBe('section-label mt-5');
+    expect(host(<Bob.SectionLabel>Planned</Bob.SectionLabel>).querySelector('[class^="section-label"]')!.className).toBe('section-label');
+  });
+});

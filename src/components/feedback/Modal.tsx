@@ -7,6 +7,8 @@ export interface ModalProps {
   children?: React.ReactNode;
   footer?: React.ReactNode;
   open?: boolean;
+  /** Goes on the dialog box (`modal-box`), after Bob's classes: `className="w-[720px]"`. */
+  className?: string;
   style?: React.CSSProperties;
 }
 
@@ -14,7 +16,7 @@ export interface ModalProps {
 // the dialog, keeps it there, closes on Escape and on a click outside the box, and gives focus
 // back to the element that had it. Bob keeps its props: the parent owns `open`, and every way
 // of closing calls `onClose`.
-export function Modal({ title, onClose, children, footer, open = true, style }: ModalProps) {
+export function Modal({ title, onClose, children, footer, open = true, className, style }: ModalProps) {
   const boxRef = React.useRef<HTMLDivElement>(null);
   return (
     <Dialog.Root open={open} onOpenChange={(next) => !next && onClose?.()}>
@@ -23,7 +25,7 @@ export function Modal({ title, onClose, children, footer, open = true, style }: 
             it is a click outside the box, so it closes the dialog. */}
         <Dialog.Viewport className="modal">
           {/* Focus goes to the box itself, so the first Tab reaches the × button. */}
-          <Dialog.Popup ref={boxRef} initialFocus={boxRef} className="modal-box" style={style} aria-modal="true">
+          <Dialog.Popup ref={boxRef} initialFocus={boxRef} className={className ? `modal-box ${className}` : 'modal-box'} style={style} aria-modal="true">
             <div className="modal-header">
               <Dialog.Title className="modal-title">{title}</Dialog.Title>
               <Dialog.Close className="modal-close" aria-label="Close">

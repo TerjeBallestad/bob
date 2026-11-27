@@ -12,7 +12,8 @@ export default {
     children: { control: 'text', description: 'The body: what happens, and what can be undone.' },
     footer: { control: false, description: 'The actions, right-aligned. Cancel first, the main action last.' },
     onClose: { description: 'Called by the × button, by Escape and by a click on the backdrop. Set `open` to false in it.' },
-    style: { control: false, description: 'Inline styles on the box, for example a `width`.' },
+    className: { control: 'text', description: 'Tailwind utilities on the box, after Bob\'s class, for example `w-[720px]`.' },
+    style: { control: false, description: 'Inline styles on the box.' },
   },
 } satisfies Meta<typeof Modal>;
 

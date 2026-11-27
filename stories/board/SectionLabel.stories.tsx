@@ -8,6 +8,7 @@ export default {
     children: { control: 'text', description: 'The section\'s name. CSS sets it in capitals: write it in sentence case.' },
     dot: { control: false, description: 'A StatusDot before the name.' },
     action: { control: false, description: 'Something small on the right: a count Chip, or a ghost Button.' },
+    className: { control: 'text', description: 'Tailwind utilities on the label, after Bob\'s class, for example `mt-5 mb-2`.' },
     style: { control: false, description: 'Inline styles, merged last.' },
   },
 } satisfies Meta<typeof SectionLabel>;
