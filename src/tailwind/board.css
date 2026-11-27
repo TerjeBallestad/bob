@@ -193,7 +193,7 @@
   min-width: 40px;
   height: 4px;
   background: var(--bg-fill);
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
   overflow: hidden;
   display: inline-block;
 }
@@ -201,7 +201,7 @@
   display: block;
   height: 100%;
   background: var(--bg-green);
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
 }
 @utility ticket-card-note {
   font-size: 10.5px;

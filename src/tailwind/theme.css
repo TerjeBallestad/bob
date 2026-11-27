@@ -12,7 +12,7 @@
    Two traps. --text-* alone is the font-size namespace: only --text-color-* is colour. And a
    text colour key must not also be a font-size key (sm, base, lg, ...), or the class loses its
    font size. In the same way a border key is never a width, a side or a style, and a bg key is
-   never a bg keyword. Radii and fonts are in the `reference` block below. */
+   never a bg keyword. Radii, shadows and fonts are in the `reference` block below. */
 @theme inline {
   --color-*: initial;
   --color-gray-1: var(--gray-1);
@@ -214,11 +214,19 @@
 @theme inline reference {
   --font-sans: var(--sans);
   --font-mono: var(--mono);
+  /* Bob owns the radius scale (DD-038): Tailwind's defaults are cleared, so rounded-md is Bob's
+     8px, not Tailwind's 6px, and rounded-2xl does not exist. `rounded` is rounded-md.
+     rounded-none and rounded-full are not theme keys, so they stay. */
+  --radius-*: initial;
+  --radius: var(--radius);
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
   --radius-btn: var(--radius-btn);
   --radius-chip: var(--radius-chip);
   --radius-kbd: var(--radius-kbd);
-  --radius-lg: var(--radius-lg);
-  --radius-xl: var(--radius-xl);
   --shadow-toast: var(--shadow-toast);
   --shadow-popup: var(--shadow-popup);
   --shadow-modal: var(--shadow-modal);

@@ -362,12 +362,14 @@ export function TypeScale() {
 
 /* ---------- Shape and space ---------- */
 
-const RADII = ['--radius-kbd', '--radius-chip', '--radius-btn', '--radius', '--radius-lg', '--radius-xl'];
+const RADII = ['--radius-xs', '--radius-sm', '--radius-kbd', '--radius-chip', '--radius-btn', '--radius', '--radius-lg', '--radius-xl'];
 const RADIUS_USE: Record<string, string> = {
+  '--radius-xs': 'rounded-xs: progress',
+  '--radius-sm': 'rounded-sm',
   '--radius-kbd': 'kbd, mono chip',
   '--radius-chip': 'chip',
   '--radius-btn': 'button, input',
-  '--radius': 'card, toast',
+  '--radius': 'rounded-md: card, toast',
   '--radius-lg': 'featured',
   '--radius-xl': 'modal',
 };
@@ -387,11 +389,11 @@ export function ShapeAndSpace() {
   return (
     <Frame eyebrow="Layout" title="Radius, shadow and space">
       <Label style={{ marginBottom: 10 }}>Radius</Label>
-      <div style={{ display: 'flex', gap: 14 }}>
+      <div style={{ display: 'flex', gap: 10 }}>
         {RADII.map((r) => (
-          <div key={r} style={{ width: 106 }}>
+          <div key={r} style={{ width: 80 }}>
             <div style={{ height: 56, background: 'var(--bg-card)', border: '1px solid var(--border-strong)', borderRadius: `var(${r})` }} />
-            <div style={{ ...mono, fontSize: 'var(--fs-tiny)', marginTop: 6 }}>{short(r)} <span style={{ color: 'var(--text-faint)' }}>{tokens.decls.get(r)}</span></div>
+            <div style={{ ...mono, fontSize: 'var(--fs-tiny)', marginTop: 6 }}>{short(r)} <span style={{ color: 'var(--text-faint)' }}>{tokens.resolve(`var(${r})`)}</span></div>
             <div style={{ fontSize: 'var(--fs-micro)', color: 'var(--text-muted)' }}>{RADIUS_USE[r]}</div>
           </div>
         ))}

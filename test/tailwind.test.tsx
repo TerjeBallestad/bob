@@ -178,6 +178,31 @@ describe('the Tailwind entry', () => {
     }
   });
 
+  it("owns the radius scale: Tailwind's radii are cleared, and rounded-md is Bob's 8px (DD-038)", async () => {
+    const yes: [string, string][] = [
+      ['rounded', '--radius'],
+      ['rounded-xs', '--radius-xs'],
+      ['rounded-sm', '--radius-sm'],
+      ['rounded-md', '--radius'],
+      ['rounded-lg', '--radius-lg'],
+      ['rounded-xl', '--radius-xl'],
+      ['rounded-btn', '--radius-btn'],
+      ['rounded-chip', '--radius-chip'],
+      ['rounded-kbd', '--radius-kbd'],
+    ];
+    const no = ['rounded-2xl', 'rounded-3xl', 'rounded-4xl'];
+    const css = await buildApp([...yes.map(([c]) => c), ...no, 'rounded-full', 'rounded-none']);
+    for (const [cls, token] of yes) {
+      const rule = css.match(new RegExp(`\\.${cls} \\{([^}]*)\\}`))?.[1] ?? '';
+      expect(rule.trim(), cls).toBe(`border-radius: var(${token});`);
+    }
+    for (const cls of no) expect(css, cls).not.toContain(`.${cls} {`);
+    expect(css).toContain('.rounded-full {');
+    expect(css).toContain('.rounded-none {');
+    // Tailwind's own radius values are not written: an app gets only Bob's.
+    expect(css).not.toMatch(/--radius-(md|lg|xl): 0\./);
+  });
+
   it("lets an app's font, size, colour and tracking utilities win over btn-text", async () => {
     const css = await buildApp(['text-tiny', 'text-muted', 'font-mono', 'tracking-label', 'uppercase']);
     for (const cls of ['text-tiny', 'text-muted', 'font-mono', 'tracking-label', 'uppercase'])

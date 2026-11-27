@@ -1,11 +1,14 @@
 /* PM Board — radii, shadows, structure */
 :root {
-  --radius: 8px;
+  /* Radius: size steps, then role names (rounded-btn) for sizes between the steps. */
+  --radius-xs: 2px; /* progress bars, swatches */
+  --radius-sm: 4px;
+  --radius: 8px; /* rounded-md: cards, rows, toasts */
   --radius-lg: 10px;
   --radius-xl: 12px;
   --radius-btn: 7px;
   --radius-chip: 5px;
-  --radius-kbd: 4px;
+  --radius-kbd: var(--radius-sm);
   --shadow-modal: 0 24px 60px var(--black-a50);
   --shadow-overlay: -24px 0 60px var(--black-a55);
   --shadow-toast: 0 8px 24px var(--black-a40);

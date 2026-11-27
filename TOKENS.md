@@ -216,9 +216,23 @@ weight. An app writes `text-label`, not `text-tiny font-semibold tracking-label`
 
 ## Layout — `tokens/layout.css`
 
-Radii: `--radius-kbd` 4px (chips/kbd) · `--radius-chip` 5px · `--radius-btn` 7px
-(buttons, inputs, nav rows) · `--radius` 8px (cards) · `--radius-lg` 10px (featured) ·
-`--radius-xl` 12px (modals). Dots are circles; swatches are 2px squares.
+Radius. Bob owns the scale (DD-038): its theme clears Tailwind's radii, so each `rounded-*` class
+is Bob's. Five size steps, and three role names for the sizes between them:
+
+| Class | Token | Value | Use |
+| --- | --- | --- | --- |
+| `rounded-xs` | `--radius-xs` | 2px | Progress bars, swatches |
+| `rounded-sm` | `--radius-sm` | 4px | Small marks |
+| `rounded-kbd` | `--radius-kbd` | 4px (`--radius-sm`) | Kbd, mono chip |
+| `rounded-chip` | `--radius-chip` | 5px | Chip, Select item |
+| `rounded-btn` | `--radius-btn` | 7px | Buttons, inputs, nav rows |
+| `rounded-md`, `rounded` | `--radius` | 8px | Cards, rows, toasts |
+| `rounded-lg` | `--radius-lg` | 10px | Featured cards |
+| `rounded-xl` | `--radius-xl` | 12px | Modals |
+
+`rounded-none` and `rounded-full` (dots) stay. `rounded-2xl` to `rounded-4xl` do not exist. A
+radius off the steps moves to the nearest one, as a size does (DD-037): 3px and 6px move to
+`rounded-sm` and `rounded-chip`.
 
 Shadows only on floating layers. Each is a Tailwind class of the same name (`shadow-modal`):
 
