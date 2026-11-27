@@ -152,6 +152,9 @@ text is under 18px, so the 3:1 large-text limit does not apply. The token test c
   `--text-danger` on `--bg-danger-tint` (Chip danger, 4.1). All other pairs pass: Button primary
   5.7, Button danger-tint 5.5, Chip accent 4.8, Button accent 6.2, the rest above 6.
 
+Target size: Button `size="xs"` is about 16px high, under WCAG 2.2's 24px target (2.5.8). It passes
+only where nothing else sits within 24px of it. The design pass decides.
+
 ## Typography — `tokens/typography.css`
 
 | Token                    | Value                                        |
@@ -214,6 +217,8 @@ weight. An app writes `text-label`, not `text-tiny font-semibold tracking-label`
 - Bob clears Tailwind's own sizes, as it does its colours and radii: `text-xs` to `text-9xl` do
   not exist. `text-base` is `--fs-base` (13px), not Tailwind's 1rem. `tracking-heading` and
   `tracking-label` stay from 1.1.
+- A line-height modifier (`text-title/7`) is Tailwind's: it sets the line height and drops the
+  style's weight and letter spacing. Do not use one on a Bob style.
 - Bob's components keep their own CSS. Some sizes in it are not on the ramp (10px mono in Kbd
   and the mono chip, 12px in Button md and SearchInput); the design pass moves them.
 
@@ -234,8 +239,9 @@ is Bob's. Five size steps, and three role names for the sizes between them:
 | `rounded-xl` | `--radius-xl` | 12px | Modals |
 
 `rounded-none` and `rounded-full` (dots) stay. `rounded-2xl` to `rounded-4xl` do not exist. A
-radius off the steps moves to the nearest one, as a size does (DD-037): 3px and 6px move to
-`rounded-sm` and `rounded-chip`.
+radius off the size steps (xs, sm, md, lg, xl) moves to the nearest one, and a tie rounds up, as a
+size does (DD-037): 3px moves to `rounded-sm` (4px) and 6px to `rounded-md` (8px). The role names
+are for their roles, not targets for a move.
 
 Shadows only on floating layers. Each is a Tailwind class of the same name (`shadow-modal`):
 

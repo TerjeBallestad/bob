@@ -16,7 +16,8 @@
   }
 }
 
-/* xs: as small as a mono chip (1px 6px with the border), for a button inside a row. */
+/* xs: a 10.5px label with 1px by 6px around it (the border and 0 5px), the padding of a mono
+   chip, for a button inside a dense row. About 16px high: under WCAG 2.2's 24px target. */
 @utility btn-xs {
   font-size: var(--fs-tiny);
   padding: 0 5px;

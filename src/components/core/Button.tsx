@@ -19,7 +19,7 @@ const SIZE_CLASS: Record<ButtonSize, string> = { xs: 'btn-xs', sm: 'btn-sm', md:
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** `text` reads as text: no border, fill or padding; it takes its font and colour from its parent or `className`. */
   variant?: ButtonVariant;
-  /** Font size and padding. `xs` is for a button inside a row, as small as a mono chip. `text` has neither, so it ignores `size`. */
+  /** Font size and padding. `xs` is for a button inside a dense row: 10.5px, about 16px high. `text` has neither, so it ignores `size`. */
   size?: ButtonSize;
 }
 

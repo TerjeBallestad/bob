@@ -65,8 +65,10 @@ button that submits a form says `type="submit"`.
 | `danger-tint` | A quiet destructive action inside a row, such as a running timer's stop. |
 | `text` | An action that reads as text: "stop" in a top bar, "sign out", a row's delete `×`. |
 
-`sm` is for toolbars, rows and dense forms. `md` is the default. `xs` is as small as a mono chip
-(10.5px, 1px by 6px around the label, the Kbd radius), for a button inside a dense row:
+`sm` is for toolbars, rows and dense forms. `md` is the default. `xs` is for a button inside a
+dense row: a 10.5px label, 1px by 6px around it (the padding of a mono chip), the Kbd radius.
+It is about 16px high, under the 24px target size of WCAG 2.2 (2.5.8); the design pass decides
+whether rows that use it need more room around it.
 
 ```tsx
 <Button variant="danger-tint" size="xs" className="font-mono">stop</Button>
