@@ -21,4 +21,9 @@
   /* Letterspacing */
   --ls-heading: -0.01em;
   --ls-label: 0.08em; /* uppercase section labels */
+  --ls-tag: 0.05em; /* uppercase kind and priority tags */
+  /* Line heights for text that wraps. One-line text keeps the font's own (normal). */
+  --lh-heading: 1.3; /* titles */
+  --lh-note: 1.5; /* small text that wraps */
+  --lh-prose: 1.65; /* document body */
 }

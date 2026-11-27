@@ -175,14 +175,44 @@ Size ramp (exact odd values are intentional; there is no modular scale):
 | `--fs-doc`     | `21px`   | Slide-over document title        |
 
 Weights `--fw-regular` 400 · `--fw-medium` 500 · `--fw-semibold` 600 · `--fw-bold` 700.
-Tracking `--ls-heading` `-.01em` (headings) · `--ls-label` `.08em` (uppercase section labels).
+Tracking `--ls-heading` `-.01em` (headings) · `--ls-label` `.08em` (uppercase section labels) ·
+`--ls-tag` `.05em` (uppercase kind and priority tags).
+Line heights, for text that wraps: `--lh-heading` 1.3 · `--lh-note` 1.5 · `--lh-prose` 1.65.
+One-line text keeps the font's own line height (`normal`).
 
-In Tailwind (`tailwind/theme.css`), each size is a class: `text-micro`, `text-tiny`,
-`text-caption`, `text-body`, `text-base`, `text-prose`, `text-title`, `text-doc`, and the tracking
-is `tracking-heading` and `tracking-label`. A size class sets only `font-size`, with no line
-height. `text-base` is `--fs-base` (13px), not Tailwind's 1rem; Tailwind's `text-xs` to
-`text-9xl` keep their values. Bob has no line-height tokens: an app uses Tailwind's
-`leading-normal` (1.5), `leading-relaxed` (1.625) or `leading-loose` (2).
+### Text styles
+
+In Tailwind (`tailwind/theme.css`), Bob's type is a set of text styles (DD-038). One class sets
+the font size, the line height, and where the style needs them the letter spacing and the
+weight. An app writes `text-label`, not `text-tiny font-semibold tracking-label`, and adds no
+`leading-*`, `tracking-*` or font weight next to a style.
+
+| Class          | Size   | Line height | Tracking | Weight | Use                                 |
+| -------------- | ------ | ----------- | -------- | ------ | ----------------------------------- |
+| `text-micro`   | 9.5px  | normal      | .05em    | 700    | Kind and priority tags, `uppercase` |
+| `text-tiny`    | 10.5px | normal      |          |        | Meta, counts, ages                  |
+| `text-id`      | 10.5px | normal      |          | 600    | Ids and codes, with `font-mono`     |
+| `text-label`   | 10.5px | normal      | .08em    | 600    | Section labels, column heads, `uppercase` |
+| `text-caption` | 11.5px | normal      |          |        | One-line meta, hints                |
+| `text-note`    | 11.5px | 1.5         |          |        | Small text that wraps               |
+| `text-body`    | 12.5px | normal      |          |        | Rows, cells, inputs                 |
+| `text-subhead` | 12.5px | normal      |          | 600    | A heading in a panel, a bar title   |
+| `text-base`    | 13px   | normal      |          |        | Body default                        |
+| `text-prose`   | 13.5px | 1.65        |          |        | Document body                       |
+| `text-heading` | 13.5px | normal      | -.01em   | 700    | Brand, column titles                |
+| `text-title`   | 15px   | 1.3         | -.01em   | 700    | Modal and panel titles              |
+| `text-doc`     | 21px   | 1.3         | -.01em   | 700    | Page and document titles            |
+
+- The ramp names are each size's plain style. A size that needs a second style gets a role
+  name: `text-id` and `text-label` at 10.5px, `text-note` at 11.5px, `text-subhead` at 12.5px,
+  `text-heading` at 13.5px.
+- A style with no weight takes its parent's weight, so `text-tiny` in a bold row stays bold.
+- A style sets no case and no family: Tailwind's text styles cannot. A label adds `uppercase`,
+  an id or a count adds `font-mono`. `SectionLabel` renders the label style with its case.
+- `text-base` is `--fs-base` (13px), not Tailwind's 1rem; Tailwind's `text-xs` to `text-9xl`
+  keep their values. `tracking-heading` and `tracking-label` stay from 1.1.
+- Bob's components keep their own CSS. Some sizes in it are not on the ramp (10px mono in Kbd
+  and the mono chip, 12px in Button md and SearchInput); the design pass moves them.
 
 ## Layout — `tokens/layout.css`
 

@@ -143,24 +143,61 @@
   --text-decoration-color-strike: var(--decoration-strike);
   --outline-color-focus: var(--outline-focus);
 
-  /* Bob's type ramp (src/tokens/typography.css) in the font-size namespace: text-micro to
-     text-doc. No key is also a --text-color-* key, so text-tiny is a size and text-primary a
-     colour. text-base is Bob's 13px body default, not Tailwind's 1rem. Tailwind's xs to 9xl stay.
-     A size sets only font-size: `--text-base--line-height: initial` drops the line height that
-     Tailwind's base carries, as Bob's components set their own. For a line height, an app adds
-     Tailwind's leading-normal (1.5), leading-relaxed (1.625) or leading-loose (2). */
-  --text-micro: var(--fs-micro);
-  --text-tiny: var(--fs-tiny);
-  --text-caption: var(--fs-caption);
-  --text-body: var(--fs-body);
-  --text-base: var(--fs-base);
-  --text-base--line-height: initial;
-  --text-prose: var(--fs-prose);
-  --text-title: var(--fs-title);
-  --text-doc: var(--fs-doc);
+  /* Bob's text styles (DD-038), in the font-size namespace. Each class sets font size, line
+     height, and where the style needs them letter spacing and weight: an app writes one class
+     (text-label), not text-tiny font-semibold tracking-label. A style sets no case and no
+     family, as Tailwind's text styles cannot: a label adds `uppercase`, an id adds `font-mono`.
 
-  /* Bob's letter spacing: tracking-heading (-0.01em) and tracking-label (0.08em, for uppercase
-     section labels). Tailwind's tracking-tight to tracking-widest stay. */
+     The ramp names (text-micro to text-doc) are the plain style of each size. A size that needs
+     a second style gets a role name: text-id and text-label at 10.5px, text-note at 11.5px,
+     text-subhead at 12.5px, text-heading at 13.5px. A style with no weight takes its parent's,
+     so text-tiny inside a bold row stays bold. One-line styles keep the font's own line height
+     (normal), as Bob's components and the apps do today; styles for text that wraps set one.
+
+     No key is also a --text-color-* key (DD-033), so text-label is a style and text-muted a
+     colour. text-base is Bob's 13px body default, not Tailwind's 1rem. Tailwind's xs to 9xl stay. */
+  --text-micro: var(--fs-micro);
+  --text-micro--line-height: normal;
+  --text-micro--letter-spacing: var(--ls-tag);
+  --text-micro--font-weight: var(--fw-bold);
+  --text-tiny: var(--fs-tiny);
+  --text-tiny--line-height: normal;
+  --text-id: var(--fs-tiny);
+  --text-id--line-height: normal;
+  --text-id--font-weight: var(--fw-semibold);
+  --text-label: var(--fs-tiny);
+  --text-label--line-height: normal;
+  --text-label--letter-spacing: var(--ls-label);
+  --text-label--font-weight: var(--fw-semibold);
+  --text-caption: var(--fs-caption);
+  --text-caption--line-height: normal;
+  --text-note: var(--fs-caption);
+  --text-note--line-height: var(--lh-note);
+  --text-body: var(--fs-body);
+  --text-body--line-height: normal;
+  --text-subhead: var(--fs-body);
+  --text-subhead--line-height: normal;
+  --text-subhead--font-weight: var(--fw-semibold);
+  --text-base: var(--fs-base);
+  --text-base--line-height: normal;
+  --text-prose: var(--fs-prose);
+  --text-prose--line-height: var(--lh-prose);
+  --text-heading: var(--fs-prose);
+  --text-heading--line-height: normal;
+  --text-heading--letter-spacing: var(--ls-heading);
+  --text-heading--font-weight: var(--fw-bold);
+  --text-title: var(--fs-title);
+  --text-title--line-height: var(--lh-heading);
+  --text-title--letter-spacing: var(--ls-heading);
+  --text-title--font-weight: var(--fw-bold);
+  --text-doc: var(--fs-doc);
+  --text-doc--line-height: var(--lh-heading);
+  --text-doc--letter-spacing: var(--ls-heading);
+  --text-doc--font-weight: var(--fw-bold);
+
+  /* Bob's letter spacing as tracking classes. DD-038 asks an app to use the text styles
+     instead; Bob's own stories and older app code still use them. Tailwind's tracking-tight to
+     tracking-widest stay. */
   --tracking-heading: var(--ls-heading);
   --tracking-label: var(--ls-label);
 }

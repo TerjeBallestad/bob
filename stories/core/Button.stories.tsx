@@ -54,7 +54,7 @@ export const Text: StoryObj = {
     <div className="grid w-80 gap-3">
       <div className="flex items-center justify-between rounded-btn border border-subtle bg-card px-3 py-2">
         <span className="text-caption text-secondary">Timer running · 0:42</span>
-        <Button variant="text" className="text-tiny font-semibold uppercase tracking-label text-danger">stop</Button>
+        <Button variant="text" className="text-label uppercase text-danger">stop</Button>
       </div>
       <div className="grid gap-0.5 rounded-btn border border-subtle bg-sidebar px-3 py-2">
         <span className="text-body text-primary">Ada Park</span>
@@ -62,7 +62,7 @@ export const Text: StoryObj = {
       </div>
       <div className="flex items-center justify-between rounded-btn border border-subtle bg-card px-3 py-2">
         <span className="font-mono text-tiny text-secondary">09:00–10:30 · design review</span>
-        <Button variant="text" aria-label="Delete entry" className="text-title text-faint hover:text-danger">×</Button>
+        <Button variant="text" aria-label="Delete entry" className="text-base text-faint hover:text-danger">×</Button>
       </div>
       <div className="flex items-center gap-3 text-caption text-secondary">
         <Button variant="text">inherits</Button>

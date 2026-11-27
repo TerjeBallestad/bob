@@ -1,69 +1,44 @@
 import React from 'react';
-import { Frame, tokens } from './TokenPages';
+import { Frame } from './TokenPages';
 
 // Each class is written whole and rendered as a class, not as an inline style, so the page shows
 // what Tailwind builds from Bob's theme (src/tailwind/theme.css). .storybook/tailwind.css scans
-// this file.
-const SIZES = [
-  ['text-micro', '--fs-micro'],
-  ['text-tiny', '--fs-tiny'],
-  ['text-caption', '--fs-caption'],
-  ['text-body', '--fs-body'],
-  ['text-base', '--fs-base'],
-  ['text-prose', '--fs-prose'],
-  ['text-title', '--fs-title'],
-  ['text-doc', '--fs-doc'],
-] as const;
-const TRACKING = [
-  ['tracking-heading', '--ls-heading', 'text-title font-semibold tracking-heading', 'Plan the sprint'],
-  ['tracking-label', '--ls-label', 'text-micro font-semibold uppercase tracking-label text-muted', 'Planned'],
-] as const;
-const LEADING = [
-  ['leading-normal', '1.5', 'text-caption leading-normal text-secondary'],
-  ['leading-relaxed', '1.625', 'text-caption leading-relaxed text-secondary'],
-  ['leading-loose', '2', 'text-caption leading-loose text-secondary'],
+// this file. [class, the case or family it needs, size · line height · tracking · weight, use, sample]
+const STYLES = [
+  ['text-micro', 'uppercase', '9.5 · normal · .05em · 700', 'kind and priority tags', 'Issue · high'],
+  ['text-tiny', 'font-mono', '10.5 · normal', 'meta, counts, ages', '3/7 · 2d'],
+  ['text-id', 'font-mono', '10.5 · normal · 600', 'ids and codes', 'PLAN-005'],
+  ['text-label', 'uppercase', '10.5 · normal · .08em · 600', 'section labels, column heads', 'Planned'],
+  ['text-caption', '', '11.5 · normal', 'one-line meta, hints', 'Updated by Ada, 2 hours ago'],
+  ['text-note', '', '11.5 · 1.5', 'small text that wraps', 'Overnight ranges roll to the next day.'],
+  ['text-body', '', '12.5 · normal', 'rows, cells, inputs', 'Plan the sprint'],
+  ['text-subhead', '', '12.5 · normal · 600', 'a heading in a panel, a bar title', 'Plan the sprint'],
+  ['text-base', '', '13 · normal', 'body default', 'Plan the sprint'],
+  ['text-prose', '', '13.5 · 1.65', 'document body', 'A plan holds tasks, and each task a check.'],
+  ['text-heading', '', '13.5 · normal · −.01em · 700', 'brand, column titles', 'Plan the sprint'],
+  ['text-title', '', '15 · 1.3 · −.01em · 700', 'modal and panel titles', 'Plan the sprint'],
+  ['text-doc', '', '21 · 1.3 · −.01em · 700', 'page and document titles', 'Plan the sprint'],
 ] as const;
 
-const row: React.CSSProperties = { display: 'grid', gridTemplateColumns: '130px 110px 1fr', alignItems: 'baseline', gap: 12, padding: '6px 0', borderBottom: '1px solid var(--border-subtle)' };
-
-function Name({ cls, value }: { cls: string; value: string }) {
-  return (
-    <>
-      <span className="font-mono text-tiny text-secondary">{cls}</span>
-      <span className="font-mono text-tiny text-faint">{value}</span>
-    </>
-  );
-}
+const row: React.CSSProperties = { display: 'grid', gridTemplateColumns: '92px 168px 176px 1fr', alignItems: 'baseline', gap: 12, padding: '5px 0', borderBottom: '1px solid var(--border-subtle)' };
 
 export function TypeUtilities() {
   return (
-    <Frame eyebrow="Type" title="Tailwind classes" lede="Bob's ramp and letter spacing as Tailwind classes. A size sets only font-size; for a line height use Tailwind's leading-*.">
-      {SIZES.map(([cls, token]) => (
+    <Frame
+      eyebrow="Type"
+      title="Text styles"
+      lede="One class sets size, line height, letter spacing and weight (DD-038). A label adds uppercase; an id or a count adds font-mono."
+    >
+      {STYLES.map(([cls, extra, value, use, sample]) => (
         <div key={cls} style={row}>
-          <Name cls={cls} value={`${token.slice(2)} ${tokens.decls.get(token)}`} />
-          <span className={cls} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            Plan the sprint
+          <span className="font-mono text-tiny text-secondary">{cls}</span>
+          <span className="font-mono text-tiny text-faint">{value}</span>
+          <span className="text-tiny text-muted">{use}</span>
+          <span className={`${cls} ${extra}`} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {sample}
           </span>
         </div>
       ))}
-      {TRACKING.map(([cls, token, classes, text]) => (
-        <div key={cls} style={row}>
-          <Name cls={cls} value={tokens.decls.get(token) ?? ''} />
-          <span className={classes}>{text}</span>
-        </div>
-      ))}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 18, marginTop: 14 }}>
-        {LEADING.map(([cls, value, classes]) => (
-          <div key={cls}>
-            <div className="flex gap-3">
-              <Name cls={cls} value={value} />
-            </div>
-            <p className={classes} style={{ marginTop: 4 }}>
-              Tailwind's own line heights. Bob has no line-height tokens, so an app uses these.
-            </p>
-          </div>
-        ))}
-      </div>
     </Frame>
   );
 }

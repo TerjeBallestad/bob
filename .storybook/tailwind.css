@@ -1,9 +1,8 @@
 /* Tailwind utilities for the stories: `<div className="flex gap-2.5">`, so the "Show code" blocks
    read like app code. Only the story files and the Tokens page's Tailwind classes page are
    scanned. The theme is an app's: Tailwind's theme, then Bob's (src/tailwind/theme.css), so a
-   story can use Bob's colours and type classes (text-muted, text-tiny, tracking-label) and
-   Tailwind's leading-*. A build writes only the theme variables in use. Bob's own component
-   classes come from src/styles.css, as in the package. The utilities sit in the layer
+   story can use Bob's colours and text styles (text-muted, text-tiny, text-label). A build
+   writes only the theme variables in use. Bob's own component classes come from src/styles.css, as in the package. The utilities sit in the layer
    `utilities`, after Bob's `base`, as in an app. */
 @import 'tailwindcss/theme.css' layer(theme);
 @import '../src/tailwind/theme.css';

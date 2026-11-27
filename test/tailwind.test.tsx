@@ -114,25 +114,54 @@ describe('the Tailwind entry', () => {
     expect(await buildApp(['text-sm'])).toMatch(/\.text-sm \{[^}]*font-size/);
   });
 
-  it("makes Bob's type ramp font-size classes with no line height, and its letter spacing tracking classes", async () => {
-    const sizes = ['micro', 'tiny', 'caption', 'body', 'base', 'prose', 'title', 'doc'];
-    const yes: [string, string][] = [
-      ...sizes.map((s): [string, string] => [`text-${s}`, `font-size: var(--fs-${s});`]),
+  // DD-038: one class sets the whole style. [class, font size, line height, letter spacing, weight];
+  // null leaves the property to the parent. Each value reads a Bob token, except `normal`.
+  const STYLES: [string, string, string, string | null, string | null][] = [
+    ['text-micro', '--fs-micro', 'normal', '--ls-tag', '--fw-bold'],
+    ['text-tiny', '--fs-tiny', 'normal', null, null],
+    ['text-id', '--fs-tiny', 'normal', null, '--fw-semibold'],
+    ['text-label', '--fs-tiny', 'normal', '--ls-label', '--fw-semibold'],
+    ['text-caption', '--fs-caption', 'normal', null, null],
+    ['text-note', '--fs-caption', '--lh-note', null, null],
+    ['text-body', '--fs-body', 'normal', null, null],
+    ['text-subhead', '--fs-body', 'normal', null, '--fw-semibold'],
+    ['text-base', '--fs-base', 'normal', null, null],
+    ['text-prose', '--fs-prose', '--lh-prose', null, null],
+    ['text-heading', '--fs-prose', 'normal', '--ls-heading', '--fw-bold'],
+    ['text-title', '--fs-title', '--lh-heading', '--ls-heading', '--fw-bold'],
+    ['text-doc', '--fs-doc', '--lh-heading', '--ls-heading', '--fw-bold'],
+  ];
+  const v = (t: string) => (t.startsWith('--') ? `var(${t})` : t);
+
+  it("makes each of Bob's text styles one class that sets size, line height, letter spacing and weight (DD-038)", async () => {
+    const css = await buildApp([...STYLES.map(([c]) => c), 'tracking-heading', 'tracking-label', 'text-primary', 'text-muted']);
+    for (const [cls, size, lh, ls, fw] of STYLES) {
+      const decls = [
+        `font-size: ${v(size)};`,
+        `line-height: var(--tw-leading, ${v(lh)});`,
+        ls && `letter-spacing: var(--tw-tracking, ${v(ls)});`,
+        fw && `font-weight: var(--tw-font-weight, ${v(fw)});`,
+      ].filter(Boolean);
+      const rule = css.match(new RegExp(`\\.${cls} \\{([^}]*)\\}`))?.[1] ?? '';
+      expect(rule.trim().replace(/\s+/g, ' '), cls).toBe(decls.join(' '));
+    }
+    // The 1.1 tracking classes stay, and a colour role next to the styles stays a colour.
+    for (const [cls, decls] of [
       ['tracking-heading', '--tw-tracking: var(--ls-heading); letter-spacing: var(--ls-heading);'],
       ['tracking-label', '--tw-tracking: var(--ls-label); letter-spacing: var(--ls-label);'],
-      // A colour role next to the sizes stays a colour.
       ['text-primary', 'color: var(--text-primary);'],
       ['text-muted', 'color: var(--text-muted);'],
-    ];
-    const css = await buildApp(yes.map(([c]) => c));
-    for (const [cls, decls] of yes) {
+    ]) {
       const rule = css.match(new RegExp(`\\.${cls} \\{([^}]*)\\}`))?.[1] ?? '';
       expect(rule.trim().replace(/\s+/g, ' '), cls).toBe(decls);
     }
-    // No size key is a colour key: a class with both would lose its font size (DD-033).
+    // Every style in the theme is in the table above.
     const theme = readFileSync('src/tailwind/theme.css', 'utf8');
+    const keys = [...theme.matchAll(/^\s*--text-([a-z]+):/gm)].map((m) => `text-${m[1]}`);
+    expect(keys.sort()).toEqual(STYLES.map(([c]) => c).sort());
+    // No style key is a colour key: a class with both would lose its font size (DD-033).
     const colours = new Set([...theme.matchAll(/--text-color-([\w-]+):/g)].map((m) => m[1]));
-    for (const s of sizes) expect(colours.has(s), s).toBe(false);
+    for (const [cls] of STYLES) expect(colours.has(cls.slice(5)), cls).toBe(false);
     // Tailwind's own sizes keep their line height, and the leading-* classes stay Tailwind's.
     const tw = await buildApp(['text-sm', 'leading-normal', 'leading-loose']);
     expect(tw).toMatch(/\.text-sm \{[^}]*line-height: var\(--tw-leading, var\(--text-sm--line-height\)\)/);

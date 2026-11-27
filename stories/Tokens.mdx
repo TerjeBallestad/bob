@@ -53,12 +53,13 @@ fail AA.
 
 <Story of={TokenStories.Type} />
 
-In a Tailwind app the ramp and the letter spacing are classes: `text-micro`, `text-tiny`,
-`text-caption`, `text-body`, `text-base`, `text-prose`, `text-title`, `text-doc`,
-`tracking-heading` and `tracking-label`. Write `text-tiny`, not `text-(length:--fs-tiny)` or
-`text-[10.5px]`. A size class sets only `font-size`. `text-base` is Bob's 13px, not Tailwind's
-1rem. Bob has no line-height tokens: use Tailwind's `leading-normal` (1.5), `leading-relaxed`
-(1.625) or `leading-loose` (2).
+In a Tailwind app Bob's type is a set of text styles (DD-038). One class sets the font size, the
+line height, and where the style needs them the letter spacing and the weight: `text-label`, not
+`text-tiny font-semibold tracking-label`. The ramp names (`text-micro` to `text-doc`) are each
+size's plain style; `text-id`, `text-label`, `text-note`, `text-subhead` and `text-heading` are
+second styles at a size, named by role. An app adds no `leading-*`, `tracking-*` or font weight
+next to a style. A style cannot set case or family, so a label adds `uppercase` and an id adds
+`font-mono`. `text-base` is Bob's 13px, not Tailwind's 1rem.
 
 <Story of={TokenStories.TypeClasses} />
 

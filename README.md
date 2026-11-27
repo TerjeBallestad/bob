@@ -29,13 +29,13 @@ utilities: `<Button className="px-8">` gets 32px of side padding over Bob's. The
 tokens, so `bg-card`, `text-secondary`, `border-subtle`, `rounded-btn` and `font-mono` work. The
 component import also loads Bob's webfonts.
 
-Type is a class too. Bob's sizes are `text-micro` (9.5px), `text-tiny` (10.5px), `text-caption`
-(11.5px), `text-body` (12.5px), `text-base` (13px), `text-prose` (13.5px), `text-title` (15px)
-and `text-doc` (21px); the letter spacing is `tracking-heading` and `tracking-label`. Write
-`text-tiny text-muted`, not `text-(length:--fs-tiny)` or `text-[10.5px]`. A size class sets only
-the font size. For a line height, use Tailwind's `leading-normal` (1.5), `leading-relaxed` (1.625)
-or `leading-loose` (2); Bob has no line-height tokens. `text-base` is Bob's 13px body size, not
-Tailwind's 1rem.
+Type is a class too: one text style sets the size, the line height, the letter spacing and the
+weight (DD-038). Write `text-label uppercase text-muted`, not `text-tiny font-semibold
+tracking-label` and not `text-[10.5px]`. The styles are `text-micro`, `text-tiny`, `text-id`,
+`text-label`, `text-caption`, `text-note`, `text-body`, `text-subhead`, `text-base`,
+`text-prose`, `text-heading`, `text-title` and `text-doc`; TOKENS.md says what each sets and is
+for. A style sets no case and no family, so a label adds `uppercase` and an id adds
+`font-mono`. `text-base` is Bob's 13px body size, not Tailwind's 1rem.
 
 - **Preflight.** Bob's components and Storybook assume Bob's own reset, not Tailwind's preflight.
   With preflight, text sits at line-height 1.5. To keep Bob's look, import the theme and the
