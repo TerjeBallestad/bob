@@ -404,8 +404,9 @@ const notify = (text: string, error?: boolean) => toast.add({ title: text, type:
 **pm-board** (client/src): no Select. Toast in App.tsx: a `useState` list, a `toast(text, error)`
 callback with a 3-second `setTimeout`, passed to BoardProvider, and a `<ToastStack>` of `<Toast>`
 elements. Change: a manager, `<ToastStack toastManager={toast} timeout={3000}>`, and the callback
-becomes `toast.add({ title: text, type: error ? 'error' : 'success' })`. Its e2e tests do not look
-for toasts.
+becomes `toast.add({ title: text, type: error ? 'error' : 'success' })`. Its e2e test "Start
+copies the configured command" finds the "Copied" toast by its text. That still works, and
+`getByRole('dialog', { name })` finds it too.
 
 **Makron** (client/src, read only; Terje's PRs):
 

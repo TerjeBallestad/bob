@@ -8,5 +8,5 @@ const bob = (window as unknown as { __BOB__: { css: string[]; version: string } 
 addons.setConfig({
   theme: bobTheme(new Tokens(...bob.css), bob.version),
   sidebar: { showRoots: true },
-  enableShortcuts: true,
+  ui: { enableShortcuts: true },
 });
