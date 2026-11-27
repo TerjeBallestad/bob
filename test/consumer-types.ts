@@ -39,6 +39,8 @@ import type {
   ToastOptions,
   ToastStackProps,
   ToastType,
+  ToastUpdateOptions,
+  UseToastManager,
 } from "@terjeballestad/bob";
 
 export type All = [
@@ -79,4 +81,6 @@ export type All = [
   ToastOptions,
   ToastStackProps,
   ToastType,
+  ToastUpdateOptions,
+  UseToastManager,
 ];

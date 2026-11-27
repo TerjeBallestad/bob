@@ -1,6 +1,12 @@
 import React from 'react';
 import { Toast as BaseToast } from '@base-ui/react/toast';
-import type { ToastManager, ToastManagerAddOptions, ToastObject as BaseToastObject, UseToastManagerReturnValue } from '@base-ui/react/toast';
+import type {
+  ToastManager as BaseToastManager,
+  ToastManagerAddOptions,
+  ToastManagerUpdateOptions,
+  ToastObject as BaseToastObject,
+  UseToastManagerReturnValue,
+} from '@base-ui/react/toast';
 
 // Toasts come from Base UI's toast manager, as in shadcn/ui's Base UI toast (DD-034, DD-036).
 // An app adds a toast with a call, `toast.add({ title, description, type })`, from a manager
@@ -8,12 +14,56 @@ import type { ToastManager, ToastManagerAddOptions, ToastObject as BaseToastObje
 // viewport, and renders each toast with Bob's classes. Base UI does the timers, the pause on
 // hover and focus, swipe to dismiss, and F6 to the viewport.
 
-export type { ToastManager };
 /** A toast in the list that useToastManager() returns. */
 export type ToastObject<Data extends object = any> = BaseToastObject<Data>;
-/** What `toast.add` takes. `type` is `'success'` (the default) or `'error'`. */
-export type ToastOptions<Data extends object = any> = ToastManagerAddOptions<Data>;
 export type ToastType = 'success' | 'error';
+
+/** What `toast.add` takes. `title` is required: it names the toast for a screen reader. `type`
+ *  is `'success'` (the default) or `'error'`. Base UI's `priority` is left out: Bob announces by
+ *  `type` (see Announcer), and priority 'high' would hide the toast from a screen reader while
+ *  Tab still reaches it, and announce it a second time. */
+export type ToastOptions<Data extends object = any> = Omit<ToastManagerAddOptions<Data>, 'priority' | 'type' | 'title'> & {
+  title: React.ReactNode;
+  type?: ToastType;
+};
+/** What `toast.update` takes: any of the add options. */
+export type ToastUpdateOptions<Data extends object = any> = Omit<ToastManagerUpdateOptions<Data>, 'priority' | 'type'> & {
+  type?: ToastType;
+};
+
+/** Bob's manager: Base UI's, with `add` and `update` that take Bob's options. */
+export type ToastManager<Data extends object = any> = Omit<BaseToastManager<Data>, 'add' | 'update'> & {
+  add: (options: ToastOptions<Data>) => string;
+  update: (id: string, updates: ToastUpdateOptions<Data> | ((prev: ToastObject<Data>) => ToastUpdateOptions<Data>)) => void;
+};
+/** What useToastManager() returns: the toasts, and Bob's add and update. */
+export type UseToastManager<Data extends object = any> = Omit<UseToastManagerReturnValue<Data>, 'add' | 'update'> & {
+  add: ToastManager<Data>['add'];
+  update: ToastManager<Data>['update'];
+};
+
+// Every toast passes through here on its way to Base UI. `priority` is dropped at run time too,
+// for an app without TypeScript.
+function bobOptions<O extends { priority?: unknown; type?: unknown; timeout?: number }>(options: O): O {
+  const { priority: _dropped, ...rest } = options;
+  // A default timeout of 0 for errors (they stay until closed) would be this one line:
+  // if (rest.type === 'error' && rest.timeout === undefined) rest.timeout = 0;
+  return rest as O;
+}
+
+type Adder<Data extends object> = Pick<BaseToastManager<Data>, 'add' | 'update'>;
+function bobAddUpdate<Data extends object>(base: Adder<Data>): Pick<ToastManager<Data>, 'add' | 'update'> {
+  return {
+    add: (options) => base.add(bobOptions(options) as ToastManagerAddOptions<Data>),
+    update: (id, updates) =>
+      base.update(
+        id,
+        typeof updates === 'function'
+          ? (prev) => bobOptions(updates(prev)) as ToastManagerUpdateOptions<Data>
+          : (bobOptions(updates) as ToastManagerUpdateOptions<Data>),
+      ),
+  };
+}
 
 // Functions, not `export const createToastManager = BaseToast.createToastManager`: a property
 // read at the top of the module keeps Base UI's toast in every app bundle, also one that
@@ -21,12 +71,16 @@ export type ToastType = 'success' | 'error';
 
 /** A manager to add toasts from anywhere, also outside React. Pass it to ToastStack. */
 export function createToastManager<Data extends object = any>(): ToastManager<Data> {
-  return BaseToast.createToastManager<Data>();
+  const base = BaseToast.createToastManager<Data>();
+  return { ...base, ...bobAddUpdate(base) };
 }
 
 /** The toasts and the add, close, update and promise calls, inside a ToastStack. */
-export function useToastManager<Data extends object = any>(): UseToastManagerReturnValue<Data> {
-  return BaseToast.useToastManager<Data>();
+export function useToastManager<Data extends object = any>(): UseToastManager<Data> {
+  const base = BaseToast.useToastManager<Data>();
+  const { add, update } = base;
+  const wrapped = React.useMemo(() => bobAddUpdate<Data>({ add, update }), [add, update]);
+  return { ...base, ...wrapped };
 }
 
 export interface ToastStackProps {
@@ -45,7 +99,8 @@ export interface ToastStackProps {
  *  bottom. Render one, at the root of the app, and keep it mounted. */
 export function ToastStack({ children, toastManager, timeout = 4000, limit = 3 }: ToastStackProps) {
   return (
-    <BaseToast.Provider toastManager={toastManager} timeout={timeout} limit={limit}>
+    // Bob's manager is Base UI's with a wrapped add and update, so Base UI's provider takes it.
+    <BaseToast.Provider toastManager={toastManager as BaseToastManager | undefined} timeout={timeout} limit={limit}>
       {children}
       {/* The viewport is the region "Notifications" that F6 moves focus to. It is not a live
           region (aria-live="off"): the Announcer below reads each toast once. In a polite
@@ -61,7 +116,14 @@ export function ToastStack({ children, toastManager, timeout = 4000, limit = 3 }
 function ToastList() {
   const { toasts } = BaseToast.useToastManager();
   return toasts.map((toast) => (
-    <BaseToast.Root key={toast.id} toast={toast} className={toast.type === 'error' ? 'toast toast-error' : 'toast'}>
+    <BaseToast.Root
+      key={toast.id}
+      toast={toast}
+      className={toast.type === 'error' ? 'toast toast-error' : 'toast'}
+      // A dialog needs a name. Base UI names it by its title; a toast with only a description
+      // (toast.promise with a string, or an update) takes the description as its name.
+      aria-label={!toast.title && typeof toast.description === 'string' ? toast.description : undefined}
+    >
       <div className="toast-text">
         <BaseToast.Title className="toast-title" render={<div />} />
         <BaseToast.Description className="toast-description" render={<div />} />

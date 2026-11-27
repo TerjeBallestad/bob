@@ -71,7 +71,6 @@
   color: var(--text-primary);
   box-shadow: var(--shadow-toast);
   font-family: var(--sans);
-  user-select: none;
   transform: translateX(var(--toast-swipe-movement-x, 0)) translateY(var(--toast-swipe-movement-y, 0));
   @variant motion-safe {
     animation: var(--animate-toast-in);
@@ -81,6 +80,11 @@
   }
   &[data-ending-style] {
     opacity: 0;
+  }
+  /* The text stays selectable, so a user can copy an error. While a swipe drags the toast,
+     Base UI sets data-swiping, and the drag selects nothing. */
+  &[data-swiping] {
+    user-select: none;
   }
   /* Over the limit: Base UI keeps the toast, inert, until a newer one closes. */
   &[data-limited] {

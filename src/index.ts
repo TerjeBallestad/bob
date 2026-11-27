@@ -49,6 +49,8 @@ export {
   type ToastOptions,
   type ToastStackProps,
   type ToastType,
+  type ToastUpdateOptions,
+  type UseToastManager,
 } from './components/feedback/Toast';
 
 // board
