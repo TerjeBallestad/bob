@@ -19,5 +19,5 @@ export const Default: StoryObj<typeof SectionLabel> = {
       <SectionLabel {...args} />
     </div>
   ),
-  args: { children: 'Planned', dot: <StatusDot state="solid" color="var(--accent)" />, action: <Chip mono>3</Chip> },
+  args: { children: 'Planned', dot: <StatusDot state="solid" color="var(--bg-accent)" />, action: <Chip mono>3</Chip> },
 };

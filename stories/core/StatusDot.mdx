@@ -24,7 +24,7 @@ import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
 
 | State | Means |
 | --- | --- |
-| `dashed` | Inbox or unset. The colour is always `--text-3`. |
+| `dashed` | Inbox or unset. The colour is always `--text-muted`. |
 | `outline` | In progress. |
 | `staged` | Staged: outline with a 25% fill. |
 | `solid` | Done. |
@@ -44,7 +44,7 @@ project beside its tickets.
 <Do>
 
 - Keep one meaning per state across the app.
-- Pass a colour role: `var(--green)`, `var(--accent)`.
+- Pass a colour role: `var(--bg-green)`, `var(--bg-accent)`.
 
 </Do>
 <Dont>

@@ -16,8 +16,9 @@ Colour has two layers. The Tokens page in Storybook shows both, computed from th
 - A **role** says what a colour is for and points at a step. Components use roles, never steps.
 
 Only scale steps hold colour literals. `test/tokens.test.ts` fails on a literal anywhere else, on a role
-that does not end at a step, and on a 0.2.0 token whose value changed. The scales are kept by hand
-(DD-032). DD-033 proposes new role names for Tailwind; until it is accepted, the names below stay.
+that does not end at a step, and on a 1.0 role whose value differs from the 0.x role it replaces.
+The scales are kept by hand (DD-032). Bob 1.0 renamed every role (DD-033); docs/migration-1.0.md
+lists each 0.x name and its new one.
 
 ### Scales
 
@@ -52,71 +53,104 @@ merges them.
 | gold | 9 `#d3b078` | 9-a18 |
 
 Also `--white` `#ffffff`, `--black-a40` / `-a50` / `-a55` (shadows) and `--gray-1-a55` (the scrim).
-Some steps have no role yet: components use those values raw, and Task 1 moves them onto roles.
+In Tailwind, a step is a class with every colour utility: `bg-gray-3`, `text-indigo-9`,
+`border-red-9-a40`. Bob's theme clears Tailwind's default palette, so `gray-500` does not exist.
 
 ### Roles
 
-Surfaces. Depth comes from 1px borders, never elevation; hover moves one step up.
+Each role is one token, named like its Tailwind class (DD-033): `--bg-card` is `bg-card`,
+`--text-primary` is `text-primary`. A role is for one property, so it makes one class: there is
+no `text-card` and no `bg-primary`. A CSS rule or an inline style reads `var(--bg-card)`.
+
+Backgrounds, `bg-*`. Depth comes from 1px borders, never elevation; hover moves one step up.
 
 | Role | Step | Use |
 | --- | --- | --- |
-| `--surface-code` | gray-2 | Code blocks |
-| `--bg` = `--surface-app` | gray-3 | App background |
-| `--bg-rail` = `--surface-rail` | gray-4 | Right rail |
-| `--bg-side` = `--surface-sidebar` | gray-5 | Sidebar |
-| `--surface-overlay` | gray-6 | Slide-over |
-| `--panel-dim` | gray-7 | Recessed panels |
-| `--panel` = `--surface-card` | gray-8 | Cards, raised rows |
-| `--surface-modal` | gray-9 | Modal |
-| `--input` = `--surface-input` | gray-11 | Input, select, textarea fill |
-| `--panel-hover` = `--surface-card-hover` | gray-12 | Hover/selected fill |
-| `--surface-toast` | gray-13 | Toast |
+| `--bg-sunken` | gray-2 | Code blocks |
+| `--bg-app` | gray-3 | App background |
+| `--bg-rail` | gray-4 | Right rail |
+| `--bg-sidebar` | gray-5 | Sidebar |
+| `--bg-overlay` | gray-6 | Slide-over |
+| `--bg-card-dim` | gray-7 | Recessed panels |
+| `--bg-card` | gray-8 | Cards, raised rows |
+| `--bg-modal` | gray-9 | Modal |
+| `--bg-nav-hover` | gray-10 | NavRow hover |
+| `--bg-input` | gray-11 | Input, select, textarea fill |
+| `--bg-card-hover` | gray-12 | Hover/selected fill |
+| `--bg-toast` | gray-13 | Toast |
+| `--bg-fill` | gray-15 | Kbd, progress track, neutral Avatar |
+| `--bg-accent` | indigo-9 | Primary button, accent fills |
+| `--bg-accent-strong` | indigo-8 | Accent button |
+| `--bg-danger` | red-9 | Danger button |
+| `--bg-green` | green-9 | Live dot, progress fill |
+| `--bg-scrim` | gray-1-a55 | Modal backdrop (no `backdrop-filter`) |
 
-Borders: `--border` gray-14 (default hairline) · `--input-border` gray-15 (inputs; also the
-progress track and `Kbd` fill) · `--border-2` gray-16 (buttons, modals) · `--border-card-hover`
-gray-18.
+Tints, `bg-*-tint`: `--bg-accent-tint` indigo-9-a10 · `--bg-accent-tint-strong` indigo-9-a18 ·
+`--bg-blue-tint` blue-9-a8 · `--bg-green-tint` green-9-a10 · `--bg-green-tint-strong` green-9-a18 ·
+`--bg-orange-tint` orange-9-a9 · `--bg-danger-tint` red-9-a12 · `--bg-yellow-tint` yellow-9-a10 ·
+`--bg-claim-tint` yellow-11-a10 · `--bg-gold-tint` gold-9-a18.
 
-Text. De-emphasis is a step down or opacity (.55–.85), never a hue change. Disabled is `opacity: .5`.
+Borders, `border-*`:
 
 | Role | Step | Use |
 | --- | --- | --- |
-| `--text` = `--text-body` | gray-26 | Primary |
-| `--text-prose` | gray-25 | Long-form document body |
-| `--text-2` = `--text-secondary` | gray-24 | Secondary, button labels |
-| `--text-3` = `--text-muted` | gray-23 | Section labels, placeholders |
-| `--text-4` = `--text-faint` | gray-22 | Timestamps, ages |
-| `--on-accent` | gray-3 | Text on an `--accent` fill |
+| `--border-subtle` | gray-14 | Default hairline |
+| `--border-input` | gray-15 | Inputs, secondary button |
+| `--border-strong` | gray-16 | Buttons, modals, toasts |
+| `--border-input-focus` | gray-17 | SearchInput key hint hover |
+| `--border-card-hover` | gray-18 | TicketCard hover |
+| `--border-strong-hover` | gray-20 | Ghost button hover |
+| `--border-focus` | indigo-8 | Focused field |
+| `--border-invalid` | red-9 | Field with `aria-invalid` |
+| `--border-accent-subtle` | indigo-6 | TicketCard `sdd` |
+| `--border-green-subtle` | green-6 | TicketCard `plan` |
+| `--border-orange-subtle` | orange-9-a30 | TicketCard grill |
+| `--border-purple-subtle` | purple-9-a28 | TicketCard probe |
+| `--border-danger-subtle` | red-9-a40 | Danger-ghost button hover |
+| `--border-danger` | red-9-a50 | Error toast |
 
-Accent and status. Colour carries meaning, not decoration; it shows mostly as a tint behind small text.
+Text, `text-*`. De-emphasis is a step down or opacity (.55–.85), never a hue change. Disabled is
+`opacity: .5`.
 
-| Role | Step | Meaning |
+| Role | Step | Use |
 | --- | --- | --- |
-| `--accent` | indigo-9 | The single brand indigo |
-| `--accent-deep` | indigo-8 | Focus border, `accent` button fill |
-| `--blue` | blue-9 | Docs, references |
-| `--green` | green-9 | Done, plans, live agents |
-| `--orange` | orange-9 | Blocked, warnings |
-| `--purple` | purple-9 | Probe |
-| `--yellow` | yellow-9 | Gap |
-| `--danger` | red-9 | Destructive |
-| `--gold` | gold-9 | Human avatar |
+| `--text-primary` | gray-26 | Primary |
+| `--text-reading` | gray-25 | Long-form document body |
+| `--text-secondary` | gray-24 | Secondary, button labels |
+| `--text-muted` | gray-23 | Section labels, placeholders |
+| `--text-faint` | gray-22 | Timestamps, ages |
+| `--text-on-accent` | gray-3 | Text on `--bg-accent` |
+| `--text-on-solid` | white | Text on `--bg-accent-strong` and `--bg-danger` |
+| `--text-accent` | indigo-9 | The single brand indigo |
+| `--text-blue` | blue-9 | Docs, references |
+| `--text-green` | green-9 | Done, plans, live agents |
+| `--text-orange` | orange-9 | Blocked, warnings |
+| `--text-purple` | purple-9 | Probe |
+| `--text-yellow` | yellow-9 | Gap |
+| `--text-gold` | gold-9 | Human avatar |
+| `--text-danger` | red-9 | Destructive |
+| `--text-danger-soft` | red-11 | Danger-ghost button |
+| `--text-danger-strong` | red-12 | Error toast |
+| `--text-claim` | yellow-11 | Claim chip |
 
-Tints: `--tint-accent` indigo-9-a10 · `--tint-blue` blue-9-a8 · `--tint-green` green-9-a10 ·
-`--tint-orange` orange-9-a9 · `--tint-danger` red-9-a12 · `--tint-yellow` yellow-9-a10.
-`--scrim` gray-1-a55 is the modal backdrop (no `backdrop-filter`).
+Also `--decoration-strike` gray-21 (`decoration-strike`, the line through a done ListRow) and
+`--outline-focus` indigo-9 (`outline-focus`, the keyboard focus ring).
+
+The text keys are never Tailwind font-size keys (`sm`, `base`, `lg`, ...): a key in both
+namespaces loses its font size. For that reason the reading colour is `reading`, not `prose`.
 
 ### Contrast
 
 WCAG 2.2, computed from the tokens; a tint is painted over its card first. AA asks 4.5:1. Bob's
 text is under 18px, so the 3:1 large-text limit does not apply. The token test checks these findings.
 
-- `--text`, `--text-prose` and `--text-2` pass AA on every surface (`--text-2`: 6.2 on
-  `--surface-toast` to 7.3 on `--surface-code`).
-- `--text-3` fails AA on every surface (2.9 to 3.4). `--text-4` fails on every surface (2.0 to 2.3).
-  The design pass decides each use: lift the colour, or accept the text as decorative.
-- Pairs in use that fail AA: white on `--danger` (Button danger, 3.9) and `--danger` on
-  `--tint-danger` (Chip danger, 4.1). All other pairs pass: Button primary 5.7, Chip accent 4.8,
-  Button accent 6.2, the rest above 6.
+- `--text-primary`, `--text-reading` and `--text-secondary` pass AA on every surface
+  (`--text-secondary`: 6.2 on `--bg-toast` to 7.3 on `--bg-sunken`).
+- `--text-muted` fails AA on every surface (2.9 to 3.4). `--text-faint` fails on every surface
+  (2.0 to 2.3). The design pass decides each use: lift the colour, or accept the text as decorative.
+- Pairs in use that fail AA: `--text-on-solid` on `--bg-danger` (Button danger, 3.9) and
+  `--text-danger` on `--bg-danger-tint` (Chip danger, 4.1). All other pairs pass: Button primary
+  5.7, Chip accent 4.8, Button accent 6.2, the rest above 6.
 
 ## Typography — `tokens/typography.css`
 
@@ -164,7 +198,7 @@ Motion: `--dur-fast` .1s · `--dur` .12s · `--dur-slow` .18s, all `--ease` `eas
 
 Carries the reset, `body` defaults, the link and scrollbar styling, and the one focus style:
 on keyboard focus (`:focus-visible`) every control gets a `--focus-ring-width` (2px) ring in
-`--accent`, `--focus-ring-offset` (2px) outside it. SegToggle draws it inside, because it clips.
+`--outline-focus`, `--focus-ring-offset` (2px) outside it. SegToggle draws it inside, because it clips.
 
 ## Animations — `tailwind/theme.css`
 

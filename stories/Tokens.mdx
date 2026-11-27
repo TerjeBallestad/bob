@@ -15,8 +15,9 @@ Colour has two layers.
 
 - A **scale** holds the values. Each step is a token: `--gray-12`, `--indigo-9`. An alpha step is a
   solid step at an opacity: `--indigo-9-a10` is indigo 9 at 10%.
-- A **role** says what a colour is for and points at a step: `--surface-card` is `--panel`, which is
-  `--gray-8`. Components use roles, never steps.
+- A **role** says what a colour is for and points at a step: `--bg-card` is `--gray-8`. Each role
+  is one token, named like its Tailwind class (`bg-card`), and is for one property: a background,
+  a border or a text colour. Components use roles, never steps.
 
 A colour literal appears only in a scale step. The token test fails on any other.
 
@@ -39,13 +40,14 @@ before the ratio is taken.
 
 <Story of={TokenStories.ContrastTextOnSurfaces} />
 
-`--text-3` (placeholders, section labels) and `--text-4` (timestamps, ages) fail AA everywhere. They
+`--text-muted` (placeholders, section labels) and `--text-faint` (timestamps, ages) fail AA everywhere. They
 are kept as they are until the design pass, which decides each use: lift the colour, or accept the
 text as decorative.
 
 <Story of={TokenStories.ContrastPairsInUse} />
 
-White on `--danger` (Button danger, 3.9:1) and `--danger` on its tint (Chip danger, 4.1:1) fail AA.
+White on `--bg-danger` (Button danger, 3.9:1) and `--text-danger` on `--bg-danger-tint` (Chip danger, 4.1:1)
+fail AA.
 
 ## Type
 

@@ -27,9 +27,9 @@ const config: StorybookConfig = {
 <style>
   .sbdocs.sbdocs-content table { border-collapse: collapse; font-size: 14px; }
   .sbdocs.sbdocs-content table tr,
-  .sbdocs.sbdocs-content table tr:nth-of-type(2n) { background: var(--surface-card); border-top: 1px solid var(--border); }
-  .sbdocs.sbdocs-content table th { text-align: left; color: var(--text-2); font-weight: 600; background: var(--surface-sidebar); }
-  .sbdocs.sbdocs-content table th, .sbdocs.sbdocs-content table td { border: 1px solid var(--border); padding: 8px 14px; }
+  .sbdocs.sbdocs-content table tr:nth-of-type(2n) { background: var(--bg-card); border-top: 1px solid var(--border-subtle); }
+  .sbdocs.sbdocs-content table th { text-align: left; color: var(--text-secondary); font-weight: 600; background: var(--bg-sidebar); }
+  .sbdocs.sbdocs-content table th, .sbdocs.sbdocs-content table td { border: 1px solid var(--border-subtle); padding: 8px 14px; }
 </style>`,
   managerHead: (head) => {
     const css = readdirSync(tokenDir)

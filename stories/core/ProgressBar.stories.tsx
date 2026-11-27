@@ -9,7 +9,7 @@ export default {
     max: { control: 'number', description: 'The total. The fill is `value / max`, capped at 100%; a `max` of 0 shows an empty track.' },
     width: { control: 'text', description: 'Track width: px as a number, or any CSS length.' },
     height: { control: 'number', description: 'Track height in px.' },
-    color: { control: 'text', description: 'Fill colour. A role such as `var(--green)`, not a hex value.' },
+    color: { control: 'text', description: 'Fill colour. A role such as `var(--bg-green)`, not a hex value.' },
     label: { control: 'text', description: 'The name a screen reader reads, such as "Tasks done". Defaults to "Progress".' },
     style: { control: false, description: 'Inline styles on the track, merged last.' },
   },

@@ -9,7 +9,7 @@ import { Button, Chip, StatusDot, TicketCard } from '../src';
 <Lede>Bob is a design system and component library for productivity tools: React components, the CSS tokens they read, and a Tailwind entry that builds Bob's classes in your app. One dark theme, dense, for tools people work in all day.</Lede>
 
 <Unstyled>
-<div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap', padding: '22px 24px', margin: '0 0 32px', background: 'var(--surface-sidebar)', border: '1px solid var(--border)', borderRadius: 'var(--radius-xl)' }}>
+<div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap', padding: '22px 24px', margin: '0 0 32px', background: 'var(--bg-sidebar)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-xl)' }}>
   <div style={{ width: 260 }}>
     <TicketCard id="SB-042" kind="task" title="The id counter refuses a second SB-042" age="2d" priority="high" live />
   </div>
@@ -19,7 +19,7 @@ import { Button, Chip, StatusDot, TicketCard } from '../src';
       <Button size="sm">Save</Button>
     </div>
     <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-      <StatusDot state="live" color="var(--green)" size={8} />
+      <StatusDot state="live" color="var(--bg-green)" size={8} />
       <Chip mono tone="green">admin</Chip>
       <Chip tone="danger">blocked</Chip>
     </div>
@@ -37,9 +37,7 @@ Bob needs React 18.3 or later: `react`, `react-dom` and `@types/react` are peer 
 
 ## Add Bob to your CSS
 
-Bob works with Tailwind v4. Add one line after your Tailwind import:
-
-```css
+Bob works with Tailwind v4. Add one line after your Tailwind import: ```css
 @import "tailwindcss";
 @import "@terjeballestad/bob/tailwind.css";
 ```
@@ -54,8 +52,7 @@ import { Button } from '@terjeballestad/bob';
 <Button variant="primary" onClick={save}>Save</Button>
 ```
 
-The import also loads Bob's webfonts. Your utilities win over Bob's classes:
-`<Button className="px-8">` gets 32px of side padding.
+The import also loads Bob's webfonts. Your utilities win over Bob's classes: `<Button className="px-8">` gets 32px of side padding.
 
 ## Two rules for your CSS
 
@@ -63,9 +60,7 @@ The import also loads Bob's webfonts. Your utilities win over Bob's classes:
   beats every layered class, Bob's too.
 - **Preflight changes the look.** Bob brings its own reset. With Tailwind's preflight, text sits
   at line-height 1.5 and Bob's rows grow. To keep Bob's look, import Tailwind's theme and
-  utilities only:
-
-  ```css
+  utilities only: ```css
   @layer theme, base, components, utilities;
   @import "tailwindcss/theme.css" layer(theme);
   @import "tailwindcss/utilities.css" layer(utilities);
@@ -78,11 +73,12 @@ Every value is a CSS custom property on `:root`.
 
 - A **scale** holds the colours: `--gray-1` to `--gray-26`, and eight hues on the 12 steps of
   Radix Colors.
-- A **role** says what a colour is for and points at a step: `--surface-card` is `--gray-8`.
+- A **role** says what a colour is for and points at a step: `--bg-card` is `--gray-8`. Each role is one token, named like its class.
   Components use roles, never steps.
 
-In Tailwind, the tokens are classes: `bg-surface-card`, `rounded-btn`, `font-mono`. A later major
-version renames the roles to read better as classes: `bg-card`, `text-secondary` (DD-033).
+In Tailwind, the tokens are classes: `bg-card`, `text-secondary`, `border-subtle`, `rounded-btn`,
+`font-mono` (DD-033). A role makes a class only for its property: there is no `text-card`. A scale
+step works with every utility: `bg-gray-3`, `text-indigo-9`.
 
 [Tokens](?path=/docs/tokens--tokens) shows every scale and role, and the contrast of each text
 role on each surface.

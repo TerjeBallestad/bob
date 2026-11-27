@@ -3,7 +3,7 @@ import React from 'react';
 // A grid for state stories: one row per item, one column per state. Each cell has an id
 // (<row>-<state>), so a story's `pseudo` parameter (storybook-addon-pseudo-states) can force
 // :hover or :focus-visible on the control in one cell.
-export const STATE_LABEL: React.CSSProperties = { fontSize: 10.5, color: 'var(--text-2)', fontFamily: 'var(--sans)' };
+export const STATE_LABEL: React.CSSProperties = { fontSize: 10.5, color: 'var(--text-secondary)', fontFamily: 'var(--sans)' };
 
 export function StateGrid({
   states,

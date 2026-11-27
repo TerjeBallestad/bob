@@ -8,8 +8,8 @@ export default { title: 'Foundations/Tokens', id: 'tokens', tags: ['!autodocs'],
 type Story = StoryObj;
 export const Gray: Story = { render: () => <GrayScale /> };
 export const Hues: Story = { render: () => <HueScales /> };
-export const RolesSurfacesBordersText: Story = { name: 'Roles: surfaces, borders, text', render: () => <RolesNeutral /> };
-export const RolesAccentStatusTints: Story = { name: 'Roles: accent, status, tints', render: () => <RolesHue /> };
+export const RolesSurfacesBordersText: Story = { name: 'Roles: backgrounds, borders', render: () => <RolesNeutral /> };
+export const RolesAccentStatusTints: Story = { name: 'Roles: text, tints', render: () => <RolesHue /> };
 export const ContrastTextOnSurfaces: Story = { name: 'Contrast: text on surfaces', render: () => <ContrastText /> };
 export const ContrastPairsInUse: Story = { name: 'Contrast: pairs in use', render: () => <ContrastPairs /> };
 export const Type: Story = { render: () => <TypeScale /> };

@@ -20,7 +20,7 @@ export const LiveDot: StoryObj = {
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 220px)', gap: 16 }}>
       {OPTIONS.map((o) => (
         <div key={o.name} className={o.cls} style={{ display: 'grid', gap: 8 }}>
-          <span style={{ ...STATE_LABEL, color: 'var(--text)' }}>{o.name}</span>
+          <span style={{ ...STATE_LABEL, color: 'var(--text-primary)' }}>{o.name}</span>
           <TicketCard id="SB-042" kind="task" title="An agent works on this ticket" age="2m" live />
           <span style={STATE_LABEL}>{o.note}</span>
         </div>

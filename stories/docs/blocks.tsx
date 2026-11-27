@@ -8,12 +8,12 @@ const label: React.CSSProperties = {
   fontWeight: 600,
   letterSpacing: 'var(--ls-label)',
   textTransform: 'uppercase',
-  color: 'var(--text-3)',
+  color: 'var(--text-muted)',
 };
 
 /** The sentence under a page title: what the component is for. */
 export function Lede({ children }: { children: React.ReactNode }) {
-  return <p style={{ fontSize: 16, lineHeight: 1.55, color: 'var(--text-2)', margin: '4px 0 24px', maxWidth: 640 }}>{children}</p>;
+  return <p style={{ fontSize: 16, lineHeight: 1.55, color: 'var(--text-secondary)', margin: '4px 0 24px', maxWidth: 640 }}>{children}</p>;
 }
 
 /** Facts about a component in one strip: how to import it, what it renders, its classes. */
@@ -27,15 +27,15 @@ export function Facts({ items }: { items: [string, React.ReactNode][] }) {
         alignItems: 'baseline',
         padding: '14px 18px',
         margin: '0 0 28px',
-        background: 'var(--surface-card)',
-        border: '1px solid var(--border)',
+        background: 'var(--bg-card)',
+        border: '1px solid var(--border-subtle)',
         borderRadius: 'var(--radius)',
       }}
     >
       {items.map(([k, v]) => (
         <React.Fragment key={k}>
           <div style={label}>{k}</div>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--text)', overflowWrap: 'break-word' }}>{v}</div>
+          <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--text-primary)', overflowWrap: 'break-word' }}>{v}</div>
         </React.Fragment>
       ))}
     </div>
@@ -56,8 +56,8 @@ function Column({ title, color, children }: { title: string; color: string; chil
     <div
       className="bob-dodont"
       style={{
-        background: 'var(--surface-card)',
-        border: '1px solid var(--border)',
+        background: 'var(--bg-card)',
+        border: '1px solid var(--border-subtle)',
         borderTop: `2px solid ${color}`,
         borderRadius: 'var(--radius)',
         padding: '12px 18px 4px',
@@ -72,13 +72,13 @@ function Column({ title, color, children }: { title: string; color: string; chil
   );
 }
 
-export const Do = ({ children }: { children: React.ReactNode }) => <Column title="Do" color="var(--green)">{children}</Column>;
-export const Dont = ({ children }: { children: React.ReactNode }) => <Column title="Don't" color="var(--danger)">{children}</Column>;
+export const Do = ({ children }: { children: React.ReactNode }) => <Column title="Do" color="var(--text-green)">{children}</Column>;
+export const Dont = ({ children }: { children: React.ReactNode }) => <Column title="Don't" color="var(--text-danger)">{children}</Column>;
 
 /** A keyboard table: each row a key (or keys) and what it does. */
 export function Keys({ rows }: { rows: [string, React.ReactNode][] }) {
   return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 'var(--radius)', overflow: 'hidden', margin: '12px 0 20px' }}>
+    <div style={{ border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius)', overflow: 'hidden', margin: '12px 0 20px' }}>
       {rows.map(([keys, what], i) => (
         <div
           key={keys}
@@ -89,9 +89,9 @@ export function Keys({ rows }: { rows: [string, React.ReactNode][] }) {
             alignItems: 'center',
             padding: '9px 16px',
             fontSize: 13.5,
-            color: 'var(--text-2)',
-            borderTop: i ? '1px solid var(--border)' : undefined,
-            background: 'var(--surface-card)',
+            color: 'var(--text-secondary)',
+            borderTop: i ? '1px solid var(--border-subtle)' : undefined,
+            background: 'var(--bg-card)',
           }}
         >
           <span style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
@@ -114,15 +114,15 @@ export function Gap({ children }: { children: React.ReactNode }) {
         alignItems: 'baseline',
         padding: '10px 16px',
         margin: '8px 0',
-        background: 'var(--tint-yellow)',
-        border: '1px solid var(--border)',
-        borderLeft: '2px solid var(--yellow)',
+        background: 'var(--bg-yellow-tint)',
+        border: '1px solid var(--border-subtle)',
+        borderLeft: '2px solid var(--text-yellow)',
         borderRadius: 'var(--radius)',
         fontSize: 14,
-        color: 'var(--text-2)',
+        color: 'var(--text-secondary)',
       }}
     >
-      <span style={{ ...label, color: 'var(--yellow)', flexShrink: 0 }}>Gap</span>
+      <span style={{ ...label, color: 'var(--text-yellow)', flexShrink: 0 }}>Gap</span>
       <span>{children}</span>
     </div>
   );

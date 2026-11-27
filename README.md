@@ -20,13 +20,13 @@ import { Button, Chip, StatusDot } from '@terjeballestad/bob';
 
 <Button variant="primary" size="sm" onClick={save}>Save</Button>
 <Chip mono tone="green">admin</Chip>
-<StatusDot state="live" color="var(--green)" size={7} />
+<StatusDot state="live" color="var(--bg-green)" size={7} />
 ```
 
 Your Tailwind build then writes Bob's component classes (`btn`, `chip`, `ticket-card`, ...) in its
 utilities layer, and only the ones in use. They take variants (`md:btn-sm`) and mix with your
 utilities: `<Button className="px-8">` gets 32px of side padding over Bob's. The theme maps Bob's
-tokens, so `bg-surface-card`, `rounded-btn` and `font-mono` work. The component import also loads
+tokens, so `bg-card`, `text-secondary`, `border-subtle`, `rounded-btn` and `font-mono` work. The component import also loads
 Bob's webfonts.
 
 - **Preflight.** Bob's components and Storybook assume Bob's own reset, not Tailwind's preflight.

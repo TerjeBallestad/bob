@@ -20,14 +20,14 @@ export const Default: StoryObj<typeof NavRow> = {
       <NavRow {...args} />
     </div>
   ),
-  args: { label: 'Inbox', count: 12, active: true, dot: <StatusDot state="live" color="var(--green)" /> },
+  args: { label: 'Inbox', count: 12, active: true, dot: <StatusDot state="live" color="var(--bg-green)" /> },
 };
 
 export const Sidebar: StoryObj = {
   name: 'A sidebar',
   render: () => (
     <div className="w-55">
-      <NavRow label="Inbox" count={12} active dot={<StatusDot state="live" color="var(--green)" />} />
+      <NavRow label="Inbox" count={12} active dot={<StatusDot state="live" color="var(--bg-green)" />} />
       <NavRow label="Planned" count={4} />
       <NavRow label="Done" count={null} />
     </div>
