@@ -11,8 +11,11 @@ export const Default: StoryObj<typeof ToastStack> = {
   name: 'Bottom centre',
   parameters: { layout: 'fullscreen' },
   render: () => (
-    <div style={{ height: '100vh' }}>
-      <ToastStack><Toast>Saved.</Toast><Toast error>Could not save.</Toast></ToastStack>
+    <div className="h-screen">
+      <ToastStack>
+        <Toast>Saved.</Toast>
+        <Toast error>Could not save.</Toast>
+      </ToastStack>
     </div>
   ),
 };

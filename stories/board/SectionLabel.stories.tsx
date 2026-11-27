@@ -14,9 +14,10 @@ export default {
 
 export const Default: StoryObj<typeof SectionLabel> = {
   name: 'With dot and count',
-  render: () => (
-    <div style={{ width: 320 }}>
-      <SectionLabel dot={<StatusDot state="solid" color="var(--accent)" />} action={<Chip mono>3</Chip>}>Planned</SectionLabel>
+  render: (args) => (
+    <div className="w-80">
+      <SectionLabel {...args} />
     </div>
   ),
+  args: { children: 'Planned', dot: <StatusDot state="solid" color="var(--accent)" />, action: <Chip mono>3</Chip> },
 };

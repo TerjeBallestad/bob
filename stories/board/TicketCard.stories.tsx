@@ -27,16 +27,22 @@ export default {
 } satisfies Meta<typeof TicketCard>;
 
 export const Default: StoryObj<typeof TicketCard> = {
-  render: (args) => <div style={{ width: 280 }}><TicketCard {...args} /></div>,
+  render: (args) => (
+    <div className="w-70">
+      <TicketCard {...args} />
+    </div>
+  ),
   args: { id: 'SB-042', kind: 'task', title: 'The id counter refuses a second SB-042', age: '2d', priority: 'high' },
 };
 
 export const States: StoryObj = {
   render: () => (
-    <div style={{ display: 'grid', gap: 8, width: 280 }}>
-      {(['research', 'probe', 'grill', 'task', 'gap'] as const).map((k, i) => (
-        <TicketCard key={k} id={`SB-0${40 + i}`} kind={k} title={`A ${k} ticket`} age={`${i + 1}d`} />
-      ))}
+    <div className="grid w-70 gap-2">
+      <TicketCard id="SB-040" kind="research" title="A research ticket" age="1d" />
+      <TicketCard id="SB-041" kind="probe" title="A probe ticket" age="2d" />
+      <TicketCard id="SB-042" kind="grill" title="A grill ticket" age="3d" />
+      <TicketCard id="SB-043" kind="task" title="A task ticket" age="4d" />
+      <TicketCard id="SB-044" kind="gap" title="A gap ticket" age="5d" />
       <TicketCard id="SB-050" title="Critical and blocked" priority="critical" blocked="SB-049" />
       <TicketCard id="PLAN-001" title="A plan with progress" progress={{ done: 3, total: 7 }} live emphasis="plan" />
       <TicketCard id="SDD-004" title="An SDD" emphasis="sdd" />
@@ -47,7 +53,7 @@ export const States: StoryObj = {
 export const LabelsAndNotes: StoryObj = {
   name: 'Labels and notes',
   render: () => (
-    <div style={{ display: 'grid', gap: 8, width: 280 }}>
+    <div className="grid w-70 gap-2">
       <TicketCard id="SDD-005" idColor="#7b83eb" label={{ text: 'map', color: '#7b83eb' }} title="A map with a label and a note" emphasis="sdd" note="4 linked" age="2d" />
       <TicketCard id="PLAN-002" idColor="#46c288" label={{ text: 'plan', color: '#46c288' }} title="A plan with a note and progress" emphasis="plan" note="1 comment" progress={{ done: 1, total: 4 }} />
       <TicketCard id="SB-051" kind="task" title="A kind wins over a label" label={{ text: 'ignored' }} note="3 comments" />

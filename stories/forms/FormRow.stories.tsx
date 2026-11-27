@@ -12,10 +12,19 @@ export default {
 } satisfies Meta<typeof FormRow>;
 
 export const Default: StoryObj<typeof FormRow> = {
+  render: (args) => (
+    <div className="w-80">
+      <FormRow {...args} />
+    </div>
+  ),
+  args: { label: 'Name', children: <Input defaultValue="Weekly review" /> },
+};
+
+export const Form: StoryObj = {
   name: 'A form',
   render: () => (
-    <div style={{ display: 'grid', gap: 12, width: 320 }}>
-      <FormRow label="Name"><Input defaultValue="Time Turtle" /></FormRow>
+    <div className="grid w-80 gap-3">
+      <FormRow label="Name"><Input defaultValue="Weekly review" /></FormRow>
       <FormRow label="Stage"><Select options={['inbox', 'planned']} /></FormRow>
       <FormRow label="Body"><Textarea rows={3} /></FormRow>
     </div>

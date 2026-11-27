@@ -16,6 +16,10 @@ import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
 
 <Canvas of={Stories.Default} />
 
+<Controls of={Stories.Default} />
+
+Chip also takes every attribute of `<span>`, for example `title` and `aria-label`.
+
 ## When to use
 
 - To mark a record with a short word: `admin`, `blocked`, `task`.
@@ -48,12 +52,6 @@ import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
 
 The top row is the sans face, the bottom row `mono`. `claim` is the yellow of a claimed ticket;
 `neutral` is grey on the input fill.
-
-## Props
-
-<Controls of={Stories.Default} />
-
-Chip also takes every attribute of `<span>`, for example `title` and `aria-label`.
 
 ## Accessibility
 

@@ -20,7 +20,7 @@ export const Default: StoryObj<typeof SearchInput> = {
 
 export const Live: StoryObj = {
   render: () => (
-    <div style={{ display: 'grid', gap: 10, width: 260 }}>
+    <div className="grid w-65 gap-2.5">
       <SearchInput placeholder="Filter…" />
       <SearchInput expandOnFocus placeholder="Search" />
       <SearchInput defaultValue="widget" aria-label="Search" />

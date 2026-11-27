@@ -16,6 +16,11 @@ import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 
 <Canvas of={Stories.Default} />
 
+<Controls of={Stories.Default} />
+
+Input takes every attribute of `<input>`: `value` and `onChange` for a controlled field,
+`defaultValue` for an uncontrolled one, and `name`, `required`, `autoFocus`.
+
 ## When to use
 
 - For short text: a name, a title, an id.
@@ -41,13 +46,6 @@ import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 
 </Dont>
 </DoDont>
-
-## Props
-
-<Controls of={Stories.Default} />
-
-Input takes every attribute of `<input>`: `value` and `onChange` for a controlled field,
-`defaultValue` for an uncontrolled one, and `name`, `required`, `autoFocus`.
 
 ## States
 

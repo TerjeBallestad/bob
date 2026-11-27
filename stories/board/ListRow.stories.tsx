@@ -17,9 +17,17 @@ export default {
 } satisfies Meta<typeof ListRow>;
 
 export const Default: StoryObj<typeof ListRow> = {
-  name: 'Rows',
+  render: (args) => (
+    <div className="w-120">
+      <ListRow {...args} />
+    </div>
+  ),
+  args: { id: 'SB-042', title: 'The id counter refuses a second SB-042', meta: <Chip mono>task</Chip>, age: '2d', done: false },
+};
+
+export const Rows: StoryObj = {
   render: () => (
-    <div style={{ width: 480 }}>
+    <div className="w-120">
       <ListRow id="SB-042" title="The id counter refuses a second SB-042" meta={<Chip mono>task</Chip>} age="2d" />
       <ListRow id="DD-001" idColor="var(--accent)" title="One server holds every board" age="1d" />
       <ListRow id="SB-030" title="A done row" age="9d" done />

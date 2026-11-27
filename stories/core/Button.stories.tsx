@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '../../src';
 
-const VARIANTS = ['primary', 'secondary', 'ghost', 'accent', 'danger', 'danger-ghost'] as const;
-const row = { display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' } as const;
 
 export default {
   title: 'Core/Button',
@@ -10,7 +8,7 @@ export default {
   argTypes: {
     variant: {
       control: 'select',
-      options: VARIANTS,
+      options: ['primary', 'secondary', 'ghost', 'accent', 'danger', 'danger-ghost'],
       description: 'How much the button stands out. One `primary` per view; `danger` only for an action that destroys data.',
     },
     size: { control: 'inline-radio', options: ['md', 'sm'], description: '`sm` for toolbars, rows and dense forms; `md` everywhere else.' },
@@ -27,15 +25,25 @@ export const Default: StoryObj<typeof Button> = {
 
 export const Variants: StoryObj = {
   render: () => (
-    <div style={{ display: 'grid', gap: 10 }}>
-      {(['md', 'sm'] as const).map((size) => (
-        <div key={size} style={row}>
-          {VARIANTS.map((v) => (
-            <Button key={v} variant={v} size={size}>{v}</Button>
-          ))}
-          <Button size={size} disabled>disabled</Button>
-        </div>
-      ))}
+    <div className="grid gap-2.5">
+      <div className="flex flex-wrap items-center gap-2.5">
+        <Button variant="primary">primary</Button>
+        <Button variant="secondary">secondary</Button>
+        <Button variant="ghost">ghost</Button>
+        <Button variant="accent">accent</Button>
+        <Button variant="danger">danger</Button>
+        <Button variant="danger-ghost">danger-ghost</Button>
+        <Button disabled>disabled</Button>
+      </div>
+      <div className="flex flex-wrap items-center gap-2.5">
+        <Button variant="primary" size="sm">primary</Button>
+        <Button variant="secondary" size="sm">secondary</Button>
+        <Button variant="ghost" size="sm">ghost</Button>
+        <Button variant="accent" size="sm">accent</Button>
+        <Button variant="danger" size="sm">danger</Button>
+        <Button variant="danger-ghost" size="sm">danger-ghost</Button>
+        <Button size="sm" disabled>disabled</Button>
+      </div>
     </div>
   ),
 };

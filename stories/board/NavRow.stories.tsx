@@ -15,9 +15,18 @@ export default {
 } satisfies Meta<typeof NavRow>;
 
 export const Default: StoryObj<typeof NavRow> = {
+  render: (args) => (
+    <div className="w-55">
+      <NavRow {...args} />
+    </div>
+  ),
+  args: { label: 'Inbox', count: 12, active: true, dot: <StatusDot state="live" color="var(--green)" /> },
+};
+
+export const Sidebar: StoryObj = {
   name: 'A sidebar',
   render: () => (
-    <div style={{ width: 220 }}>
+    <div className="w-55">
       <NavRow label="Inbox" count={12} active dot={<StatusDot state="live" color="var(--green)" />} />
       <NavRow label="Planned" count={4} />
       <NavRow label="Done" count={null} />

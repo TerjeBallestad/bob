@@ -13,8 +13,12 @@ const noop = () => {
 };
 const ROW_STATES = ['rest', 'hover', 'focus'] as const;
 
+// The grids are test fixtures, so each code block shows the control as an app writes it.
 export const Rows: StoryObj = {
-  parameters: { pseudo: { hover: cells(['row', 'done'], 'hover'), focusVisible: cells(['row', 'done'], 'focus') } },
+  parameters: {
+    pseudo: { hover: cells(['row', 'done'], 'hover'), focusVisible: cells(['row', 'done'], 'focus') },
+    docs: { source: { code: '<ListRow id="SB-042" title="The id counter" meta={<Chip mono>task</Chip>} onClick={open} />' } },
+  },
   render: () => (
     <StateGrid
       states={ROW_STATES}
@@ -26,7 +30,10 @@ export const Rows: StoryObj = {
 };
 
 export const Cards: StoryObj = {
-  parameters: { pseudo: { hover: cells(['card', 'live'], 'hover'), focusVisible: cells(['card', 'live'], 'focus') } },
+  parameters: {
+    pseudo: { hover: cells(['card', 'live'], 'hover'), focusVisible: cells(['card', 'live'], 'focus') },
+    docs: { source: { code: '<TicketCard id="SB-042" kind="task" title="The id counter refuses a second SB-042" age="2d" live onClick={open} />' } },
+  },
   render: () => (
     <StateGrid
       states={ROW_STATES}
@@ -41,7 +48,10 @@ export const Cards: StoryObj = {
 
 export const NavRows: StoryObj = {
   name: 'NavRow',
-  parameters: { pseudo: { hover: cells(['nav-row', 'active'], 'hover'), focusVisible: cells(['nav-row', 'active'], 'focus') } },
+  parameters: {
+    pseudo: { hover: cells(['nav-row', 'active'], 'hover'), focusVisible: cells(['nav-row', 'active'], 'focus') },
+    docs: { source: { code: '<NavRow label="Inbox" count={12} active onClick={goToInbox} />' } },
+  },
   render: () => (
     <StateGrid
       states={ROW_STATES}

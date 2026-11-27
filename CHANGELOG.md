@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+- **Storybook** (no change to the package's code): the docs describe Bob as a design system and
+  component library for productivity tools, with no app names. The Introduction is shorter and
+  teaches one way in, the Tailwind entry. Each component page shows its controls right under the
+  story at the top. "Show code" prints plain JSX as an app writes it, with Tailwind utilities on
+  layout wrappers. Avatar, Kbd, StatusDot, FormRow, Toast, ListRow and NavRow get a one-component
+  Default story with controls; their former Default is a new story (Tones, Keys, States, Form,
+  Success and error, Rows, Sidebar).
+- The package description and the README no longer name the apps, and the README teaches the
+  Tailwind entry only. The JS import and `styles.css` stay in the package.
+
 ## 0.4.0
 
 PLAN-005 Task 3 (TASK-032): focus, accessibility checks, state screenshots, animations. Task 4

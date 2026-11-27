@@ -80,7 +80,7 @@ test.describe('SegToggle', () => {
 
 test.describe('Toast', () => {
   test('a toast is a status, an error toast an alert', async ({ page }) => {
-    await openStory(page, 'feedback-toast--default');
+    await openStory(page, 'feedback-toast--success-and-error');
     await expect(page.getByRole('status')).toHaveText('Saved.');
     await expect(page.getByRole('alert')).toHaveText(/Could not save/);
   });
@@ -136,6 +136,6 @@ test.describe('roles and states', () => {
 
   test('FormRow names its field with its label', async ({ page }) => {
     await openStory(page, 'forms-formrow--default');
-    await expect(page.getByLabel('Name')).toHaveValue('Time Turtle');
+    await expect(page.getByLabel('Name')).toHaveValue('Weekly review');
   });
 });

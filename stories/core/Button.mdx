@@ -16,6 +16,11 @@ import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 
 <Canvas of={Stories.Default} />
 
+<Controls of={Stories.Default} />
+
+Button also takes every attribute of `<button>`: `onClick`, `type`, `aria-label`, `form`. In a
+form, set `type="button"` on every button that does not submit it.
+
 ## When to use
 
 - For an action that changes something here: save a form, archive a ticket, open a modal.
@@ -59,14 +64,7 @@ import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 
 `sm` is for toolbars, rows and dense forms. `md` is the default.
 
-## Props
-
-<Controls of={Stories.Default} />
-
-Button also takes every attribute of `<button>`: `onClick`, `type`, `aria-label`, `form`. In a
-form, set `type="button"` on every button that does not submit it.
-
-### Override with Tailwind
+## Override with Tailwind
 
 In a Tailwind app, utilities in `className` win over Bob's classes, because both come out of the
 same build (DD-031):

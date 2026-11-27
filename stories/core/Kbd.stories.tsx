@@ -11,6 +11,16 @@ export default {
 } satisfies Meta<typeof Kbd>;
 
 export const Default: StoryObj<typeof Kbd> = {
-  name: 'Keys',
-  render: () => <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}><Kbd>⌘K</Kbd><Kbd>/</Kbd><Kbd>Esc</Kbd></div>,
+  render: (args) => <Kbd {...args} />,
+  args: { children: '⌘K' },
+};
+
+export const Keys: StoryObj = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-2.5">
+      <Kbd>⌘K</Kbd>
+      <Kbd>/</Kbd>
+      <Kbd>Esc</Kbd>
+    </div>
+  ),
 };

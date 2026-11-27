@@ -12,7 +12,7 @@ export const ModalFocus: StoryObj = {
   name: 'Modal focus',
   parameters: { layout: 'fullscreen', pseudo: { focusVisible: ['.modal-close'] } },
   render: () => (
-    <div style={{ height: '100vh' }}>
+    <div className="h-screen">
       <Modal
         title="Archive SB-042?"
         onClose={noop}
@@ -32,10 +32,24 @@ export const ModalFocus: StoryObj = {
 // A trigger that opens the modal, for the keyboard checks in visual/keyboard.visual.ts.
 export const ModalKeyboard: StoryObj = {
   name: 'Modal keyboard',
+  // A demo with state: the code block shows the usage, not the demo.
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      source: {
+        code: `const [open, setOpen] = useState(false);
+
+<Button onClick={() => setOpen(true)}>Open</Button>
+<Modal open={open} title="Archive SB-042?" onClose={() => setOpen(false)} footer={…}>
+  The ticket leaves the board.
+</Modal>`,
+      },
+    },
+  },
   render: function Render() {
     const [open, setOpen] = useState(false);
     return (
-      <div style={{ height: '100vh', display: 'grid', placeItems: 'center' }}>
+      <div className="grid h-screen place-items-center">
         <Button onClick={() => setOpen(true)}>Open</Button>
         <Modal
           open={open}
@@ -53,5 +67,4 @@ export const ModalKeyboard: StoryObj = {
       </div>
     );
   },
-  parameters: { layout: 'fullscreen' },
 };

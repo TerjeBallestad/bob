@@ -18,12 +18,18 @@ export default {
 } satisfies Meta<typeof StatusDot>;
 
 export const Default: StoryObj<typeof StatusDot> = {
-  name: 'States',
+  render: (args) => <StatusDot {...args} />,
+  args: { state: 'live', color: 'var(--green)', size: 9 },
+};
+
+export const States: StoryObj = {
   render: () => (
-    <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-      {(['dashed', 'outline', 'staged', 'live', 'solid'] as const).map((s) => (
-        <StatusDot key={s} state={s} color="var(--green)" size={9} />
-      ))}
+    <div className="flex flex-wrap items-center gap-2.5">
+      <StatusDot state="dashed" color="var(--green)" size={9} />
+      <StatusDot state="outline" color="var(--green)" size={9} />
+      <StatusDot state="staged" color="var(--green)" size={9} />
+      <StatusDot state="live" color="var(--green)" size={9} />
+      <StatusDot state="solid" color="var(--green)" size={9} />
       <StatusDot state="solid" square color="var(--accent)" size={9} />
     </div>
   ),

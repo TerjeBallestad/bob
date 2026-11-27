@@ -16,6 +16,8 @@ import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 
 <Canvas of={Stories.Default} />
 
+<Controls of={Stories.Default} />
+
 ## When to use
 
 - To switch how the same data shows: day, week, month; list or board.
@@ -50,10 +52,6 @@ const [range, setRange] = useState('week');
 ```
 
 An option is a string, or `{ value, label }` when the label differs from the value.
-
-## Props
-
-<Controls of={Stories.Default} />
 
 ## Interaction test
 

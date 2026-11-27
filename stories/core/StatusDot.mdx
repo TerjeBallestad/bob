@@ -16,6 +16,8 @@ import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
 
 <Canvas of={Stories.Default} />
 
+<Controls of={Stories.Default} />
+
 ## When to use
 
 - Before a name in a list, a sidebar row or a section label, to show its state.
@@ -27,6 +29,8 @@ import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
 | `staged` | Staged: outline with a 25% fill. |
 | `solid` | Done. |
 | `live` | An agent works on it now. It pulses. |
+
+<Canvas of={Stories.States} />
 
 `square` makes a rounded square: use it for a different kind of thing in the same list, such as a
 project beside its tickets.
@@ -49,10 +53,6 @@ project beside its tickets.
 
 </Dont>
 </DoDont>
-
-## Props
-
-<Controls of={Stories.Default} />
 
 ## Accessibility
 

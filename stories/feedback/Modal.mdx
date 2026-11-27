@@ -16,6 +16,8 @@ import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 
 <Canvas of={Stories.Default} story={{ inline: false, height: '420px' }} />
 
+<Controls of={Stories.Default} />
+
 ## When to use
 
 - To confirm an action that is hard to undo: archive, delete, leave with unsaved changes.
@@ -65,10 +67,6 @@ const [open, setOpen] = useState(false);
 ```
 
 The box is 560px wide (92% of a narrow screen) and scrolls past 80% of the screen height.
-
-## Props
-
-<Controls of={Stories.Default} />
 
 ## Interaction test
 

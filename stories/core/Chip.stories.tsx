@@ -1,14 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Chip } from '../../src';
 
-const TONES = ['neutral', 'accent', 'blue', 'green', 'orange', 'danger', 'yellow', 'claim'] as const;
-const row = { display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' } as const;
 
 export default {
   title: 'Core/Chip',
   component: Chip,
   argTypes: {
-    tone: { control: 'select', options: TONES, description: 'The colour. Each tone pairs a text colour with its tint.' },
+    tone: { control: 'select', options: ['neutral', 'accent', 'blue', 'green', 'orange', 'danger', 'yellow', 'claim'], description: 'The colour. Each tone pairs a text colour with its tint.' },
     mono: { control: 'boolean', description: 'JetBrains Mono, for ids, counts, roles and other machine words.' },
     children: { control: 'text', description: 'One or two words.' },
     className: { control: 'text', description: 'Tailwind utilities that win over Bob\'s classes.' },
@@ -22,14 +20,27 @@ export const Default: StoryObj<typeof Chip> = {
 
 export const Tones: StoryObj = {
   render: () => (
-    <div style={{ display: 'grid', gap: 10 }}>
-      {[false, true].map((mono) => (
-        <div key={String(mono)} style={row}>
-          {TONES.map((t) => (
-            <Chip key={t} tone={t} mono={mono}>{t}</Chip>
-          ))}
-        </div>
-      ))}
+    <div className="grid gap-2.5">
+      <div className="flex flex-wrap items-center gap-2.5">
+        <Chip tone="neutral">neutral</Chip>
+        <Chip tone="accent">accent</Chip>
+        <Chip tone="blue">blue</Chip>
+        <Chip tone="green">green</Chip>
+        <Chip tone="orange">orange</Chip>
+        <Chip tone="danger">danger</Chip>
+        <Chip tone="yellow">yellow</Chip>
+        <Chip tone="claim">claim</Chip>
+      </div>
+      <div className="flex flex-wrap items-center gap-2.5">
+        <Chip mono tone="neutral">neutral</Chip>
+        <Chip mono tone="accent">accent</Chip>
+        <Chip mono tone="blue">blue</Chip>
+        <Chip mono tone="green">green</Chip>
+        <Chip mono tone="orange">orange</Chip>
+        <Chip mono tone="danger">danger</Chip>
+        <Chip mono tone="yellow">yellow</Chip>
+        <Chip mono tone="claim">claim</Chip>
+      </div>
     </div>
   ),
 };

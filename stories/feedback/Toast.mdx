@@ -16,6 +16,8 @@ import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
 
 <Canvas of={Stories.Default} />
 
+<Controls of={Stories.Default} />
+
 ## When to use
 
 - To confirm that an action worked when its result is not in view: **SB-341 archived**.
@@ -42,15 +44,15 @@ import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
 </Dont>
 </DoDont>
 
+## Success and error
+
+<Canvas of={Stories.SuccessAndError} />
+
 ## Usage
 
 Toast shows a message; it does not time itself out or stack itself. The app keeps the list, puts
 the toasts in one [ToastStack](?path=/docs/feedback-toaststack--docs), and removes each after a
 timer.
-
-## Props
-
-<Controls of={Stories.Default} />
 
 ## Interaction test
 

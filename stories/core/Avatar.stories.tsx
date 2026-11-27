@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Avatar } from '../../src';
 
-const row = { display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' } as const;
-
 export default {
   title: 'Core/Avatar',
   component: Avatar,
@@ -15,10 +13,18 @@ export default {
 } satisfies Meta<typeof Avatar>;
 
 export const Default: StoryObj<typeof Avatar> = {
+  render: (args) => <Avatar {...args} />,
+  args: { initials: 'TB', tone: 'gold' },
+};
+
+export const Tones: StoryObj = {
   name: 'Tones and sizes',
   render: () => (
-    <div style={row}>
-      {(['gold', 'accent', 'green', 'neutral'] as const).map((t) => <Avatar key={t} tone={t} initials="TB" />)}
+    <div className="flex flex-wrap items-center gap-2.5">
+      <Avatar tone="gold" initials="TB" />
+      <Avatar tone="accent" initials="TB" />
+      <Avatar tone="green" initials="TB" />
+      <Avatar tone="neutral" initials="TB" />
       <Avatar initials="TB" size={32} />
     </div>
   ),

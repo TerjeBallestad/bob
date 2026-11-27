@@ -14,9 +14,14 @@ export default {
 } satisfies Meta<typeof Toast>;
 
 export const Default: StoryObj<typeof Toast> = {
+  render: (args) => <Toast {...args} />,
+  args: { children: 'Saved.', error: false },
+};
+
+export const SuccessAndError: StoryObj = {
   name: 'Success and error',
   render: () => (
-    <div style={{ display: 'grid', gap: 8 }}>
+    <div className="grid gap-2">
       <Toast>Saved.</Toast>
       <Toast error>Could not save. The server did not answer.</Toast>
     </div>
@@ -28,7 +33,7 @@ function SaveWithToasts() {
   const [toasts, setToasts] = useState<{ id: number; text: string; error?: boolean }[]>([]);
   const push = (text: string, error?: boolean) => setToasts((t) => [...t, { id: t.length, text, error }]);
   return (
-    <div style={{ height: '100vh', display: 'flex', gap: 8, alignItems: 'center', justifyContent: 'center' }}>
+    <div className="flex h-screen items-center justify-center gap-2">
       <Button onClick={() => push('Title updated')}>Save</Button>
       <Button variant="secondary" onClick={() => push('Could not save', true)}>Save offline</Button>
       <ToastStack>
@@ -41,7 +46,20 @@ function SaveWithToasts() {
 /** An interaction test: each action adds a toast to the stack, and the focus stays where it was. */
 export const ShowToasts: StoryObj = {
   name: 'Show toasts (test)',
-  parameters: { layout: 'fullscreen' },
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      source: {
+        code: `const [toasts, setToasts] = useState([]);
+const push = (text, error) => setToasts((t) => [...t, { id: t.length, text, error }]);
+
+<Button onClick={() => push('Title updated')}>Save</Button>
+<ToastStack>
+  {toasts.map((t) => <Toast key={t.id} error={t.error}>{t.text}</Toast>)}
+</ToastStack>`,
+      },
+    },
+  },
   render: () => <SaveWithToasts />,
   play: async ({ canvas, canvasElement, userEvent }) => {
     const save = canvas.getByRole('button', { name: 'Save' });

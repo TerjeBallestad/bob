@@ -18,7 +18,11 @@ export default {
 
 export const Default: StoryObj<typeof Modal> = {
   parameters: { layout: 'fullscreen' },
-  render: (args) => <div style={{ height: '100vh' }}><Modal {...args} /></div>,
+  render: (args) => (
+    <div className="h-screen">
+      <Modal {...args} />
+    </div>
+  ),
   args: {
     open: true,
     title: 'Archive SB-042?',
@@ -35,7 +39,7 @@ function ArchiveDialog({ onClose }: { onClose?: () => void }) {
     onClose?.();
   };
   return (
-    <div style={{ height: '100vh', display: 'grid', placeItems: 'center' }}>
+    <div className="grid h-screen place-items-center">
       <Button variant="danger-ghost" onClick={() => setOpen(true)}>Archive SB-042</Button>
       <Modal
         open={open}
@@ -52,7 +56,30 @@ function ArchiveDialog({ onClose }: { onClose?: () => void }) {
 /** An interaction test: it opens and closes the dialog by keyboard and by pointer. */
 export const OpenAndClose: StoryObj<typeof ArchiveDialog> = {
   name: 'Open and close (test)',
-  parameters: { layout: 'fullscreen', controls: { disable: true } },
+  parameters: {
+    layout: 'fullscreen',
+    controls: { disable: true },
+    docs: {
+      source: {
+        code: `const [open, setOpen] = useState(false);
+
+<Button variant="danger-ghost" onClick={() => setOpen(true)}>Archive SB-042</Button>
+<Modal
+  open={open}
+  title="Archive SB-042?"
+  onClose={() => setOpen(false)}
+  footer={
+    <>
+      <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+      <Button variant="danger" onClick={archive}>Archive</Button>
+    </>
+  }
+>
+  The ticket leaves the board. You can find it again under Archive.
+</Modal>`,
+      },
+    },
+  },
   args: { onClose: fn() },
   render: (args) => <ArchiveDialog {...args} />,
   play: async ({ args, canvas, userEvent, step }) => {

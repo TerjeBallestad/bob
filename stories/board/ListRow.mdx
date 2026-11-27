@@ -16,6 +16,8 @@ import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
 
 <Canvas of={Stories.Default} />
 
+<Controls of={Stories.Default} />
+
 ## When to use
 
 - For lists of records where people scan ids and titles: search results, decisions, a backlog.
@@ -39,9 +41,11 @@ import { Lede, Facts, DoDont, Do, Dont, Gap } from '../docs/blocks';
 </Dont>
 </DoDont>
 
-## Props
+## In a list
 
-<Controls of={Stories.Default} />
+A done row is struck through and dimmed.
+
+<Canvas of={Stories.Rows} />
 
 ## Accessibility
 

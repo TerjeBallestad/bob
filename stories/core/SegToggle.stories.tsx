@@ -37,7 +37,16 @@ function RangeToggle({ onChange }: { onChange?: (value: string) => void }) {
 /** An interaction test: a click or Enter on a segment makes it the active one. */
 export const SwitchSegments: StoryObj<typeof RangeToggle> = {
   name: 'Switch segments (test)',
-  parameters: { controls: { disable: true } },
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      source: {
+        code: `const [range, setRange] = useState('week');
+
+<SegToggle options={['day', 'week', { value: 'month', label: 'Month' }]} value={range} onChange={setRange} />`,
+      },
+    },
+  },
   args: { onChange: fn() },
   render: (args) => <RangeToggle {...args} />,
   play: async ({ args, canvas, userEvent }) => {

@@ -22,10 +22,19 @@ export const Default: StoryObj<typeof Select> = {
 /** An interaction test: Tab reaches the select, and a choice by value or by label reaches onChange. */
 export const ChooseAnOption: StoryObj<typeof Select> = {
   name: 'Choose an option (test)',
-  parameters: { controls: { disable: true } },
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      source: {
+        code: `<FormRow label="Stage">
+  <Select defaultValue="inbox" options={['inbox', 'planned', { value: 'done', label: 'Done' }]} onChange={(e) => setStage(e.target.value)} />
+</FormRow>`,
+      },
+    },
+  },
   args: { onChange: fn() },
   render: (args) => (
-    <div style={{ width: 240 }}>
+    <div className="w-60">
       <FormRow label="Stage">
         <Select aria-label="Stage" defaultValue="inbox" options={['inbox', 'planned', { value: 'done', label: 'Done' }]} onChange={args.onChange} />
       </FormRow>

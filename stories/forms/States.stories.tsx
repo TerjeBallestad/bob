@@ -8,8 +8,18 @@ export default { title: 'Forms/States', tags: ['!autodocs'] } satisfies Meta;
 
 const FIELDS = ['input', 'select', 'textarea', 'search'] as const;
 
+// The grid is a test fixture, so the code block shows the states as an app writes them.
 export const Fields: StoryObj = {
-  parameters: { pseudo: { focus: cells(FIELDS, 'focus'), focusVisible: cells(FIELDS, 'focus') } },
+  parameters: {
+    pseudo: { focus: cells(FIELDS, 'focus'), focusVisible: cells(FIELDS, 'focus') },
+    docs: {
+      source: {
+        code: `<Input placeholder="Project name" />
+<Input placeholder="Project name" aria-invalid="true" />
+<Input placeholder="Project name" disabled />`,
+      },
+    },
+  },
   render: () => (
     <StateGrid
       states={['rest', 'focus', 'error', 'disabled']}
@@ -28,7 +38,10 @@ export const Fields: StoryObj = {
 
 export const SearchKeyHint: StoryObj = {
   name: 'SearchInput key hint',
-  parameters: { pseudo: { hover: cells(['kbd'], 'hover'), focusVisible: cells(['kbd'], 'focus') } },
+  parameters: {
+    pseudo: { hover: cells(['kbd'], 'hover'), focusVisible: cells(['kbd'], 'focus') },
+    docs: { source: { code: '<SearchInput kbd="/" placeholder="Search" onClick={openPalette} />' } },
+  },
   render: () => (
     <StateGrid states={['rest', 'hover', 'focus']} rows={['kbd']} width={180} cell={() => <SearchInput kbd="/" placeholder="Search" />} />
   ),

@@ -16,6 +16,10 @@ import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 
 <Canvas of={Stories.Default} />
 
+<Controls of={Stories.Default} />
+
+All other props go to the `<input>` (or, with `kbd`, to the `<button>`).
+
 ## Two forms
 
 - **A field** (no `kbd`): the user types here, and the app filters as they type.
@@ -49,12 +53,6 @@ topbar where space is tight.
 
 </Dont>
 </DoDont>
-
-## Props
-
-<Controls of={Stories.Default} />
-
-All other props go to the `<input>` (or, with `kbd`, to the `<button>`).
 
 ## Accessibility
 

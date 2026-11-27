@@ -8,8 +8,12 @@ export default { title: 'Core/States', tags: ['!autodocs'] } satisfies Meta;
 
 const BUTTONS = ['primary', 'secondary', 'ghost', 'accent', 'danger', 'danger-ghost'] as const;
 
+// The grid is a test fixture, so the code block shows the states as an app writes them.
 export const Buttons: StoryObj = {
-  parameters: { pseudo: { hover: cells(BUTTONS, 'hover'), focusVisible: cells(BUTTONS, 'focus') } },
+  parameters: {
+    pseudo: { hover: cells(BUTTONS, 'hover'), focusVisible: cells(BUTTONS, 'focus') },
+    docs: { source: { code: '<Button variant="primary">Save</Button>\n<Button variant="primary" disabled>Save</Button>' } },
+  },
   render: () => (
     <StateGrid
       states={['rest', 'hover', 'focus', 'disabled']}
@@ -27,7 +31,7 @@ export const SegToggleFocus: StoryObj = {
   name: 'SegToggle focus',
   parameters: { pseudo: { focusVisible: ['#seg-focus button:first-child', '#seg-focus-active button:nth-child(2)'] } },
   render: () => (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <div className="grid gap-3">
       <div id="seg-focus">
         <SegToggle options={['day', 'week', 'month']} value="week" />
       </div>
