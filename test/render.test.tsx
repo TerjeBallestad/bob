@@ -30,3 +30,24 @@ describe('render', () => {
     expect(readFileSync('dist/index.js', 'utf8').startsWith("import './bob.css';")).toBe(true);
   });
 });
+
+describe('Button', () => {
+  const button = (el: JSX.Element) => {
+    const host = document.createElement('div');
+    host.innerHTML = renderHtml(el);
+    return host.querySelector('button')!;
+  };
+
+  it('text renders btn and btn-text, with no size class, and is type="button" unless the app says otherwise', () => {
+    const text = button(<Bob.Button variant="text" size="sm" className="text-muted">stop</Bob.Button>);
+    expect(text.className).toBe('btn btn-text text-muted');
+    expect(text.getAttribute('type')).toBe('button');
+    expect(button(<Bob.Button variant="text" type="submit">send</Bob.Button>).getAttribute('type')).toBe('submit');
+  });
+
+  it('the other variants keep the native default type', () => {
+    const save = button(<Bob.Button variant="ghost">Save</Bob.Button>);
+    expect(save.className).toBe('btn btn-md btn-ghost');
+    expect(save.hasAttribute('type')).toBe(false);
+  });
+});

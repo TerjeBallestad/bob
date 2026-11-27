@@ -6,7 +6,12 @@ import * as Bob from '@terjeballestad/bob';
 // covers every component; tailwind.test.ts builds Bob's classes for them in a Tailwind app.
 export const samples: Record<string, () => JSX.Element> = {
   Avatar: () => <Bob.Avatar initials="TB" />,
-  Button: () => <Bob.Button variant="secondary" size="sm">Save</Bob.Button>,
+  Button: () => (
+    <>
+      <Bob.Button variant="secondary" size="sm">Save</Bob.Button>
+      <Bob.Button variant="text">stop</Bob.Button>
+    </>
+  ),
   Chip: () => <Bob.Chip mono tone="green">admin</Bob.Chip>,
   Kbd: () => <Bob.Kbd>⌘K</Bob.Kbd>,
   ProgressBar: () => <Bob.ProgressBar value={3} max={7} />,

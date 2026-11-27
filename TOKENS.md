@@ -177,6 +177,13 @@ Size ramp (exact odd values are intentional; there is no modular scale):
 Weights `--fw-regular` 400 · `--fw-medium` 500 · `--fw-semibold` 600 · `--fw-bold` 700.
 Tracking `--ls-heading` `-.01em` (headings) · `--ls-label` `.08em` (uppercase section labels).
 
+In Tailwind (`tailwind/theme.css`), each size is a class: `text-micro`, `text-tiny`,
+`text-caption`, `text-body`, `text-base`, `text-prose`, `text-title`, `text-doc`, and the tracking
+is `tracking-heading` and `tracking-label`. A size class sets only `font-size`, with no line
+height. `text-base` is `--fs-base` (13px), not Tailwind's 1rem; Tailwind's `text-xs` to
+`text-9xl` keep their values. Bob has no line-height tokens: an app uses Tailwind's
+`leading-normal` (1.5), `leading-relaxed` (1.625) or `leading-loose` (2).
+
 ## Layout — `tokens/layout.css`
 
 Radii: `--radius-kbd` 4px (chips/kbd) · `--radius-chip` 5px · `--radius-btn` 7px

@@ -49,10 +49,17 @@ function files(path: string): string[] {
   return readdirSync(full).flatMap((f) => (f.startsWith('.') && path !== '.storybook' ? [] : files(join(path, f)))).filter((f) => EXT.test(f));
 }
 
+// Bob 1.1 puts the type ramp in Tailwind's font-size namespace, so the theme declares
+// --text-body and --text-prose again, as font-size keys that read --fs-*. Those lines are not 0.x
+// colour tokens. The theme is `inline`, so a build writes no --text-body variable, and a stray
+// var(--text-body) anywhere else is still an old name.
+const FONT_SIZE_KEY = /^\s*--text-[a-z]+:\s*var\(--fs-[a-z]+\);/;
+
 /** Every old name in a text, as `file:line name`. */
 export function oldNames(file: string, text: string): string[] {
   const out: string[] = [];
   text.split('\n').forEach((line, i) => {
+    if (FONT_SIZE_KEY.test(line)) return;
     for (const re of [tokenRe, classRe]) for (const m of line.matchAll(re)) out.push(`${file}:${i + 1} ${m[1]}`);
   });
   return out;
@@ -68,6 +75,8 @@ describe('no 0.x colour name is left (DD-033)', () => {
     expect(oldClasses).not.toContain('bg-card-hover');
     expect(oldNames('x', 'a { color: var(--text-2); } <b className="bg-panel">')).toEqual(['x:1 --text-2', 'x:1 bg-panel']);
     expect(oldNames('x', 'var(--text-primary) var(--bg-card) bg-card text-muted border-subtle')).toEqual([]);
+    expect(oldNames('x', '  --text-body: var(--fs-body);')).toEqual([]);
+    expect(oldNames('x', 'a { color: var(--text-body); }')).toEqual(['x:1 --text-body']);
   });
 
   it('in src, stories, .storybook, visual, scripts, dist, docs, README and TOKENS.md', () => {

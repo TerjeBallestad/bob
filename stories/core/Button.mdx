@@ -11,7 +11,7 @@ import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 <Facts items={[
   ['Import', "import { Button } from '@terjeballestad/bob'"],
   ['Renders', '<button>, with every native attribute passed on'],
-  ['Classes', 'btn  btn-md | btn-sm  btn-primary | btn-secondary | btn-ghost | btn-accent | btn-danger | btn-danger-ghost'],
+  ['Classes', 'btn  btn-md | btn-sm  btn-primary | btn-secondary | btn-ghost | btn-accent | btn-danger | btn-danger-ghost | btn-text (no size class)'],
 ]} />
 
 <Canvas of={Stories.Default} />
@@ -19,7 +19,8 @@ import { Lede, Facts, DoDont, Do, Dont, Keys, Gap } from '../docs/blocks';
 <Controls of={Stories.Default} />
 
 Button also takes every attribute of `<button>`: `onClick`, `type`, `aria-label`, `form`. In a
-form, set `type="button"` on every button that does not submit it.
+form, set `type="button"` on every button that does not submit it. The `text` variant is
+`type="button"` already.
 
 ## When to use
 
@@ -61,8 +62,26 @@ form, set `type="button"` on every button that does not submit it.
 | `accent` | An action that starts something new, in the indigo accent. |
 | `danger` | An action that destroys data: Delete, Archive for good. |
 | `danger-ghost` | The first step to a destructive action, which then asks in a modal. |
+| `text` | An action that reads as text: "stop" in a top bar, "sign out", a row's delete `×`. |
 
 `sm` is for toolbars, rows and dense forms. `md` is the default.
+
+## Text
+
+<Canvas of={Stories.Text} />
+
+`variant="text"` renders `btn btn-text`: no border, no fill, no padding, and no size class, so
+`size` has no effect. It takes the font and colour of its parent, or of the classes you give it:
+
+```tsx
+<Button variant="text" className="text-caption text-muted hover:text-primary">sign out</Button>
+<Button variant="text" aria-label="Delete entry" className="text-title text-faint hover:text-danger">×</Button>
+```
+
+- It is `type="button"` unless you set `type`, so it never submits a form by accident. The other
+  variants keep the native default, `submit`.
+- It has no hover style of its own. Give it one with a class, as above.
+- It keeps Bob's focus ring and the disabled style of every Button (half opacity, no pointer).
 
 ## Override with Tailwind
 

@@ -27,6 +27,28 @@ export const Buttons: StoryObj = {
   ),
 };
 
+// The text variant has no fill or border to change, so hover is the app's (here hover:text-primary).
+// Focus is Bob's ring; disabled is Bob's opacity.
+const TEXT_ROWS = ['text'] as const;
+export const TextButton: StoryObj = {
+  name: 'Text button',
+  parameters: {
+    pseudo: { hover: cells(TEXT_ROWS, 'hover'), focusVisible: cells(TEXT_ROWS, 'focus') },
+    docs: { source: { code: '<Button variant="text" className="text-caption text-muted hover:text-primary">sign out</Button>' } },
+  },
+  render: () => (
+    <StateGrid
+      states={['rest', 'hover', 'focus', 'disabled']}
+      rows={TEXT_ROWS}
+      cell={(_, s) => (
+        <Button variant="text" disabled={s === 'disabled'} className="text-caption text-muted hover:text-primary">
+          sign out
+        </Button>
+      )}
+    />
+  ),
+};
+
 export const SegToggleFocus: StoryObj = {
   name: 'SegToggle focus',
   parameters: { pseudo: { focusVisible: ['#seg-focus button:first-child', '#seg-focus-active button:nth-child(2)'] } },

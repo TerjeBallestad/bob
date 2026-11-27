@@ -1,5 +1,49 @@
 # Changelog
 
+## 1.1.0
+
+A minor version: two new sets of Tailwind classes and a new Button variant. Nothing is removed,
+and every component looks as it did. Makron's review (PR #6) asked for both, so an app needs no
+custom values (`text-(length:--fs-tiny)`, `text-[10px]`) and no local TextButton.
+
+### Type classes from Bob's ramp
+
+- **Font sizes**: `tailwind/theme.css` maps the ramp into Tailwind's `--text-*` namespace.
+  `text-micro` 9.5px, `text-tiny` 10.5px, `text-caption` 11.5px, `text-body` 12.5px, `text-base`
+  13px, `text-prose` 13.5px, `text-title` 15px, `text-doc` 21px. Each reads its token:
+  `.text-tiny { font-size: var(--fs-tiny) }`.
+- **No line height.** A size class sets only `font-size`, as Bob's components set their own line
+  heights. Tailwind's sizes carry one, so a Bob size with one would move the line box of any
+  element that uses it.
+- **`text-base` is Bob's 13px**, the body default, and no longer Tailwind's 1rem with line-height
+  1.5. Bob, pm-board and Makron did not use `text-base`, or any of Tailwind's `text-xs` to
+  `text-9xl`, before this release. Tailwind's other sizes keep their values and line heights.
+- **No name collides.** The size keys are not colour keys (DD-033), so `text-primary` and
+  `text-muted` stay colours, and `text-tiny text-muted` sets both.
+- `--text-body` and `--text-prose` were 0.x colour tokens. In 1.1 they are font-size keys in
+  the theme only: the theme is `inline`, so a build writes no `--text-body` variable, and a 0.x
+  `var(--text-body)` still resolves to nothing. test/old-names.test.ts still finds one.
+- **Letter spacing**: `tracking-heading` (`--ls-heading`, -0.01em) and `tracking-label`
+  (`--ls-label`, 0.08em). Tailwind's `tracking-tight` to `tracking-widest` stay.
+- **Line heights**: Bob has no line-height tokens. An app uses Tailwind's `leading-normal` (1.5),
+  `leading-relaxed` (1.625) or `leading-loose` (2).
+- Storybook: Foundations / Tokens has a new page, "Type: Tailwind classes", that renders each
+  class. Storybook's own Tailwind build now loads Tailwind's theme and Bob's, as an app does.
+
+### Button: `variant="text"`
+
+- A button that reads as text, for "stop" in a top bar, "sign out", or a row's delete `×`. It
+  replaces Makron's local TextButton.
+- It renders `btn btn-text` and no size class, so `size` has no effect. `btn-text` sets no
+  border, no fill and no padding, and inherits the font, colour, letter spacing and text
+  transform. An app sets them with classes: `className="text-caption text-muted hover:text-primary"`.
+  The app's classes win over `btn-text` in the app's build (tested).
+- It is `type="button"` unless the app sets `type`. The other variants keep the native default.
+- It keeps Bob's focus ring and Button's disabled style (half opacity, default cursor). It has
+  no hover style of its own.
+- New stories: Core / Button / Text and Core / States / Text button.
+- New exports: none. `ButtonVariant` gains `'text'`.
+
 ## 1.0.0
 
 Bob 1.0.0 is a major version with three breaking changes, so an app migrates once:

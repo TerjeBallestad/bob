@@ -49,7 +49,7 @@ describe('the Tailwind entry', () => {
   // A modifier class sets some of the same properties as its base class, so it must come
   // later in the stylesheet. Tailwind sorts utilities by its own rules, not by file order.
   const ORDER: [string, string][] = [
-    ['btn', 'btn-primary'], ['btn', 'btn-secondary'], ['btn', 'btn-ghost'], ['btn', 'btn-danger-ghost'],
+    ['btn', 'btn-primary'], ['btn', 'btn-secondary'], ['btn', 'btn-ghost'], ['btn', 'btn-danger-ghost'], ['btn', 'btn-text'],
     ['chip', 'chip-mono'], ['seg-opt', 'seg-active'], ['search', 'search-expand'], ['toast', 'toast-error'], ['nav-row', 'nav-row-active'],
   ];
   const ruleAt = (css: string, cls: string) => css.search(new RegExp(`\\.${cls}\\s*\\{`));
@@ -112,6 +112,37 @@ describe('the Tailwind entry', () => {
     for (const cls of ['bg-transparent', 'text-current', 'border-transparent']) expect(keywords, cls).toContain(`.${cls} {`);
     // Tailwind's font sizes still work next to Bob's text colours.
     expect(await buildApp(['text-sm'])).toMatch(/\.text-sm \{[^}]*font-size/);
+  });
+
+  it("makes Bob's type ramp font-size classes with no line height, and its letter spacing tracking classes", async () => {
+    const sizes = ['micro', 'tiny', 'caption', 'body', 'base', 'prose', 'title', 'doc'];
+    const yes: [string, string][] = [
+      ...sizes.map((s): [string, string] => [`text-${s}`, `font-size: var(--fs-${s});`]),
+      ['tracking-heading', '--tw-tracking: var(--ls-heading); letter-spacing: var(--ls-heading);'],
+      ['tracking-label', '--tw-tracking: var(--ls-label); letter-spacing: var(--ls-label);'],
+      // A colour role next to the sizes stays a colour.
+      ['text-primary', 'color: var(--text-primary);'],
+      ['text-muted', 'color: var(--text-muted);'],
+    ];
+    const css = await buildApp(yes.map(([c]) => c));
+    for (const [cls, decls] of yes) {
+      const rule = css.match(new RegExp(`\\.${cls} \\{([^}]*)\\}`))?.[1] ?? '';
+      expect(rule.trim().replace(/\s+/g, ' '), cls).toBe(decls);
+    }
+    // No size key is a colour key: a class with both would lose its font size (DD-033).
+    const theme = readFileSync('src/tailwind/theme.css', 'utf8');
+    const colours = new Set([...theme.matchAll(/--text-color-([\w-]+):/g)].map((m) => m[1]));
+    for (const s of sizes) expect(colours.has(s), s).toBe(false);
+    // Tailwind's own sizes keep their line height, and the leading-* classes stay Tailwind's.
+    const tw = await buildApp(['text-sm', 'leading-normal', 'leading-loose']);
+    expect(tw).toMatch(/\.text-sm \{[^}]*line-height: var\(--tw-leading, var\(--text-sm--line-height\)\)/);
+    expect(tw).toMatch(/--leading-loose: 2;/);
+  });
+
+  it("lets an app's font, size, colour and tracking utilities win over btn-text", async () => {
+    const css = await buildApp(['text-tiny', 'text-muted', 'font-mono', 'tracking-label', 'uppercase']);
+    for (const cls of ['text-tiny', 'text-muted', 'font-mono', 'tracking-label', 'uppercase'])
+      expect(ruleAt(css, cls), `${cls} after btn-text`).toBeGreaterThan(ruleAt(css, 'btn-text'));
   });
 
   it("makes Bob's animations theme keys: animate-* classes, with a keyframe only when used", async () => {

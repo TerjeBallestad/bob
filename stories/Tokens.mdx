@@ -53,6 +53,15 @@ fail AA.
 
 <Story of={TokenStories.Type} />
 
+In a Tailwind app the ramp and the letter spacing are classes: `text-micro`, `text-tiny`,
+`text-caption`, `text-body`, `text-base`, `text-prose`, `text-title`, `text-doc`,
+`tracking-heading` and `tracking-label`. Write `text-tiny`, not `text-(length:--fs-tiny)` or
+`text-[10.5px]`. A size class sets only `font-size`. `text-base` is Bob's 13px, not Tailwind's
+1rem. Bob has no line-height tokens: use Tailwind's `leading-normal` (1.5), `leading-relaxed`
+(1.625) or `leading-loose` (2).
+
+<Story of={TokenStories.TypeClasses} />
+
 ## Radius, shadow and space
 
 <Story of={TokenStories.RadiusShadowSpace} />

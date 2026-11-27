@@ -142,6 +142,27 @@
 
   --text-decoration-color-strike: var(--decoration-strike);
   --outline-color-focus: var(--outline-focus);
+
+  /* Bob's type ramp (src/tokens/typography.css) in the font-size namespace: text-micro to
+     text-doc. No key is also a --text-color-* key, so text-tiny is a size and text-primary a
+     colour. text-base is Bob's 13px body default, not Tailwind's 1rem. Tailwind's xs to 9xl stay.
+     A size sets only font-size: `--text-base--line-height: initial` drops the line height that
+     Tailwind's base carries, as Bob's components set their own. For a line height, an app adds
+     Tailwind's leading-normal (1.5), leading-relaxed (1.625) or leading-loose (2). */
+  --text-micro: var(--fs-micro);
+  --text-tiny: var(--fs-tiny);
+  --text-caption: var(--fs-caption);
+  --text-body: var(--fs-body);
+  --text-base: var(--fs-base);
+  --text-base--line-height: initial;
+  --text-prose: var(--fs-prose);
+  --text-title: var(--fs-title);
+  --text-doc: var(--fs-doc);
+
+  /* Bob's letter spacing: tracking-heading (-0.01em) and tracking-label (0.08em, for uppercase
+     section labels). Tailwind's tracking-tight to tracking-widest stay. */
+  --tracking-heading: var(--ls-heading);
+  --tracking-label: var(--ls-label);
 }
 
 /* Radii and fonts. Bob's tokens already have Tailwind's names (--radius-btn, --font-sans), so

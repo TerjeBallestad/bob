@@ -79,6 +79,19 @@
   }
 }
 
+/* A button that reads as text: no border, fill or padding, and the font and colour of its
+   parent, so an app sets them with utilities (text-tiny text-muted). It keeps btn's cursor,
+   disabled style and the focus ring. Button renders it without a size class. */
+@utility btn-text {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
 /* Chip */
 @utility chip {
   display: inline-block;
