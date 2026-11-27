@@ -1,7 +1,7 @@
 # Bob
 
-The design system that Time Turtle and pm-board share: `@terjeballestad/bob` on npm, Storybook at
-https://bob.godstemning.dev. The work is planned on the pm board: PLAN-002 in project SPRINT-002,
+A design system and component library for productivity tools: `@terjeballestad/bob` on npm,
+Storybook at https://bob.godstemning.dev. The work is planned on the pm board: PLAN-002 in project SPRINT-002,
 decisions DD-007 to DD-009 (`pm plan PLAN-002`, `pm get DD-008`). `pm` works here through
 .pm.json, which names the pm-board-cli board on the pm server.
 

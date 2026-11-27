@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.4.1
+
+PLAN-005 Task 4 (TASK-033), review nits.
 
 - **Storybook** (no change to the package's code): the docs describe Bob as a design system and
   component library for productivity tools, with no app names. The Introduction is shorter and
