@@ -60,4 +60,24 @@ describe('toast options', () => {
     expect(dialog.hasAttribute('aria-labelledby')).toBe(false);
     done();
   });
+
+  it('an error stays until closed, unless it has its own timeout', () => {
+    let seen: Bob.ToastObject[] = [];
+    function Probe() {
+      seen = Bob.useToastManager().toasts;
+      return null;
+    }
+    const toast = Bob.createToastManager();
+    const { done } = mount(<Bob.ToastStack toastManager={toast}><Probe /></Bob.ToastStack>);
+    act(() => {
+      toast.add({ title: 'Could not save', type: 'error' });
+      toast.add({ title: 'Saved' });
+      toast.add({ title: 'Retrying', type: 'error', timeout: 500 });
+    });
+    const timeout = (title: string) => seen.find((t) => t.title === title)?.timeout;
+    expect(timeout('Could not save')).toBe(0);
+    expect(timeout('Saved')).toBeUndefined();
+    expect(timeout('Retrying')).toBe(500);
+    done();
+  });
 });

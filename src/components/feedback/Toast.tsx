@@ -46,8 +46,8 @@ export type UseToastManager<Data extends object = any> = Omit<UseToastManagerRet
 // for an app without TypeScript.
 function bobOptions<O extends { priority?: unknown; type?: unknown; timeout?: number }>(options: O): O {
   const { priority: _dropped, ...rest } = options;
-  // A default timeout of 0 for errors (they stay until closed) would be this one line:
-  // if (rest.type === 'error' && rest.timeout === undefined) rest.timeout = 0;
+  // An error stays until the user closes it, unless the app gives it a timeout (WCAG 2.2.1).
+  if (rest.type === 'error' && rest.timeout === undefined) rest.timeout = 0;
   return rest as O;
 }
 

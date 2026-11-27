@@ -392,9 +392,10 @@ const notify = (text: string, error?: boolean) => toast.add({ title: text, type:
   `createToastManager()` and pass it to ToastStack.
 - **A toast is a `dialog`, named by its title**, with a Close button. A test that looked for
   `role="status"` or `role="alert"` must look for `getByRole('dialog', { name })`, or for the text.
-- **Every toast closes after `timeout`.** In 0.x the app owned the timers; now ToastStack's
-  `timeout` (4000 ms) or the toast's own closes it, a success or an error alike. Pass
-  `timeout: 0` to keep a toast until the user closes it.
+- **A success closes after `timeout`, and an error stays.** In 0.x the app owned the timers.
+  Now ToastStack's `timeout` (4000 ms), or the toast's own, closes a success. An error stays
+  until the user closes it, unless the app passes a `timeout` for it. `timeout: 0` keeps any
+  toast open.
 - **`title` is required, and `priority` and other `type` strings are not options.** Bob reads
   `type` to choose the live region, and drops `priority` at run time too.
 

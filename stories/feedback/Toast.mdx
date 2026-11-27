@@ -35,7 +35,7 @@ import { Lede, Facts, DoDont, Do, Dont, Keys } from '../docs/blocks';
 <Do>
 
 - Write two to five words, past tense, no subject: **Title updated**, **SB-341 archived**.
-- Keep an error until the user acts: `toast.add({ title: 'Could not save', type: 'error', timeout: 0 })`.
+- Let an error stay until the user acts. Bob does this by default: `toast.add({ title: 'Could not save', type: 'error' })`.
 - Give every toast a `title`. It names the toast for a screen reader; TypeScript requires it.
 
 </Do>
@@ -82,7 +82,7 @@ function SaveButton() {
 ```
 
 - `toast.add` returns the toast's id. `toast.close(id)` closes it, and `toast.update(id, { title })` changes it.
-- A toast closes itself after the stack's `timeout` (4 seconds), or its own. `timeout: 0` keeps it until the user closes it.
+- A success closes itself after the stack's `timeout` (4 seconds), or its own. An error stays until the user closes it, unless it has its own `timeout`. `timeout: 0` keeps any toast open.
 - `toast.promise(promise, { loading, success, error })` shows one toast through the three states.
 
 ## Interaction test

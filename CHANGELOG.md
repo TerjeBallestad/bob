@@ -51,7 +51,8 @@ classes (DD-031).
   - Bob's `add` and `update` take Bob's options: `title` is required (it names the toast),
     `type` is `'success'` or `'error'`, and `priority` is dropped, in the types and at run time.
     A toast with only a description (from `toast.promise` with a string) is named by it.
-  - Every toast closes after `timeout`, an error too. Pass `timeout: 0` to keep one.
+  - A success closes after `timeout`. An error stays until the user closes it, unless the app
+    gives it a `timeout` (WCAG 2.2.1). `timeout: 0` keeps any toast open.
   - Toast text stays selectable, so a user can copy an error; a swipe selects nothing.
 - **Bundle cost** (an app that imports one component; minified, gzip, React external, Base UI
   included): ToastStack 31.4 kB, about 0.4 kB more than the viewport alone in Task 5; Select
