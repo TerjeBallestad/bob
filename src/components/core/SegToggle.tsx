@@ -11,7 +11,8 @@ export interface SegToggleProps {
 }
 
 // Built on Base UI's ToggleGroup and Toggle, from shadcn/ui's Base UI toggle group (DD-034).
-// Base UI gives the group one Tab stop and moves focus with the arrow keys, Home and End.
+// Base UI gives the group one Tab stop, on the active segment, and moves focus with the arrow
+// keys, Home and End.
 // Bob keeps its props: SegToggle holds no state, `value` alone decides the pressed segment, and
 // a click calls onChange with the segment's value, also when it is already pressed.
 export function SegToggle({ options = [], value, onChange, style }: SegToggleProps) {
@@ -25,6 +26,11 @@ export function SegToggle({ options = [], value, onChange, style }: SegTogglePro
         <Toggle
           key={opt.value}
           value={String(i)}
+          // Base UI's composite gives the first Tab stop to the item with this attribute (its
+          // Radio and Tabs set it). Toggle does not, so Bob marks the active segment: Tab into
+          // the group lands on it. Base UI reads it once, when the group mounts; after that the
+          // Tab stop follows focus.
+          data-composite-item-active={i === active ? '' : undefined}
           onPressedChange={() => onChange?.(opt.value)}
           className={(state) => (state.pressed ? 'seg-opt seg-active' : 'seg-opt')}
         >

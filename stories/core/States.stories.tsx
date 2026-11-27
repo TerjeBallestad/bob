@@ -41,3 +41,10 @@ export const SegToggleFocus: StoryObj = {
     </div>
   ),
 };
+
+// SegToggle with no value: no segment is active, and Tab lands on the first one
+// (visual/keyboard.visual.ts).
+export const SegToggleNoValue: StoryObj = {
+  name: 'SegToggle no value',
+  render: () => <SegToggle options={['day', 'week', 'month']} />,
+};

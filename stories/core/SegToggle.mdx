@@ -57,8 +57,9 @@ An option is a string, or `{ value, label }` when the label differs from the val
 ## Interaction test
 
 The story **Switch segments (test)** runs this wiring in a play function. A click makes a segment
-active and calls `onChange`. The arrow keys move focus, and Enter makes the focused segment active. CI runs it in the built Storybook. Open the story and
-the Interactions panel to step through it.
+active and calls `onChange`. The arrow keys move focus, and Enter makes the focused segment
+active. CI runs it in the built Storybook. Open the story and the Interactions panel to step
+through it.
 
 <Canvas of={Stories.SwitchSegments} />
 
@@ -68,7 +69,7 @@ SegToggle is built on Base UI's ToggleGroup. Each segment is a native `<button>`
 one Tab stop.
 
 <Keys rows={[
-  ['Tab', 'Moves into the group, to the segment that last had focus (the first one at the start), and then out of the group.'],
+  ['Tab', 'Moves into the group, to the active segment (the first one when none is active), and then out of the group. After you move with the arrow keys, Tab returns to the segment that last had focus.'],
   ['Arrow Right Arrow Left', 'Moves focus to the next or the previous segment, and wraps at the ends. Focus moves, the value does not.'],
   ['Home End', 'Moves focus to the first or the last segment.'],
   ['Enter Space', 'Makes the focused segment active: calls onChange.'],

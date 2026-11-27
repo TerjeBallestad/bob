@@ -85,24 +85,29 @@ test.describe('Select', () => {
 test.describe('SegToggle', () => {
   // Base UI's ToggleGroup (DD-034): the group is one Tab stop, and the arrow keys move between
   // the segments.
-  test('the group is one Tab stop; aria-pressed marks the active segment; Enter and Space press the focused one', async ({ page }) => {
+  test('the group is one Tab stop, on the active segment; aria-pressed marks it', async ({ page }) => {
     await openStory(page, 'core-segtoggle--default');
     await expect(page.getByRole('group')).toBeVisible();
     await page.keyboard.press('Tab');
-    const day = page.getByRole('button', { name: 'day' });
-    await expect(day).toBeFocused();
-    await expect(day).toHaveAttribute('aria-pressed', 'false');
-    await expect(page.getByRole('button', { name: 'week' })).toHaveAttribute('aria-pressed', 'true');
+    const week = page.getByRole('button', { name: 'week' });
+    await expect(week).toBeFocused();
+    await expect(week).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('button', { name: 'day' })).toHaveAttribute('aria-pressed', 'false');
     await page.keyboard.press('Tab');
     await expect(page.getByRole('button', { name: /^(day|week|month)$/ }).and(page.locator(':focus'))).toHaveCount(0);
+  });
+
+  test('with no active segment, Tab lands on the first one', async ({ page }) => {
+    await openStory(page, 'core-states--seg-toggle-no-value');
+    await page.keyboard.press('Tab');
+    await expect(page.getByRole('button', { name: 'day' })).toBeFocused();
   });
 
   test('arrow keys move between the segments, and wrap; Home and End go to the ends', async ({ page }) => {
     await openStory(page, 'core-segtoggle--default');
     await page.keyboard.press('Tab');
     await page.keyboard.press('ArrowRight');
-    await expect(page.getByRole('button', { name: 'week' })).toBeFocused({ timeout: 1000 });
-    await page.keyboard.press('ArrowRight');
+    await expect(page.getByRole('button', { name: 'month' })).toBeFocused({ timeout: 1000 });
     await page.keyboard.press('ArrowRight');
     await expect(page.getByRole('button', { name: 'day' })).toBeFocused();
     await page.keyboard.press('ArrowLeft');
