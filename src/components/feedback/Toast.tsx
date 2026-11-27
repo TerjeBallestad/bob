@@ -15,11 +15,19 @@ export type ToastObject<Data extends object = any> = BaseToastObject<Data>;
 export type ToastOptions<Data extends object = any> = ToastManagerAddOptions<Data>;
 export type ToastType = 'success' | 'error';
 
+// Functions, not `export const createToastManager = BaseToast.createToastManager`: a property
+// read at the top of the module keeps Base UI's toast in every app bundle, also one that
+// imports only Button.
+
 /** A manager to add toasts from anywhere, also outside React. Pass it to ToastStack. */
-export const createToastManager: <Data extends object = any>() => ToastManager<Data> = BaseToast.createToastManager;
+export function createToastManager<Data extends object = any>(): ToastManager<Data> {
+  return BaseToast.createToastManager<Data>();
+}
 
 /** The toasts and the add, close, update and promise calls, inside a ToastStack. */
-export const useToastManager: <Data extends object = any>() => UseToastManagerReturnValue<Data> = BaseToast.useToastManager;
+export function useToastManager<Data extends object = any>(): UseToastManagerReturnValue<Data> {
+  return BaseToast.useToastManager<Data>();
+}
 
 export interface ToastStackProps {
   /** The app. A component inside it can call useToastManager(). */

@@ -8,13 +8,17 @@ import { Select as SelectPrimitive } from '@base-ui/react/select';
 // is Base UI's: value or defaultValue, onValueChange(value), and the items as children.
 // The styles are Bob's classes in src/tailwind/forms.css (DD-031).
 
+export type SelectProps<Value = string, Multiple extends boolean | undefined = false> = SelectPrimitive.Root.Props<Value, Multiple>;
+
 /** The select's state: value or defaultValue, onValueChange, items, name, disabled, required.
  *  Pass `items` (`{ value, label }[]`) so the trigger shows the chosen item's label; without it
  *  the trigger shows the raw value. Renders no element of its own. An `id` goes to the trigger,
  *  so FormRow's label names it. */
-const Select = SelectPrimitive.Root;
-
-export type SelectProps<Value = string> = SelectPrimitive.Root.Props<Value>;
+// A function, not `const Select = SelectPrimitive.Root`: a property read at the top of the
+// module keeps Base UI's Select in every app bundle, also one that imports only Button.
+function Select<Value, Multiple extends boolean | undefined = false>(props: SelectProps<Value, Multiple>) {
+  return <SelectPrimitive.Root {...props} />;
+}
 
 export interface SelectTriggerProps extends SelectPrimitive.Trigger.Props {}
 
