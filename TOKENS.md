@@ -211,8 +211,9 @@ weight. An app writes `text-label`, not `text-tiny font-semibold tracking-label`
 - A style with no weight takes its parent's weight, so `text-tiny` in a bold row stays bold.
 - A style sets no case and no family: Tailwind's text styles cannot. A label adds `uppercase`,
   an id or a count adds `font-mono`. `SectionLabel` renders the label style with its case.
-- `text-base` is `--fs-base` (13px), not Tailwind's 1rem; Tailwind's `text-xs` to `text-9xl`
-  keep their values. `tracking-heading` and `tracking-label` stay from 1.1.
+- Bob clears Tailwind's own sizes, as it does its colours and radii: `text-xs` to `text-9xl` do
+  not exist. `text-base` is `--fs-base` (13px), not Tailwind's 1rem. `tracking-heading` and
+  `tracking-label` stay from 1.1.
 - Bob's components keep their own CSS. Some sizes in it are not on the ramp (10px mono in Kbd
   and the mono chip, 12px in Button md and SearchInput); the design pass moves them.
 

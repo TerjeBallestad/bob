@@ -158,7 +158,9 @@
      (normal), as Bob's components and the apps do today; styles for text that wraps set one.
 
      No key is also a --text-color-* key (DD-033), so text-label is a style and text-muted a
-     colour. text-base is Bob's 13px body default, not Tailwind's 1rem. Tailwind's xs to 9xl stay. */
+     colour. `--text-*: initial` clears Tailwind's own sizes, as for colours and radii: text-xs to
+     text-9xl do not exist, and text-base is Bob's 13px body default, not Tailwind's 1rem. */
+  --text-*: initial;
   --text-micro: var(--fs-micro);
   --text-micro--line-height: normal;
   --text-micro--letter-spacing: var(--ls-tag);

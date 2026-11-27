@@ -112,8 +112,6 @@ describe('the Tailwind entry', () => {
     // Clearing the default palette keeps the colour keywords.
     const keywords = await buildApp(['bg-transparent', 'text-current', 'border-transparent']);
     for (const cls of ['bg-transparent', 'text-current', 'border-transparent']) expect(keywords, cls).toContain(`.${cls} {`);
-    // Tailwind's font sizes still work next to Bob's text colours.
-    expect(await buildApp(['text-sm'])).toMatch(/\.text-sm \{[^}]*font-size/);
   });
 
   // DD-038: one class sets the whole style. [class, font size, line height, letter spacing, weight];
@@ -165,9 +163,13 @@ describe('the Tailwind entry', () => {
     // No style key is a colour key: a class with both would lose its font size (DD-033).
     const colours = new Set([...theme.matchAll(/--text-color-([\w-]+):/g)].map((m) => m[1]));
     for (const [cls] of STYLES) expect(colours.has(cls.slice(5)), cls).toBe(false);
-    // Tailwind's own sizes keep their line height, and the leading-* classes stay Tailwind's.
-    const tw = await buildApp(['text-sm', 'leading-normal', 'leading-loose']);
-    expect(tw).toMatch(/\.text-sm \{[^}]*line-height: var\(--tw-leading, var\(--text-sm--line-height\)\)/);
+    // Tailwind's own sizes are cleared, as its colours and radii are: only Bob's styles build.
+    // Bob's colour roles in the text namespace stay. The leading-* classes stay Tailwind's.
+    const defaults = ['xs', 'sm', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl', '9xl'].map((k) => `text-${k}`);
+    const tw = await buildApp([...defaults, 'text-primary', 'leading-loose']);
+    for (const cls of defaults) expect(tw, cls).not.toContain(`.${cls} {`);
+    expect(tw).not.toMatch(/--text-(xs|sm|lg|\d?xl)(--line-height)?:/);
+    expect(tw).toContain('.text-primary {');
     expect(tw).toMatch(/--leading-loose: 2;/);
   });
 
