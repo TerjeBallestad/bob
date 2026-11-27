@@ -12,6 +12,7 @@
   --fs-base: 13px; /* body default */
   --fs-prose: 13.5px; /* document body */
   --fs-title: 15px; /* modal/featured headings */
+  --fs-section: 18px; /* a section heading in a document (markdown h1) */
   --fs-doc: 21px; /* slide-over document title */
   /* Weights */
   --fw-regular: 400; /* @kind font */

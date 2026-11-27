@@ -131,6 +131,7 @@ describe('the Tailwind entry', () => {
     ['text-prose', '--fs-prose', '--lh-prose', null, null],
     ['text-heading', '--fs-prose', 'normal', '--ls-heading', '--fw-bold'],
     ['text-title', '--fs-title', '--lh-heading', '--ls-heading', '--fw-bold'],
+    ['text-section', '--fs-section', '--lh-heading', '--ls-heading', '--fw-bold'],
     ['text-doc', '--fs-doc', '--lh-heading', '--ls-heading', '--fw-bold'],
   ];
   const v = (t: string) => (t.startsWith('--') ? `var(${t})` : t);

@@ -193,6 +193,10 @@
   --text-title--line-height: var(--lh-heading);
   --text-title--letter-spacing: var(--ls-heading);
   --text-title--font-weight: var(--fw-bold);
+  --text-section: var(--fs-section);
+  --text-section--line-height: var(--lh-heading);
+  --text-section--letter-spacing: var(--ls-heading);
+  --text-section--font-weight: var(--fw-bold);
   --text-doc: var(--fs-doc);
   --text-doc--line-height: var(--lh-heading);
   --text-doc--letter-spacing: var(--ls-heading);

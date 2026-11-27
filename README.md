@@ -33,7 +33,7 @@ Type is a class too: one text style sets the size, the line height, the letter s
 weight (DD-038). Write `text-label uppercase text-muted`, not `text-tiny font-semibold
 tracking-label` and not `text-[10.5px]`. The styles are `text-micro`, `text-tiny`, `text-id`,
 `text-label`, `text-caption`, `text-note`, `text-body`, `text-subhead`, `text-base`,
-`text-prose`, `text-heading`, `text-title` and `text-doc`; TOKENS.md says what each sets and is
+`text-prose`, `text-heading`, `text-title`, `text-section` and `text-doc`; TOKENS.md says what each sets and is
 for. A style sets no case and no family, so a label adds `uppercase` and an id adds
 `font-mono`. `text-base` is Bob's 13px body size, not Tailwind's 1rem.
 

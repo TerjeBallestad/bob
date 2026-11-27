@@ -324,7 +324,7 @@ export function ContrastPairs() {
 
 /* ---------- Type ---------- */
 
-const SIZES = ['--fs-micro', '--fs-tiny', '--fs-caption', '--fs-body', '--fs-base', '--fs-prose', '--fs-title', '--fs-doc'];
+const SIZES = ['--fs-micro', '--fs-tiny', '--fs-caption', '--fs-body', '--fs-base', '--fs-prose', '--fs-title', '--fs-section', '--fs-doc'];
 const comment = (file: string, name: string) => {
   const src = Object.entries(sources).find(([k]) => k.endsWith(file))?.[1] ?? '';
   return new RegExp(`${name}:[^;]+;\\s*/\\*\\s*([^*]+?)\\s*\\*/`).exec(src)?.[1] ?? '';

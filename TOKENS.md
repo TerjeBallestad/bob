@@ -172,6 +172,7 @@ Size ramp (exact odd values are intentional; there is no modular scale):
 | `--fs-base`    | `13px`   | Body default                     |
 | `--fs-prose`   | `13.5px` | Document body                    |
 | `--fs-title`   | `15px`   | Modal/featured headings          |
+| `--fs-section` | `18px`   | Section heading in a document    |
 | `--fs-doc`     | `21px`   | Slide-over document title        |
 
 Weights `--fw-regular` 400 · `--fw-medium` 500 · `--fw-semibold` 600 · `--fw-bold` 700.
@@ -201,6 +202,7 @@ weight. An app writes `text-label`, not `text-tiny font-semibold tracking-label`
 | `text-prose`   | 13.5px | 1.65        |          |        | Document body                       |
 | `text-heading` | 13.5px | normal      | -.01em   | 700    | Brand, column titles                |
 | `text-title`   | 15px   | 1.3         | -.01em   | 700    | Modal and panel titles              |
+| `text-section` | 18px   | 1.3         | -.01em   | 700    | Section heads in a document (markdown h1) |
 | `text-doc`     | 21px   | 1.3         | -.01em   | 700    | Page and document titles            |
 
 - The ramp names are each size's plain style. A size that needs a second style gets a role
