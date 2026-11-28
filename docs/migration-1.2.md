@@ -40,8 +40,11 @@ An app sees these as soon as it bumps the version.
 | `text-tiny`, `text-caption`, `text-body`, `text-base` | font-size | Also line height `normal` |
 | `<Button>` of any variant | `type="submit"` (the native default), except `variant="text"` | `type="button"` |
 
-- **Line heights.** In an app without Tailwind's preflight (pm-board and Makron), text had
-  `normal` already, so the one-line styles move nothing. `text-prose`, `text-title` and
+- **Line heights.** In an app without Tailwind's preflight (pm-board and Makron), most text has
+  `normal` already, so most one-line styles move nothing. The exception is an element that sat
+  inside a parent with its own line height and inherited it: a `text-caption` span in a
+  `leading-loose` block, or a `text-tiny` element inside `.md`, moves from the parent's value (2,
+  1.65) to `normal`. A `leading-*` class on the element itself still wins. `text-prose`, `text-title` and
   `text-doc` do move: in Makron the sidebar brand (`text-prose`) grows from `normal` to 1.65 and
   pushes the nav down about 2px, and the first-run and login cards grow with `text-doc` (1.3) and
   `text-prose`. In an app **with** preflight (README's `@import "tailwindcss"`), the html line
@@ -158,9 +161,11 @@ Moves:
 | `.pm-empty` | 13px, line height 1.8 | `normal` |
 | `.pm-strip-text` | line height 1.5 | `normal` |
 | `.pm-outcome` | line height 1.45 | 1.5 |
+| `.pm-act-text` | line height `normal` (a 2-line clamp) | 1.5: activity rows get taller |
 | `.md h3`, `.md h4` | line height 1.3 | `normal` (`.md h1` and `.md h2` keep 1.3) |
-| `.pm-home-title` | `normal` (an h1 with no line height) | 1.3 |
-| `.pm-doc-title` | 22px, 1.3 | 21px, 1.3 |
+| `.pm-home-title` | 22px, `normal` (an h1 with no line height), no letter spacing | 21px, 1.3, -.01em |
+| `.pm-doc-title` | 22px, 1.3, no letter spacing | 21px, 1.3, -.01em |
+| `.md h1` | 18px, 1.3, no letter spacing | 18px, 1.3, -.01em |
 | `.pm-frontier-tag` | 9.5px, 700, .06em; not uppercased: the text is "FRONTIER" in the source | .05em. Add `uppercase`, or keep the capitals in the source |
 | `.pm-needs-title` | 700, .06em | 600, .08em |
 | `.pm-group-label`, `.pm-exec-label` | 700 | 600 |
@@ -168,6 +173,7 @@ Moves:
 | `.pm-brand-name`, `.pm-topbar-title`, `.md h3` | 14px, 700 (h3 bold by default) | 13.5px, -.01em |
 | `.pm-dd-featured-title`, `.md h2` | no letter spacing; `.pm-dd-featured-title` `normal` line height | -.01em; 1.3 |
 | `.pm-meta-priority`, `.pm-typechip` | sans, 600 | `text-id` sets no family: they stay sans |
+| `.pm-slide-id` | mono, 12px, 600 | `text-subhead` sets no family: add `font-mono` |
 
 `.pm-close` (20px) and `.pm-task-box` (10px) size a glyph, not text, and keep their values.
 

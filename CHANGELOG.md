@@ -24,7 +24,9 @@ An app sees these as soon as it bumps the version:
   sidebar brand (`text-prose`, now 1.65) pushes the nav down about 2px, and the first-run and
   login cards grow.
 - **Changed:** `text-tiny`, `text-caption`, `text-body` and `text-base` set line height `normal`.
-  Without Tailwind's preflight (pm-board, Makron) text had `normal` already. With preflight
+  Without Tailwind's preflight (pm-board, Makron) most text has `normal` already, but an element
+  that inherited its parent's line height (inside `leading-loose`, or `.md` at 1.65) moves from
+  that value to `normal`. With preflight
   (README's `@import "tailwindcss"`), each such line goes from 1.5 to `normal`.
 - **Changed:** every Button is `type="button"` unless the app sets `type`. In 1.1 only
   `variant="text"` was; the others submitted a form they sat in. A Button that submits says
