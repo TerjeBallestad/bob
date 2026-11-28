@@ -201,6 +201,7 @@ weight. An app writes `text-label`, not `text-tiny font-semibold tracking-label`
 | `text-label`   | 10.5px | normal      | .08em    | 600    | Section labels, column heads, `uppercase` |
 | `text-caption` | 11.5px | normal      |          |        | One-line meta, hints                |
 | `text-note`    | 11.5px | 1.5         |          |        | Small text that wraps               |
+| `text-figure`  | 11.5px | normal      |          | 600    | A total or a sum, with `font-mono`  |
 | `text-body`    | 12.5px | normal      |          |        | Rows, cells, inputs                 |
 | `text-subhead` | 12.5px | normal      |          | 600    | A heading in a panel, a bar title   |
 | `text-item`    | 12.5px | normal      |          | 500    | A row's item title, a task input    |
@@ -214,14 +215,16 @@ weight. An app writes `text-label`, not `text-tiny font-semibold tracking-label`
 - `text-doc` is `text-display`'s name before 1.2. It still works through 1.x, deprecated, and
   goes in 2.0.
 - The ramp names are each size's plain style. A size that needs a second style gets a role
-  name: `text-id` and `text-label` at 10.5px, `text-note` at 11.5px, `text-subhead` and `text-item` at
-  12.5px, `text-heading` at 13.5px.
+  name: `text-id` and `text-label` at 10.5px, `text-note` and `text-figure` at 11.5px, `text-subhead`
+  and `text-item` at 12.5px, `text-heading` at 13.5px.
 - `text-item` (1.3) is the title of an item in a row or on a card. ListRow's `list-row-title` and
   TicketCard's `ticket-card-title` use it. `ticket-card-title` keeps its own line height of 1.45,
   because a card title wraps.
+- `text-figure` (1.4) is a number that matters: a total, or the sum in a table row. Like
+  `text-id`, it is set in mono, and the app adds `font-mono`: `font-mono text-figure`.
 - A style with no weight takes its parent's weight, so `text-tiny` in a bold row stays bold.
 - A style sets no case and no family: Tailwind's text styles cannot. A label adds `uppercase`,
-  an id or a count adds `font-mono`. `SectionLabel` renders the label style with its case.
+  an id, a count or a figure adds `font-mono`. `SectionLabel` renders the label style with its case.
 - Bob clears Tailwind's own sizes, as it does its colours and radii: `text-xs` to `text-9xl` do
   not exist. `text-base` is `--fs-base` (13px), not Tailwind's 1rem. `tracking-heading` and
   `tracking-label` stay from 1.1.

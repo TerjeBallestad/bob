@@ -152,7 +152,8 @@
      family, as Tailwind's text styles cannot: a label adds `uppercase`, an id adds `font-mono`.
 
      The ramp names (text-micro to text-display) are the plain style of each size. A size that needs
-     a second style gets a role name: text-id and text-label at 10.5px, text-note at 11.5px,
+     a second style gets a role name: text-id and text-label at 10.5px, text-note and text-figure
+     (1.4, a number that matters, with font-mono) at 11.5px,
      text-subhead and text-item (1.3, a row's item title) at 12.5px, text-heading at 13.5px. A
      style with no weight takes its parent's, so text-tiny inside a bold row stays bold. One-line styles keep the font's own line height
      (normal), as Bob's components and the apps do today; styles for text that wraps set one.
@@ -178,6 +179,9 @@
   --text-caption--line-height: normal;
   --text-note: var(--fs-caption);
   --text-note--line-height: var(--lh-note);
+  --text-figure: var(--fs-caption);
+  --text-figure--line-height: normal;
+  --text-figure--font-weight: var(--fw-semibold);
   --text-body: var(--fs-body);
   --text-body--line-height: normal;
   --text-subhead: var(--fs-body);

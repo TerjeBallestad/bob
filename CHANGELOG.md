@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.4.0
+
+A minor version: one new text style and one new prop. Nothing an app sees changes until it uses
+them.
+
+- New text style `text-figure`: 11.5px (`--fs-caption`), line height `normal`, weight 600
+  (`--fw-semibold`). It is a number that matters: a total, or the sum in a table row. It is set
+  in mono, and as with `text-id` the app adds `font-mono`: `font-mono text-figure`. Before 1.4 an
+  app had no style for 11.5px at 600, and DD-038 allows no `font-semibold` next to a style
+  (SB-024, Makron's report and invoice totals).
+- StatusDot takes `className`. It goes on the dot, after Bob's classes, in every state, as on
+  Modal and SectionLabel since 1.2. An app places the dot with a utility
+  (`className="self-center"`), not with a wrapper.
+
+### Screenshots
+
+A new baseline for `tokens--type-classes` (the `text-figure` row). No component looks different.
+
 ## 1.3.0
 
 A minor version: one new text style. Nothing an app sees changes until it uses it.

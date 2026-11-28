@@ -123,6 +123,7 @@ describe('the Tailwind entry', () => {
     ['text-label', '--fs-tiny', 'normal', '--ls-label', '--fw-semibold'],
     ['text-caption', '--fs-caption', 'normal', null, null],
     ['text-note', '--fs-caption', '--lh-note', null, null],
+    ['text-figure', '--fs-caption', 'normal', null, '--fw-semibold'],
     ['text-body', '--fs-body', 'normal', null, null],
     ['text-subhead', '--fs-body', 'normal', null, '--fw-semibold'],
     ['text-item', '--fs-body', 'normal', null, '--fw-medium'],

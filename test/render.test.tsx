@@ -59,7 +59,7 @@ describe('Button', () => {
   });
 });
 
-describe('className on Modal and SectionLabel', () => {
+describe('className on Modal, SectionLabel and StatusDot', () => {
   const host = (el: JSX.Element) => {
     const div = document.createElement('div');
     div.innerHTML = renderHtml(el);
@@ -75,5 +75,15 @@ describe('className on Modal and SectionLabel', () => {
   it("SectionLabel puts it on the label, after Bob's class", () => {
     expect(host(<Bob.SectionLabel className="mt-5">Planned</Bob.SectionLabel>).querySelector('[class^="section-label"]')!.className).toBe('section-label mt-5');
     expect(host(<Bob.SectionLabel>Planned</Bob.SectionLabel>).querySelector('[class^="section-label"]')!.className).toBe('section-label');
+  });
+
+  it("StatusDot puts it on the dot, after Bob's classes, in every state (1.4)", () => {
+    const dot = (el: JSX.Element) => host(el).querySelector('.status-dot')!.className;
+    for (const state of ['dashed', 'outline', 'staged', 'solid'] as const) {
+      expect(dot(<Bob.StatusDot state={state} className="self-center" />), state).toBe('status-dot self-center');
+      expect(dot(<Bob.StatusDot state={state} />), state).toBe('status-dot');
+    }
+    expect(dot(<Bob.StatusDot state="live" className="self-center" />)).toBe('status-dot status-dot-live self-center');
+    expect(dot(<Bob.StatusDot state="live" />)).toBe('status-dot status-dot-live');
   });
 });

@@ -13,6 +13,7 @@ export default {
     color: { control: 'text', description: 'The dot\'s colour, a role such as `var(--bg-green)`. `dashed` ignores it and uses `--gray-23`.' },
     size: { control: 'number', description: 'Diameter in px.' },
     square: { control: 'boolean', description: 'A rounded square instead of a circle.' },
+    className: { control: false, description: "Classes for the dot, after Bob's: `className=\"self-center\"`." },
     style: { control: false, description: 'Inline styles, merged last.' },
   },
 } satisfies Meta<typeof StatusDot>;
