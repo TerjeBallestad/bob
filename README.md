@@ -32,7 +32,7 @@ component import also loads Bob's webfonts.
 Type is a class too: one text style sets the size, the line height, the letter spacing and the
 weight (DD-038). Write `text-label uppercase text-muted`, not `text-tiny font-semibold
 tracking-label` and not `text-[10.5px]`. The styles are `text-micro`, `text-tiny`, `text-id`,
-`text-label`, `text-caption`, `text-note`, `text-body`, `text-subhead`, `text-base`,
+`text-label`, `text-caption`, `text-note`, `text-body`, `text-subhead`, `text-item`, `text-base`,
 `text-prose`, `text-heading`, `text-title`, `text-headline` and `text-display`; TOKENS.md
 says what each sets and is for. A style sets no case and no family, so a label adds
 `uppercase` and an id adds `font-mono`. `text-doc` is `text-display`'s old name, deprecated. `text-base` is Bob's 13px body size, not Tailwind's 1rem.

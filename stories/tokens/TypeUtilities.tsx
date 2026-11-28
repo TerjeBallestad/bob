@@ -13,6 +13,7 @@ const STYLES = [
   ['text-note', '', '11.5 · 1.5', 'small text that wraps', 'Overnight ranges roll to the next day.'],
   ['text-body', '', '12.5 · normal', 'rows, cells, inputs', 'Plan the sprint'],
   ['text-subhead', '', '12.5 · normal · 600', 'a heading in a panel, a bar title', 'Plan the sprint'],
+  ['text-item', '', '12.5 · normal · 500', "a row's item title, a task input", 'Plan the sprint'],
   ['text-base', '', '13 · normal', 'body default', 'Plan the sprint'],
   ['text-prose', '', '13.5 · 1.65', 'document body', 'A plan holds tasks, and each task a check.'],
   ['text-heading', '', '13.5 · normal · −.01em · 700', 'brand, column titles', 'Plan the sprint'],

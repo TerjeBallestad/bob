@@ -125,6 +125,7 @@ describe('the Tailwind entry', () => {
     ['text-note', '--fs-caption', '--lh-note', null, null],
     ['text-body', '--fs-body', 'normal', null, null],
     ['text-subhead', '--fs-body', 'normal', null, '--fw-semibold'],
+    ['text-item', '--fs-body', 'normal', null, '--fw-medium'],
     ['text-base', '--fs-base', 'normal', null, null],
     ['text-prose', '--fs-prose', '--lh-prose', null, null],
     ['text-heading', '--fs-prose', 'normal', '--ls-heading', '--fw-bold'],
@@ -173,6 +174,18 @@ describe('the Tailwind entry', () => {
     expect(tw).not.toMatch(/--text-(xs|sm|lg|\d?xl)(--line-height)?:/);
     expect(tw).toContain('.text-primary {');
     expect(tw).toMatch(/--leading-loose: 2;/);
+  });
+
+  it("sets ListRow's and TicketCard's titles with text-item, in the app build and in bob.css (1.3)", async () => {
+    const item = 'font-size: var(--fs-body); line-height: var(--tw-leading, normal); font-weight: var(--tw-font-weight, var(--fw-medium));';
+    const flat = (r: string) => r.replace(/\s+/g, ' ').replace(/ ?([:;,]) ?/g, '$1 ').trim().replace(/;?$/, ';');
+    for (const css of [await buildApp(), readFileSync('dist/bob.css', 'utf8')]) {
+      const rule = (cls: string) => flat(css.match(new RegExp(`\\.${cls} ?\\{([^}]*)\\}`))?.[1] ?? '');
+      expect(rule('list-row-title').startsWith(flat(item)), 'list-row-title').toBe(true);
+      // A card title wraps, so it keeps its own line height after the style's.
+      expect(rule('ticket-card-title').startsWith(flat(item)), 'ticket-card-title').toBe(true);
+      expect(rule('ticket-card-title').match(/line-height: [^;]+;/g)?.at(-1), 'ticket-card-title').toBe('line-height: 1.45;');
+    }
   });
 
   it("makes each of Bob's shadows a shadow-* class that reads its token", async () => {

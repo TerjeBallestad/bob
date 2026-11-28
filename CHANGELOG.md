@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.3.0
+
+A minor version: one new text style. Nothing an app sees changes until it uses it.
+
+- New text style `text-item`: 12.5px (`--fs-body`), line height `normal`, weight 500
+  (`--fw-medium`). It is the title of an item in a row or on a card, and a task input. Before
+  1.3 an app had no style for 12.5px at 500, and DD-038 allows no `font-medium` next to a style
+  (SB-024, Makron's task input and locked-row label).
+- ListRow's `list-row-title` and TicketCard's `ticket-card-title` now take their size and weight
+  from `text-item` (`@apply text-item`), not from their own 12.5px and 500. They look the same.
+  `ticket-card-title` keeps its line height of 1.45, because a card title wraps.
+  `list-row-title` now sets line height `normal`; before, it inherited the row's. Without
+  Tailwind's preflight, as Bob's components assume (README), that was `normal` too, so pm-board
+  and Makron see no change. An app with preflight sees the title's line height go from 1.5 to
+  `normal`.
+
 ## 1.2.0
 
 A minor version by Terje's choice (DD-038, SB-023), as an exception to the semver rule in
